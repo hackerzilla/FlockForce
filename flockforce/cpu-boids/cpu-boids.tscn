@@ -1,0 +1,3 @@
+[gd_scene format=3 uid="uid://l4wp52fvch2c"]
+
+[node name="Cpu-boids" type="Node3D"]
