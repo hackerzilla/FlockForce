@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://bws3qvijgtyc8"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="Label3D" type="Label3D" parent="."]
+text = "Welcome to FlockForce
+"
