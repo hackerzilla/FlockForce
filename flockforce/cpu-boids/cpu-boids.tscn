@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://l4wp52fvch2c"]
+
+[ext_resource type="Script" uid="uid://ctu8xfmndj21e" path="res://cpu-boids/boid_manager.gd" id="1_2tbla"]
+[ext_resource type="PackedScene" uid="uid://bytrua2livwae" path="res://cpu-boids/boid.tscn" id="2_vmxt3"]
+
+[node name="BoidRoot" type="Node3D"]
+script = ExtResource("1_2tbla")
+boid_scene = ExtResource("2_vmxt3")
+random_velocity_strength = 11.38
+alignment_strength = 2.93
+cohesion_strenth = 1.31
+neighborhood_size = 28.51
