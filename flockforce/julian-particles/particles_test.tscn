@@ -1,19 +1,24 @@
-[gd_scene load_steps=4 format=3 uid="uid://bbjutj3dpfh4x"]
+[gd_scene load_steps=3 format=3 uid="uid://bbjutj3dpfh4x"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_bvrfd"]
+emission_shape = 1
+emission_sphere_radius = 3.99
+direction = Vector3(1, 1, 1)
+spread = 180.0
+initial_velocity_max = 20.74
 gravity = Vector3(0, 0, 0)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bvrfd"]
-
-[sub_resource type="QuadMesh" id="QuadMesh_33ucc"]
-material = SubResource("StandardMaterial3D_bvrfd")
+[sub_resource type="SphereMesh" id="SphereMesh_bvrfd"]
+radial_segments = 4
+rings = 1
 
 [node name="ParticlesTest" type="Node3D"]
 
 [node name="GPUParticles3D" type="GPUParticles3D" parent="."]
-emitting = false
+amount = 100
+lifetime = 7.3
 process_material = SubResource("ParticleProcessMaterial_bvrfd")
-draw_pass_1 = SubResource("QuadMesh_33ucc")
+draw_pass_1 = SubResource("SphereMesh_bvrfd")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 
