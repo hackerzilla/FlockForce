@@ -60,8 +60,8 @@ func initialize_boids():
 		)
 		new_boid.position = spawn_location
 		new_boid.linear_velocity = rand_direction() * random_velocity_strength
-		
-	
+
+
 
 func update_boids_velocity(delta: float):
 	# https://www.red3d.com/cwr/boids/

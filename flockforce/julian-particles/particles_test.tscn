@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://bbjutj3dpfh4x"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_bvrfd"]
+gravity = Vector3(0, 0, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bvrfd"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_33ucc"]
+material = SubResource("StandardMaterial3D_bvrfd")
+
+[node name="ParticlesTest" type="Node3D"]
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+emitting = false
+process_material = SubResource("ParticleProcessMaterial_bvrfd")
+draw_pass_1 = SubResource("QuadMesh_33ucc")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.50297)
