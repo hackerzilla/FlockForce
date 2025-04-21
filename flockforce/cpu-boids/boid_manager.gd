@@ -74,10 +74,15 @@ func update_boids_velocity(delta: float):
 		var neighbors = get_boids_in_neighborhood(boid)
 		var CoM: Vector3 = get_center_of_mass(neighbors) # center of mass
 		var to_CoM = (CoM - boid.position).normalized() # possible bug : local vs global coords
-		var avg_direction: Vector3 = get_average_velocity(neighbors).normalized()
-		separation = -to_CoM
+		var dist_to_CoM = boid.position.distance_to(CoM)
+		# distance ratio is approximately the distance to the center of neighborhood as a percentage [0, 1]
+		# when this is high we want cohesion to be higher
+		# when this is low we want separation to be higher
+		var distance_ratio = abs(neighborhood_size - dist_to_CoM) / neighborhood_size 
+		var avg_direction = get_average_velocity(neighbors).normalized()
+		separation = -to_CoM * (1 - distance_ratio) # TODO: make separation proportional to the inverse square of the distance
 		alignment = avg_direction
-		cohesion = to_CoM
+		cohesion = to_CoM * distance_ratio   # TODO: make cohesion proportional to the distance squared from the 
 		random_nudge = rand_direction() 
 		boid.linear_velocity = \
 			separation * separation_strength \
