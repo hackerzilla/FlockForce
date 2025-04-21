@@ -9,7 +9,7 @@ var shader_path  := "res://julian-compute/compute_shader2.glsl"
 var shader_file  : Resource
 var shader_spirv : RDShaderSPIRV
 var shader       : RID
-var input        : PackedFloat32Array
+var input        : PackedVector3Array
 var input_bytes  : PackedByteArray
 var buffer       : RID
 var uniform      : RDUniform
@@ -17,7 +17,17 @@ var uniform_set  : RID
 var pipeline     : RID
 var compute_list : int
 var output_bytes : PackedByteArray
-var output       : PackedFloat32Array
+var output_intermediary : PackedFloat32Array
+var output       : PackedVector3Array
+
+func float32_to_vector3_array(input: PackedFloat32Array) -> PackedVector3Array:
+	assert(input.size() % 3 == 0, "input array should be divisible by 3 (it has vec3s right?)")
+	var temp_arr : Array[Vector3] = []
+	var temp_vec : Vector3
+	for i in range(0, input.size()):
+
+	var ouput: PackedVector3Array = PackedVector3Array(temp_arr)
+	return output
 
 func _ready() -> void:
 	# initialize the dispatch thread
@@ -33,7 +43,8 @@ func _ready() -> void:
 	shader = rd.shader_create_from_spirv(shader_spirv)
 
 	# Shader uses 32 bit floats
-	input = PackedFloat32Array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+	input = PackedVector3Array([Vector3(1, 2, 3)])
+
 	input_bytes = input.to_byte_array()
 
 	# Create a storage buffer on the device, get the ID
@@ -57,7 +68,8 @@ func _ready() -> void:
 	rd.sync()
 
 	output_bytes = rd.buffer_get_data(buffer)
-	output = output_bytes.to_float32_array()
+	output_intermediary = output_bytes.to_float32_array()
+	output
 	print("Input: ", input)
 	print("Output: ", output)
 
