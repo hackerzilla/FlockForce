@@ -33,11 +33,11 @@
 
 		<br>
         <!-- will update the links latee-->
-		Link to webpage: <a href="https://hackerzilla.github.io/FlockForce/">Milestone Webpage</a>
+		Link to webpage: <a href="https://hackerzilla.github.io/FlockForce/">https://hackerzilla.github.io/FlockForce/</a>
 
 		<br>
         <!-- Will iupdate link here -->
-		Link to GitHub repository:  <a href="https://github.com/hackerzilla/FlockForce/tree/main">Github Repository</a>
+		Link to GitHub repository:  <a href="https://github.com/hackerzilla/FlockForce/tree/main">https://github.com/hackerzilla/FlockForce/tree/main</a>
 
 
         <!--will include the webpage title here -->
@@ -58,25 +58,31 @@
 			
 		</p>
 		<h3>Preliminary results</h3>
-        <p>
-            <!-- Will include text here-->
-        </p>
+		<p>
+			The first week, we split into two teams. The first team (Julian and Mark) focused on the CPU boids implementation, and the second team (Connor and John) used the time to read about compute shaders and the GPU shader pipeline. We managed to flesh out the rough program for CPU boids, which works decently well. Below is an image of the 3D boids produced by our CPU-based program. The performance is not great as you might expect from an <em>O(n<sup>2</sup>)</em> algorithm running in a scripting environment. We were able to get stable <strong>120 FPS</strong> on an <strong>M2 Pro</strong> machine with 100 boids. This suggests a lot of room for improvement once we get compute shader boids working.
+		</p>
+		<p>
+			The second week, Mark focused on setting up the milestone submission while others tried to implement a first draft boids simulation on a compute shader. This section turns out to be a little bit beyond our current knowledge and requires further research. From this research, we found that Godot Engine has an abstraction called <a href="https://docs.godotengine.org/en/stable/classes/class_gpuparticles3d.html#class-gpuparticles3d" target="_blank">GPUParticles3D</a>, which has way more features than we realistically need, but has a key functionality of being able to make many particles that live entirely on the GPU and can have their attributes modified from a user-authored compute shader. This is currently our most promising direction, so we spent time reading and learning about the <em>GPUParticles3D</em> class.
+		</p>
+		<p>
+			In addition, we have some compute shader code for a boids simulation, although it doesn’t function yet since at the time of writing it we hadn’t figured out how to connect it to the rendering backend. However, it still shows the intention of what our compute shader will eventually be doing, which is a simple forward Euler or Verlet integration of particle position (boid position) over time. This code snippet from our rough draft compute shader shows the lines that update each particle’s position and velocity.
+		</p>
 		<h3>Progress relative to your plan & Further changes to plan</h3>
-        <p>
-            <!-- Will include text here-->
-        </p>
+		<p>
+			Our next steps include finishing the compute shader implementation of the boids algorithm and optimizing its performance. Our objective is to optimize boid simulation performance and increase the number of boids we can simulate and render. To achieve this, we plan to experiment with the <em>GPUParticle3D</em> node, along with exploring other methods of rendering the GPU-based boid simulation. Another key plan is to implement a neighborhood search algorithm with better than <em>O(n<sup>2</sup>)</em> complexity, allowing for more efficient simulation as the number of boids increases.
+		</p>
 
 		<h2>3.2: Milestone Video</h2>
 		<br>
         <!-- will update the links latee-->
-		<a href="https://hackerzilla.github.io/FlockForce/">The video</a>
+		<a href="https://youtu.be/JFyV3ioOYWU?feature=shared">https://youtu.be/JFyV3ioOYWU?feature=shared</a>
 
 		<p>
 			<!-- Will include text here-->
 		</p>
 
 		<h2>3.3: Milestone Slides</h2>
-		<a href="https://www.canva.com/design/DAGlOD7Kwow/K57iDLisehqeTTzdDSIspg/view?utm_content=DAGlOD7Kwow&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hd00e9cbd21">The slides</a>
+		<a href="https://www.canva.com/design/DAGlOD7Kwow/K57iDLisehqeTTzdDSIspg/view?utm_content=DAGlOD7Kwow&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hd00e9cbd21">https://www.canva.com/design/DAGlOD7Kwow/K57iDLisehqeTTzdDSIspg/view?utm_content=DAGlOD7Kwow&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hd00e9cbd21</a>
 
 
 
