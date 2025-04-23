@@ -25,7 +25,7 @@ func float32_to_vector3_array(input: PackedFloat32Array) -> PackedVector3Array:
 	var temp_arr : Array[Vector3] = []
 	var temp_vec : Vector3
 	for i in range(0, input.size()):
-
+		pass
 	var ouput: PackedVector3Array = PackedVector3Array(temp_arr)
 	return output
 
