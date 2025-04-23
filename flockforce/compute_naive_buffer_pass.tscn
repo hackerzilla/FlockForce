@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://bxpktp4ldb1mi"]
-
-[ext_resource type="Script" uid="uid://c45lqhy3d0l2k" path="res://compute_naive_buffer_pass.gd" id="1_vtskc"]
-
-[node name="Node3D" type="Node3D"]
-script = ExtResource("1_vtskc")
