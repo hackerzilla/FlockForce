@@ -1,5 +1,7 @@
 extends Node	
 
+
+
 # create a local rendering device
 var rd := RenderingServer.create_local_rendering_device()
 
