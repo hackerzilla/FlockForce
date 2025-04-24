@@ -3,9 +3,13 @@ extends Node
 @export
 var boid_scene: PackedScene
 
+@export 
+var spawn_radius: float = 10.0
+
 var boids: Array[RigidBody3D] = []
 
-var boid_count = 3
+@export
+var boid_count = 10
 
 # create a local rendering device
 var rd := RenderingServer.create_local_rendering_device()
@@ -16,25 +20,47 @@ var shader_spirv: RDShaderSPIRV = shader_file.get_spirv()
 var shader := rd.shader_create_from_spirv(shader_spirv)
 
 # Prepare our data. We use floats in the shader, so we need 32 bit.
-var position := PackedFloat32Array([1, 2, 3, 4, 5, 6, 7, 8, 9])
-var position_bytes := position.to_byte_array()
+var position
+var position_bytes
 
-var velocity := PackedFloat32Array([0, 0.4, 0, 0, 0.5, 0, 0, 0.6, 0])
-var velocity_bytes = velocity.to_byte_array()
+var velocity 
+var velocity_bytes
 
 # Create a storage buffer that can hold our float values.
 # Each float has 4 bytes (32 bit) so 10 x 4 = 40 bytes
-var pos_buffer := rd.storage_buffer_create(position_bytes.size(), position_bytes)
+var pos_buffer 
 
-var vol_buffer := rd.storage_buffer_create(velocity_bytes.size(), velocity_bytes)
+var vol_buffer 
 
 # Create a uniform to assign the buffer to the rendering device
-var pos_uniform := RDUniform.new()
-var vol_uniform := RDUniform.new()
+var pos_uniform
+var vol_uniform
 
 #function to spawn boids and put data in inputBuffer
 
 func _ready():
+	var rng = RandomNumberGenerator.new()
+	var pos_start_arr = []
+	var vol_start_arr = []
+	for i in range(boid_count):
+		for j in range(3):
+			pos_start_arr.push_back(rng.randf_range(-spawn_radius, spawn_radius))
+			vol_start_arr.push_back(rng.randf_range(-1, 1))
+	position = PackedFloat32Array(pos_start_arr)
+	position_bytes = position.to_byte_array()
+
+	velocity = PackedFloat32Array(vol_start_arr)
+	velocity_bytes = velocity.to_byte_array()
+
+	# Create a storage buffer that can hold our float values.
+	# Each float has 4 bytes (32 bit) so 10 x 4 = 40 bytes
+	pos_buffer = rd.storage_buffer_create(position_bytes.size(), position_bytes)
+
+	vol_buffer = rd.storage_buffer_create(velocity_bytes.size(), velocity_bytes)
+
+	# Create a uniform to assign the buffer to the rendering device
+	pos_uniform = RDUniform.new()
+	vol_uniform = RDUniform.new()
 	initialize_boids()
 	print("ready called")
 	pos_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
