@@ -16,11 +16,16 @@ layout(set = 0, binding = 1, std430) restrict buffer Velocity {
 }
 velocities;
 
+layout(set = 0, binding = 2, std430) restrict buffer Params{
+    int boid_count;
+} params;
+
+
 const float neighborhood_size = 20.0;
 
 const float separation_strength = 1.0;
 const float alignment_strength = 1.0;
-const float cohesion_strength = 1.0;
+const float cohesion_strength = 1.5;
 
 
 // The code we want to execute in each invocation
@@ -33,7 +38,7 @@ void main() {
     vec3 avg_position = vec3(0.0);
     vec3 avg_velocity = vec3(0.0);
     int num_neighbors = 0;
-    int total_boids = 10; //TODO
+    int total_boids = params.boid_count;
 
     for (int i = 0; i < total_boids; i++) {
         if (i == gl_GlobalInvocationID.x) {
@@ -62,6 +67,7 @@ void main() {
     vec3 alignment = avg_velocity;
 
     boid_velocity = (separation * separation_strength) + (alignment * alignment_strength) + (cohesion * cohesion_strength);
+    boid_velocity = normalize(boid_velocity);
     boid_position = boid_position + boid_velocity * 0.1; // should this include something related to timesteps?
 
     positions.data[gl_GlobalInvocationID.x] = boid_position;
