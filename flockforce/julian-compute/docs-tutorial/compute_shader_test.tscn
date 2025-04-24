@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://m4mhpxemldx"]
+
+[ext_resource type="Script" uid="uid://ecd2dmu5tx5d" path="res://julian-compute/docs-tutorial/compute_shader_test.gd" id="1_ojc0s"]
+
+[node name="ComputeShaderTest" type="Node3D"]
+script = ExtResource("1_ojc0s")
+
+[node name="Label3D" type="Label3D" parent="."]
+text = "This is just a test of using a compute shader, followed the tutorial in godot docs."

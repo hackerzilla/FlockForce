@@ -5,7 +5,7 @@ var boid_scene: PackedScene
 
 var boids: Array[RigidBody3D] = []
 
-var boid_count = 100
+var boid_count = 3
 
 # create a local rendering device
 var rd := RenderingServer.create_local_rendering_device()
@@ -16,10 +16,10 @@ var shader_spirv: RDShaderSPIRV = shader_file.get_spirv()
 var shader := rd.shader_create_from_spirv(shader_spirv)
 
 # Prepare our data. We use floats in the shader, so we need 32 bit.
-var position := PackedFloat32Array( range(0, boid_count * 3) ) # initialize to that many entries
+var position := PackedFloat32Array([1, 2, 3, 4, 5, 6, 7, 8, 9])
 var position_bytes := position.to_byte_array()
 
-var velocity := PackedFloat32Array( range(0, boid_count * 3) )
+var velocity := PackedFloat32Array([0, 0.4, 0, 0, 0.5, 0, 0, 0.6, 0])
 var velocity_bytes = velocity.to_byte_array()
 
 # Create a storage buffer that can hold our float values.
@@ -44,6 +44,8 @@ func _ready():
 	vol_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
 	vol_uniform.binding = 1 # this needs to match the "binding" in our shader file
 	vol_uniform.add_id(vol_buffer)
+	
+	
 
 
 func _process(delta):
@@ -61,12 +63,14 @@ func _process(delta):
 	rd.sync()
 	update_boids_position()
 	
+	
 	# Read back the data from the buffer
 	
 	#var output_bytes = rd.buffer_get_data(pos_buffer)
 	##rd.buffer_update(buffer, 0, len(output_bytes), output_bytes)
 	#var output = output_bytes.to_float32_array()
 	#print("Output: ", output)
+
 
 func update_boids_position():
 	var pos_output_bytes = rd.buffer_get_data(pos_buffer)
@@ -80,14 +84,14 @@ func update_boids_position():
 		var new_pos = Vector3(pos_output[(i*3)], pos_output[(i*3) + 1], pos_output[(i*3) + 2])
 		#var new_pos = Vector3(0,0,0)
 		var new_vol = Vector3(vol_output[(i*3)], vol_output[(i*3) + 1], vol_output[(i*3) + 2])
-		#cur_boid.position = new_pos
+		cur_boid.position = new_pos
 		cur_boid.linear_velocity = new_vol
 		
 func initialize_boids():
 	for i in range(boid_count):
 		var new_boid : RigidBody3D = boid_scene.instantiate()
 		assert(new_boid != null, 
-			"error in boid manager: the " + str(i) + "the boid is null!"
+			"error in boid manager: the " + str(i) + "th boid is null!"
 		)
 		add_child(new_boid) # add to the scene tree
 		boids.push_back(new_boid)

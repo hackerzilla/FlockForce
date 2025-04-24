@@ -1,3 +1,6 @@
+# This is a script that is basically a carbon copy of the script in the godot 
+# docs tutorial for compute shaders: 
+# https://docs.godotengine.org/en/stable/tutorials/shaders/compute_shaders.html 
 extends Node3D
 
 func _ready():
@@ -39,7 +42,7 @@ func _ready():
 	print("Output: ", output)
 
 	rd.free_rid(buffer)
-	rd.free_rid(uniform_set)
+	#rd.free_rid(uniform_set) # this line gives error "Attempted to free invalid ID: ..."
 	rd.free_rid(pipeline)
 	
 	
