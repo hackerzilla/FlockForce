@@ -4,12 +4,21 @@ extends Node
 var boid_scene: PackedScene
 
 @export 
-var spawn_radius: float = 10.0
+var spawn_radius: float = 1.0
+
+@export 
+var separation: float = 1.0
+
+@export 
+var allignment: float = 1.0
+
+@export 
+var cohesion: float = 1.0
 
 var boids: Array[RigidBody3D] = []
 
 @export
-var boid_count = 10
+var boid_count: int = 10
 
 # create a local rendering device
 var rd := RenderingServer.create_local_rendering_device()
@@ -32,9 +41,12 @@ var pos_buffer
 
 var vol_buffer 
 
+var params_buffer
+
 # Create a uniform to assign the buffer to the rendering device
 var pos_uniform
 var vol_uniform
+var params_uniform
 
 #function to spawn boids and put data in inputBuffer
 
@@ -52,15 +64,20 @@ func _ready():
 	velocity = PackedFloat32Array(vol_start_arr)
 	velocity_bytes = velocity.to_byte_array()
 
+
 	# Create a storage buffer that can hold our float values.
 	# Each float has 4 bytes (32 bit) so 10 x 4 = 40 bytes
 	pos_buffer = rd.storage_buffer_create(position_bytes.size(), position_bytes)
 
 	vol_buffer = rd.storage_buffer_create(velocity_bytes.size(), velocity_bytes)
+	
+	var params_bytes  = PackedInt32Array([boid_count]).to_byte_array()
+	params_buffer = rd.storage_buffer_create(params_bytes.size(), params_bytes)
 
 	# Create a uniform to assign the buffer to the rendering device
 	pos_uniform = RDUniform.new()
 	vol_uniform = RDUniform.new()
+	params_uniform = RDUniform.new()
 	initialize_boids()
 	print("ready called")
 	pos_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
@@ -71,11 +88,15 @@ func _ready():
 	vol_uniform.binding = 1 # this needs to match the "binding" in our shader file
 	vol_uniform.add_id(vol_buffer)
 	
+	params_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
+	params_uniform.binding = 2 # this needs to match the "binding" in our shader file
+	params_uniform.add_id(params_buffer)
+	
 	
 
 
 func _process(delta):
-	var uniform_set := rd.uniform_set_create([pos_uniform, vol_uniform], shader, 0) # the last parameter (the 0) needs to match the "set" in our shader file
+	var uniform_set := rd.uniform_set_create([pos_uniform, vol_uniform, params_uniform], shader, 0) # the last parameter (the 0) needs to match the "set" in our shader file
 
 	# Create a compute pipeline
 	var pipeline := rd.compute_pipeline_create(shader)
@@ -88,6 +109,7 @@ func _process(delta):
 	rd.submit()
 	rd.sync()
 	update_boids_position()
+	print("updated position")
 	
 	
 	# Read back the data from the buffer
