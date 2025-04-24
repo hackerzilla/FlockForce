@@ -33,7 +33,7 @@ void main() {
     vec3 avg_position = vec3(0.0);
     vec3 avg_velocity = vec3(0.0);
     int num_neighbors = 0;
-    int total_boids = 3; //TODO
+    int total_boids = 10; //TODO
 
     for (int i = 0; i < total_boids; i++) {
         if (i == gl_GlobalInvocationID.x) {
@@ -62,7 +62,7 @@ void main() {
     vec3 alignment = avg_velocity;
 
     boid_velocity = (separation * separation_strength) + (alignment * alignment_strength) + (cohesion * cohesion_strength);
-    boid_position = boid_position + boid_velocity; // should this include something related to timesteps?
+    boid_position = boid_position + boid_velocity * 0.1; // should this include something related to timesteps?
 
     positions.data[gl_GlobalInvocationID.x] = boid_position;
     velocities.data[gl_GlobalInvocationID.x] = boid_velocity;
