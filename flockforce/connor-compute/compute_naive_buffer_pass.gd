@@ -37,15 +37,19 @@ var velocity_bytes
 
 # Create a storage buffer that can hold our float values.
 # Each float has 4 bytes (32 bit) so 10 x 4 = 40 bytes
-var pos_buffer 
-
-var vol_buffer 
+var current_buffer = 0
+var pos_buffer_a
+var vol_buffer_a
+var pos_buffer_b
+var vol_buffer_b
 
 var params_buffer
 
 # Create a uniform to assign the buffer to the rendering device
-var pos_uniform
-var vol_uniform
+var pos_uniform_a
+var vol_uniform_a
+var pos_uniform_b
+var vol_uniform_b
 var params_uniform
 
 var uniform_set
@@ -70,33 +74,44 @@ func _ready():
 
 	# Create a storage buffer that can hold our float values.
 	# Each float has 4 bytes (32 bit) so 10 x 4 = 40 bytes
-	pos_buffer = rd.storage_buffer_create(position_bytes.size(), position_bytes)
-
-	vol_buffer = rd.storage_buffer_create(velocity_bytes.size(), velocity_bytes)
+	pos_buffer_a = rd.storage_buffer_create(position_bytes.size(), position_bytes)
+	vol_buffer_a = rd.storage_buffer_create(velocity_bytes.size(), velocity_bytes)
+	pos_buffer_b = rd.storage_buffer_create(position_bytes.size(), position_bytes)
+	vol_buffer_b = rd.storage_buffer_create(velocity_bytes.size(), velocity_bytes)
 	
-	var params_bytes  = PackedInt32Array([boid_count]).to_byte_array()
+	var params_bytes  = PackedInt32Array([boid_count, current_buffer]).to_byte_array()
 	params_buffer = rd.storage_buffer_create(params_bytes.size(), params_bytes)
 
 	# Create a uniform to assign the buffer to the rendering device
-	pos_uniform = RDUniform.new()
-	vol_uniform = RDUniform.new()
+	pos_uniform_a = RDUniform.new()
+	vol_uniform_a = RDUniform.new()
+	pos_uniform_b = RDUniform.new()
+	vol_uniform_b = RDUniform.new()
 	params_uniform = RDUniform.new()
 	initialize_boids()
 	print("ready called")
-	pos_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
-	pos_uniform.binding = 0 # this needs to match the "binding" in our shader file
-	pos_uniform.add_id(pos_buffer)
+	pos_uniform_a.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
+	pos_uniform_a.binding = 0 # this needs to match the "binding" in our shader file
+	pos_uniform_a.add_id(pos_buffer_a)
 	
-	vol_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
-	vol_uniform.binding = 1 # this needs to match the "binding" in our shader file
-	vol_uniform.add_id(vol_buffer)
+	vol_uniform_a.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
+	vol_uniform_a.binding = 1 # this needs to match the "binding" in our shader file
+	vol_uniform_a.add_id(vol_buffer_a)
+	
+	pos_uniform_b.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
+	pos_uniform_b.binding = 2 # this needs to match the "binding" in our shader file
+	pos_uniform_b.add_id(pos_buffer_b)
+	
+	vol_uniform_b.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
+	vol_uniform_b.binding = 3 # this needs to match the "binding" in our shader file
+	vol_uniform_b.add_id(vol_buffer_b)
 	
 	params_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
-	params_uniform.binding = 2 # this needs to match the "binding" in our shader file
+	params_uniform.binding = 4 # this needs to match the "binding" in our shader file
 	params_uniform.add_id(params_buffer)
 	
-	uniform_set = rd.uniform_set_create([pos_uniform, vol_uniform, params_uniform], shader, 0) # the last parameter (the 0) needs to match the "set" in our shader file
 	pipeline = rd.compute_pipeline_create(shader)
+	uniform_set = rd.uniform_set_create([pos_uniform_a, vol_uniform_a, pos_uniform_b, vol_uniform_b, params_uniform], shader, 0) # the last parameter (the 0) needs to match the "set" in our shader file
 	
 	
 
@@ -113,6 +128,12 @@ func _process(delta):
 	rd.sync()
 	update_boids_position()
 	print("updated position")
+	if (current_buffer == 0):
+		current_buffer = 1
+	else:
+		current_buffer = 0
+	var new_params_bytes = PackedInt32Array([boid_count, current_buffer]).to_byte_array()
+	rd.buffer_update(params_buffer, 0, new_params_bytes.size(), new_params_bytes)
 	
 	
 	# Read back the data from the buffer
@@ -124,10 +145,17 @@ func _process(delta):
 
 
 func update_boids_position():
-	var pos_output_bytes = rd.buffer_get_data(pos_buffer)
-	var pos_output = pos_output_bytes.to_float32_array()
+	var pos_output_bytes
+	var vol_output_bytes
 	
-	var vol_output_bytes = rd.buffer_get_data(vol_buffer)
+	if current_buffer == 0:
+		pos_output_bytes = rd.buffer_get_data(pos_buffer_a)
+		vol_output_bytes = rd.buffer_get_data(vol_buffer_a)
+	else:
+		pos_output_bytes = rd.buffer_get_data(pos_buffer_b)
+		vol_output_bytes = rd.buffer_get_data(vol_buffer_b)
+	
+	var pos_output = pos_output_bytes.to_float32_array()
 	var vol_output = vol_output_bytes.to_float32_array()
 	
 	for i in range(len(boids)):
