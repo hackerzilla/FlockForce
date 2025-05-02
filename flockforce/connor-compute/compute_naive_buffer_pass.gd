@@ -4,7 +4,7 @@ extends Node
 var boid_scene: PackedScene
 
 @export 
-var spawn_radius: float = 1.0
+var spawn_radius: float = 30.0
 
 @export 
 var separation: float = 1.0
@@ -18,7 +18,7 @@ var cohesion: float = 1.0
 var boids: Array[RigidBody3D] = []
 
 @export
-var boid_count: int = 10
+var boid_count: int = 50
 
 # create a local rendering device
 var rd := RenderingServer.create_local_rendering_device()

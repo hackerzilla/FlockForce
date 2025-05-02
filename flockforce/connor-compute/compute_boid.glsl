@@ -21,11 +21,11 @@ layout(set = 0, binding = 2, std430) restrict buffer Params{
 } params;
 
 
-const float neighborhood_size = 20.0;
+const float neighborhood_size = 50.0;
 
 const float separation_strength = 1.0;
 const float alignment_strength = 1.0;
-const float cohesion_strength = 1.5;
+const float cohesion_strength = 1.2;
 
 
 // The code we want to execute in each invocation
