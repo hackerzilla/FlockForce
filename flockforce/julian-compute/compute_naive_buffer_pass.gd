@@ -5,7 +5,7 @@ var boid_scene: PackedScene
 
 var boids: Array[RigidBody3D] = []
 
-var boid_count = 3
+var boid_count = 100 
 
 # create a local rendering device
 var rd := RenderingServer.create_local_rendering_device()

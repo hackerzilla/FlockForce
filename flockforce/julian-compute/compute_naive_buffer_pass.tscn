@@ -12,4 +12,4 @@ boid_scene = ExtResource("2_dd1wx")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 25.6769)
 
 [node name="Freecam" parent="." instance=ExtResource("3_211pm")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 133.815)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 101.894)
