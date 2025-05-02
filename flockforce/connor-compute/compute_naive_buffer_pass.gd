@@ -4,13 +4,13 @@ extends Node
 var boid_scene: PackedScene
 
 @export 
-var spawn_radius: float = 30.0
+var spawn_radius: float = 25.0
 
 @export 
 var separation: float = 1.0
 
 @export 
-var allignment: float = 1.0
+var allignment: float = 0.8
 
 @export 
 var cohesion: float = 1.0
@@ -47,6 +47,9 @@ var params_buffer
 var pos_uniform
 var vol_uniform
 var params_uniform
+
+var uniform_set
+var pipeline
 
 #function to spawn boids and put data in inputBuffer
 
@@ -92,18 +95,18 @@ func _ready():
 	params_uniform.binding = 2 # this needs to match the "binding" in our shader file
 	params_uniform.add_id(params_buffer)
 	
+	uniform_set = rd.uniform_set_create([pos_uniform, vol_uniform, params_uniform], shader, 0) # the last parameter (the 0) needs to match the "set" in our shader file
+	pipeline = rd.compute_pipeline_create(shader)
+	
 	
 
 
 func _process(delta):
-	var uniform_set := rd.uniform_set_create([pos_uniform, vol_uniform, params_uniform], shader, 0) # the last parameter (the 0) needs to match the "set" in our shader file
-
-	# Create a compute pipeline
-	var pipeline := rd.compute_pipeline_create(shader)
+	
 	var compute_list := rd.compute_list_begin()
 	rd.compute_list_bind_compute_pipeline(compute_list, pipeline)
 	rd.compute_list_bind_uniform_set(compute_list, uniform_set, 0)
-	rd.compute_list_dispatch(compute_list, 5, 1, 1)
+	rd.compute_list_dispatch(compute_list, 15, 1, 1)
 	rd.compute_list_end()
 	# Submit to GPU and wait for sync
 	rd.submit()
