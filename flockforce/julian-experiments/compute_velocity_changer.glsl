@@ -4,9 +4,13 @@
 // Dispatch groups
 layout(local_size_x = 1, local_size_y = 1, local_size_z = 1) in;
 
-layout(set = 0, binding = 0, std430) buffer VelocityBuffer {
+layout(set = 0, binding = 0, std430) readonly buffer VelocityIn {
     vec3 data[];
-} velocity_buffer;
+} velocity_in;
+
+layout(set = 0, binding = 1, std430) writeonly buffer VelocityOut {
+    vec3 data[];
+} velocity_out;
 
 /* Math 3D Transformations */
 
@@ -62,8 +66,9 @@ vec3 rotateY(vec3 p, float angle) {
     return (vec4(p, 1.0) * r).xyz;
 }
 void main() {
-    vec3 rotated_velocity = rotateZ(velocity_buffer.data[0], radians(15.0));
+    // vec3 rotated_velocity = rotateZ(velocity_buffer.data[0], radians(15.0));
     // velocity_buffer.data[0] = velocity_buffer.data[0] - vec3(0, 0.2, 0);
     // velocity_buffer.data[0] = velocity_buffer.data[0];
-    velocity_buffer.data[0] = rotated_velocity;
+    // velocity_buffer.data[0] = rotated_velocity;
+    velocity_out.data[0] = velocity_in.data[0];
 }
