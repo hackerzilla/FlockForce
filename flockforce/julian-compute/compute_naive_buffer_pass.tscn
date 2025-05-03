@@ -1,15 +1,18 @@
 [gd_scene load_steps=4 format=3 uid="uid://d3byiuwj4sojn"]
 
-[ext_resource type="Script" uid="uid://c45lqhy3d0l2k" path="res://connor-compute/compute_naive_buffer_pass.gd" id="1_vtskc"]
-[ext_resource type="PackedScene" uid="uid://bfc7kx5fbm0cy" path="res://connor-compute/connor_boid.tscn" id="2_dd1wx"]
+[ext_resource type="Script" uid="uid://527o624y85cd" path="res://julian-compute/boid_manager.gd" id="1_2jfuk"]
+[ext_resource type="PackedScene" uid="uid://bytrua2livwae" path="res://cpu-boids/boid.tscn" id="2_211pm"]
 [ext_resource type="PackedScene" uid="uid://cwuyad1e74v5d" path="res://freecam/freecam.tscn" id="3_211pm"]
 
 [node name="Node3D" type="Node3D"]
-script = ExtResource("1_vtskc")
-boid_scene = ExtResource("2_dd1wx")
+script = ExtResource("1_2jfuk")
+boid_scene = ExtResource("2_211pm")
+boid_count = 100
+spawn_radius = 30.0
+updates_per_second = 10
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 25.6769)
 
 [node name="Freecam" parent="." instance=ExtResource("3_211pm")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 101.894)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 58.6249)

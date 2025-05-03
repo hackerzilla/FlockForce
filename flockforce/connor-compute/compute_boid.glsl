@@ -62,7 +62,7 @@ void main() {
     vec3 alignment = avg_velocity;
 
     boid_velocity = (separation * separation_strength) + (alignment * alignment_strength) + (cohesion * cohesion_strength);
-    boid_position = boid_position + boid_velocity; // should this include something related to timesteps?
+    boid_position = boid_position + boid_velocity * 0.01; // should this include something related to timesteps?
 
     positions.data[gl_GlobalInvocationID.x] = boid_position;
     velocities.data[gl_GlobalInvocationID.x] = boid_velocity;
