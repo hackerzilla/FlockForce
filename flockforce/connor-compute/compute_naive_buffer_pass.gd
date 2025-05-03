@@ -4,7 +4,7 @@ extends Node
 var boid_scene: PackedScene
 
 @export 
-var spawn_radius: float = 25.0
+var spawn_radius: float = 20.0
 
 @export 
 var separation: float = 1.0
@@ -64,12 +64,17 @@ func _ready():
 	for i in range(boid_count):
 		for j in range(3):
 			pos_start_arr.push_back(rng.randf_range(-spawn_radius, spawn_radius))
+			#pos_start_arr.push_back(i * 0.2) exists for testing purposes
 			vol_start_arr.push_back(rng.randf_range(-1, 1))
+		pos_start_arr.push_back(0.0) #padding for vec3
+		vol_start_arr.push_back(0.0) #padding for vec3
 	position = PackedFloat32Array(pos_start_arr)
 	position_bytes = position.to_byte_array()
+	print("the position byte array is of size: ", position_bytes.size())
 
 	velocity = PackedFloat32Array(vol_start_arr)
 	velocity_bytes = velocity.to_byte_array()
+	print("the velocity byte array is of size: ", velocity_bytes.size())
 
 
 	# Create a storage buffer that can hold our float values.
@@ -121,13 +126,13 @@ func _process(delta):
 	var compute_list := rd.compute_list_begin()
 	rd.compute_list_bind_compute_pipeline(compute_list, pipeline)
 	rd.compute_list_bind_uniform_set(compute_list, uniform_set, 0)
-	rd.compute_list_dispatch(compute_list, 15, 1, 1)
+	rd.compute_list_dispatch(compute_list, 25, 1, 1)
 	rd.compute_list_end()
 	# Submit to GPU and wait for sync
 	rd.submit()
 	rd.sync()
 	update_boids_position()
-	print("updated position")
+	#print("updated position")
 	if (current_buffer == 0):
 		current_buffer = 1
 	else:
@@ -159,10 +164,15 @@ func update_boids_position():
 	var vol_output = vol_output_bytes.to_float32_array()
 	
 	for i in range(len(boids)):
+		#if (i < 3):
+			#continue
 		var cur_boid = boids[i]
-		var new_pos = Vector3(pos_output[(i*3)], pos_output[(i*3) + 1], pos_output[(i*3) + 2])
+		var prev_pos = cur_boid.position
+		var new_pos = Vector3(pos_output[(i*4)], pos_output[(i*4) + 1], pos_output[(i*4) + 2])
+		if (prev_pos - new_pos).length() > 1:
+			print("issue with boid: ", i, " distance of: ", (prev_pos - new_pos).length())
 		#var new_pos = Vector3(0,0,0)
-		var new_vol = Vector3(vol_output[(i*3)], vol_output[(i*3) + 1], vol_output[(i*3) + 2])
+		var new_vol = Vector3(vol_output[(i*4)], vol_output[(i*4) + 1], vol_output[(i*4) + 2])
 		cur_boid.position = new_pos
 		cur_boid.linear_velocity = new_vol
 		
