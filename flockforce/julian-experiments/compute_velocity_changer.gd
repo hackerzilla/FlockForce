@@ -7,16 +7,15 @@ extends Node3D
 var update_delay = 1.0 / 2.0 # to be set by updates_per_second setter
 var last_update_time = 0
 
-var plane_mesh : MeshInstance3D
-var plane_material : StandardMaterial3D
-var initial_color : Vector3 = Vector3.ZERO
+var plane_body : RigidBody3D 
+var initial_velocity : Vector3 = Vector3.ZERO
 
 # Compute shader stuff
 var rd := RenderingServer.create_local_rendering_device()
-var shader_file := load("res://julian-experiments/compute_color_changer.glsl") # Adjust path if needed
+var shader_file := load("res://julian-experiments/compute_velocity_changer.glsl") # Adjust path if needed
 var shader_spirv : RDShaderSPIRV = shader_file.get_spirv()
 var shader : RID
-var color_buffer : RID
+var velocity_buffer : RID
 var uniform : RDUniform 
 var uniform_set : RID
 var pipeline : RID
@@ -34,25 +33,24 @@ func _ready() -> void:
 		get_tree().root.propagate_notification(NOTIFICATION_WM_CLOSE_REQUEST)
 		return
 
-	plane_mesh = $MeshInstance3D
-	plane_material = plane_mesh.get_active_material(0)
-	var col = plane_material.albedo_color
-	initial_color = Vector3(col.r, col.g, col.b)
+	plane_body = $RigidBody3D
+	initial_velocity = plane_body.linear_velocity
+	print("Initial velocity of body is: ", str(initial_velocity))
 
 	# Create buffers
-	var col_arr = PackedFloat32Array()
-	col_arr.resize(3)
-	col_arr[0] = initial_color[0]
-	col_arr[1] = initial_color[1]
-	col_arr[2] = initial_color[2]
-	var col_arr_bytes = col_arr.to_byte_array()
-	color_buffer = rd.storage_buffer_create(col_arr_bytes.size(), col_arr_bytes)
+	var vel_arr = PackedFloat32Array()
+	vel_arr.resize(3)
+	vel_arr[0] = initial_velocity[0]
+	vel_arr[1] = initial_velocity[1]
+	vel_arr[2] = initial_velocity[2]
+	var vel_byte_arr = vel_arr.to_byte_array()
+	velocity_buffer = rd.storage_buffer_create(vel_byte_arr.size(), vel_byte_arr)
 
 	# Create uniforms
 	uniform = RDUniform.new()
 	uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
 	uniform.binding = 0
-	uniform.add_id(color_buffer)
+	uniform.add_id(velocity_buffer)
 
 	# Create uniform set
 	uniform_set = rd.uniform_set_create([uniform], shader, 0)
@@ -80,21 +78,22 @@ func _process(_delta: float) -> void:
 	rd.submit()
 	rd.sync()
 
-	var output_bytes = rd.buffer_get_data(color_buffer)
-	var color_output = output_bytes.to_float32_array()
-	var new_color = Color.BLACK
-	new_color[0] = color_output[0]
-	new_color[1] = color_output[1]
-	new_color[2] = color_output[2]
+	var output_bytes = rd.buffer_get_data(velocity_buffer)
+	var velocity_output = output_bytes.to_float32_array()
+	var new_velocity = Vector3.ZERO
+	new_velocity[0] = velocity_output[0]
+	new_velocity[1] = velocity_output[1]
+	new_velocity[2] = velocity_output[2]
 
-	plane_material.albedo_color = new_color
+	plane_body.linear_velocity = new_velocity
 
 	last_update_time = Time.get_ticks_msec()
+
+	# print("velocity updated with value: ", str(new_velocity))
 
 func _input(event: InputEvent) -> void:
 	if event.is_action("Quit"):
 		get_tree().root.propagate_notification(NOTIFICATION_WM_CLOSE_REQUEST)
-
 
 func _notification(what):
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:

@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://xmxxcnba0dw7"
+path="res://.godot/imported/compute_velocity_changer.glsl-77dd23da2a61ad77b66b36f4c3676281.res"
+
+[deps]
+
+source_file="res://julian-experiments/compute_velocity_changer.glsl"
+dest_files=["res://.godot/imported/compute_velocity_changer.glsl-77dd23da2a61ad77b66b36f4c3676281.res"]
+
+[params]
+
