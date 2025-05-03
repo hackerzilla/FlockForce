@@ -36,7 +36,7 @@ layout(set = 0, binding = 4, std430) restrict buffer Params{
 const float neighborhood_size = 50.0;
 
 const float separation_strength = 1.1;
-const float alignment_strength = 0.6;
+const float alignment_strength = 1.0;
 const float cohesion_strength = 1.0;
 
 
@@ -55,48 +55,8 @@ void main() {
         boid_read_velocity = velocities_b.data[gl_GlobalInvocationID.x];
     }
     
-    vec3 avg_position = vec3(0.0);
-    vec3 avg_velocity = vec3(0.0);
-    int num_neighbors = 0;
-    int total_boids = params.boid_count;
-
-    for (int i = 0; i < total_boids; i++) {
-        if (i == gl_GlobalInvocationID.x) {
-            continue;
-        }
-        vec3 other_position;
-        vec3 other_velocity;
-        if (params.current_buffer == 0) {
-            other_position = positions_a.data[i];
-            other_velocity = velocities_a.data[i];
-        } else {
-            other_position = positions_b.data[i];
-            other_velocity = velocities_b.data[i];
-        }
-
-        vec3 pos_difference = boid_read_position - other_position;
-        if (length(pos_difference) > neighborhood_size) {
-            continue;
-        }
-        avg_position += other_position;
-        avg_velocity += other_velocity;
-        num_neighbors += 1;
-    }
-    if (num_neighbors !=0) {
-        avg_position /= num_neighbors;
-        avg_velocity /= num_neighbors;
-    } else {
-        avg_position = boid_read_position;
-        avg_velocity = boid_read_velocity;
-    }
-    vec3 to_com = normalize(avg_position - boid_read_position);
-    vec3 separation = -to_com;
-    vec3 cohesion = to_com;
-    vec3 alignment = avg_velocity;
-
-    boid_read_velocity = (separation * separation_strength) + (alignment * alignment_strength) + (cohesion * cohesion_strength);
-    boid_read_velocity = normalize(boid_read_velocity);
-    boid_read_position = boid_read_position + boid_read_velocity * 0.1; // should this include something related to timesteps?
+    vec3 random_vec = vec3(0.0, 0.01, 0.0);
+    boid_read_position = boid_read_position + random_vec;
 
     if (params.current_buffer == 0) {
         positions_b.data[gl_GlobalInvocationID.x] = boid_read_position;
