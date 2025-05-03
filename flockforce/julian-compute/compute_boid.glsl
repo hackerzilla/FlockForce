@@ -53,6 +53,10 @@ void main() {
         return;
     }
 
+    positions_out.data[index] = positions_in.data[index];
+    velocities_out.data[index] = vec3(1,0,0);
+    return;
+
     // Read from input buffers
     vec3 boid_position = positions_in.data[index];
     vec3 boid_velocity = velocities_in.data[index];

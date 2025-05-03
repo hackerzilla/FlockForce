@@ -96,7 +96,6 @@ func _ready():
 	params_data.encode_float(4, 0.0) # Initial delta
 	params_buffer = rd.storage_buffer_create(params_data.size(), params_data)
 
-	# 4. Create Uniform Sets
 	# Set A: Read A (0,1), Params (2), Write B (3,4)
 	var uniforms_a: Array[RDUniform] = [
 		create_storage_uniform(0, pos_buffer_a),
@@ -117,25 +116,24 @@ func _ready():
 	]
 	uniform_set_b = rd.uniform_set_create(uniforms_b, shader, 0)
 
-	# 5. Create Pipeline
 	pipeline = rd.compute_pipeline_create(shader)
 
-	# 6. Initialize Boid Nodes
 	if not boid_scene: printerr("Boid scene not set!"); return
 	for i in range(boid_count):
 		var new_boid : RigidBody3D = boid_scene.instantiate()
 		if new_boid:
 			add_child(new_boid)
 			boids.push_back(new_boid)
-			# Set initial visual position
 			new_boid.position = Vector3(pos_start_arr[i*3], pos_start_arr[i*3+1], pos_start_arr[i*3+2])
+			new_boid.linear_velocity = Vector3(vol_start_arr[i*3], vol_start_arr[i*3+1], vol_start_arr[i*3+2])
+
 		else:
 			printerr("Failed to instantiate boid scene")
 
 
 func _process(delta):
+	return
 	if not pipeline.is_valid(): return # Guard
-
 	var current_time = Time.get_ticks_msec() 
 	var msec_since_update = current_time - last_update_time
 	var sec_since_update = msec_since_update / 1000.0
@@ -160,7 +158,8 @@ func _process(delta):
 
 	# Dispatch (adjust group count based on local_size_x in shader)
 	var work_group_size_x = 1 
-	var group_count = int(ceil(float(boid_count) / float(work_group_size_x)))
+	# var group_count = int(ceil(float(boid_count) / float(work_group_size_x)))
+	var group_count = boid_count / work_group_size_x
 	rd.compute_list_dispatch(compute_list, group_count, 1, 1)
 	rd.compute_list_end()
 
@@ -203,25 +202,8 @@ func update_boids_position(pos_buffer_read: RID, vol_buffer_read: RID):
 		var new_vel = Vector3(vol_output[base_idx + 0], vol_output[base_idx + 1], vol_output[base_idx + 2])
 
 		# Update RigidBody3D properties (as in user's original code)
-		cur_boid.position = new_pos
+		# cur_boid.position = new_pos
 		cur_boid.linear_velocity = new_vel
 		# Optional: Orient boid
-		if new_vel.length_squared() > 0.001:
-			cur_boid.look_at(new_pos + new_vel.normalized(), Vector3.UP)
-
-
-func _notification(what):
-	# Basic cleanup
-	if what == NOTIFICATION_PREDELETE:
-		if rd:
-			# Free RIDs in reverse order of creation (optional but good practice)
-			if pipeline.is_valid(): rd.free_rid(pipeline)
-			if uniform_set_a.is_valid(): rd.free_rid(uniform_set_a)
-			if uniform_set_b.is_valid(): rd.free_rid(uniform_set_b)
-			if params_buffer.is_valid(): rd.free_rid(params_buffer)
-			if pos_buffer_a.is_valid(): rd.free_rid(pos_buffer_a)
-			if vol_buffer_a.is_valid(): rd.free_rid(vol_buffer_a)
-			if pos_buffer_b.is_valid(): rd.free_rid(pos_buffer_b)
-			if vol_buffer_b.is_valid(): rd.free_rid(vol_buffer_b)
-			if shader.is_valid(): rd.free_rid(shader)
-			# rd.free() # Don't free the device itself unless you are sure nothing else uses it
+		# if new_vel.length_squared() > 0.001:
+		# 	cur_boid.look_at(new_pos + new_vel.normalized(), Vector3.UP)
