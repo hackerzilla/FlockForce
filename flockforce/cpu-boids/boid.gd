@@ -6,8 +6,9 @@ class_name Boid
 
 func _process(delta: float) -> void:
 	var target = linear_velocity + global_position
-	var shouldnt_look : bool = rotation == linear_velocity
-	if target != global_position and !shouldnt_look:
-		#arrow_pivot.look_at(target)
-		pass
+	var safe_to_look : bool = \
+		target != global_position and \
+		linear_velocity != transform.basis.z
+	if safe_to_look:
+		arrow_pivot.look_at(target)
 	
