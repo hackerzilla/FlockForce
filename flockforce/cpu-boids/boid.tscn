@@ -7,9 +7,9 @@
 [sub_resource type="SphereShape3D" id="SphereShape3D_rg3n1"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rg3n1"]
-albedo_color = Color(0.975279, 0, 0.276753, 1)
+albedo_color = Color(1, 0, 0, 1)
 
-[sub_resource type="PrismMesh" id="PrismMesh_6fw4u"]
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_6fw4u"]
 material = SubResource("StandardMaterial3D_rg3n1")
 
 [node name="RigidBody3D" type="RigidBody3D"]
@@ -27,6 +27,6 @@ shape = SubResource("SphereShape3D_rg3n1")
 [node name="ArrowPivot" type="Node3D" parent="."]
 
 [node name="Arrow" type="MeshInstance3D" parent="ArrowPivot"]
-transform = Transform3D(0.82, 0, 0, 0, -3.58433e-08, 0.82, 0, -0.82, -3.58433e-08, 0, 0, -1)
-mesh = SubResource("PrismMesh_6fw4u")
+transform = Transform3D(0.54, 0, 0, 0, -2.36041e-08, 0.54, 0, -0.54, -2.36041e-08, 0, 0, -1)
+mesh = SubResource("CapsuleMesh_6fw4u")
 skeleton = NodePath("../..")

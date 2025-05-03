@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://cd07ypihk6cv8"]
+
+[ext_resource type="Script" uid="uid://clsd3wtf50j82" path="res://julian-experiments/compute_color_changer.gd" id="1_n4g4n"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n4g4n"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ypo5r"]
+material = SubResource("StandardMaterial3D_n4g4n")
+
+[node name="ComputeColorChanger" type="Node3D"]
+script = ExtResource("1_n4g4n")
+updates_per_second = 30
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0, -1.22544)
+mesh = SubResource("PlaneMesh_ypo5r")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.546384)

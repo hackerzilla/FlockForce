@@ -28,8 +28,8 @@ layout(set = 0, binding = 4, std430) writeonly buffer VelocityOut {
 } velocities_out;
 
 // Constants moved back into shader
-const float neighborhood_size = 50.0;
-const float separation_strength = 1.0;
+const float neighborhood_size = 30.0;
+const float separation_strength = 0.5;
 const float alignment_strength = 1.0;
 const float cohesion_strength = 1.2;
 const float max_speed = 15.0; // Example max speed
@@ -53,8 +53,9 @@ void main() {
         return;
     }
 
+    // Testing data passthrough
     positions_out.data[index] = positions_in.data[index];
-    velocities_out.data[index] = vec3(1,0,0);
+    velocities_out.data[index] = velocities_in.data[index];
     return;
 
     // Read from input buffers

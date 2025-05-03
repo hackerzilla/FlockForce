@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://bj5ia3rmmkk0n"
+path="res://.godot/imported/compute_color_changer.glsl-058e560f23950227a528c643ca7096e9.res"
+
+[deps]
+
+source_file="res://julian-experiments/compute_color_changer.glsl"
+dest_files=["res://.godot/imported/compute_color_changer.glsl-058e560f23950227a528c643ca7096e9.res"]
+
+[params]
+
