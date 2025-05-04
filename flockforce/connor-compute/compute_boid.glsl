@@ -33,11 +33,13 @@ layout(set = 0, binding = 4, std430) restrict buffer Params{
 } params;
 
 
-const float neighborhood_size = 50.0;
+const float neighborhood_size = 5.0;
 
-const float separation_strength = 1.1;
-const float alignment_strength = 0.6;
-const float cohesion_strength = 1.0;
+const float separation_strength = 1.2;
+const float alignment_strength = 1.1;
+const float cohesion_strength = 1.2;
+
+const float limit = 10.0;
 
 
 // The code we want to execute in each invocation
@@ -97,6 +99,14 @@ void main() {
     boid_read_velocity = (separation * separation_strength) + (alignment * alignment_strength) + (cohesion * cohesion_strength);
     boid_read_velocity = normalize(boid_read_velocity);
     boid_read_position = boid_read_position + boid_read_velocity * 0.1; // should this include something related to timesteps?
+
+    // if (boid_read_position.x > limit) boid_read_position.x = -inside_limit;
+    // if (boid_read_position.x < -limit) boid_read_position.x = inside_limit;
+    // if (boid_read_position.y > limit) boid_read_position.y = -inside_limit;
+    // if (boid_read_position.y < -limit) boid_read_position.y = inside_limit;
+    // if (boid_read_position.z > limit) boid_read_position.z = -inside_limit;
+    // if (boid_read_position.z < -limit) boid_read_position.z = inside_limit;
+    boid_read_position = clamp(boid_read_position, vec3(-limit), vec3(limit));
 
     if (params.current_buffer == 0) {
         positions_b.data[gl_GlobalInvocationID.x] = boid_read_position;

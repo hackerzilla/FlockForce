@@ -33,9 +33,9 @@ layout(set = 0, binding = 4, std430) restrict buffer Params{
 } params;
 
 
-const float neighborhood_size = 50.0;
+const float neighborhood_size = 3.0;
 
-const float separation_strength = 1.1;
+const float separation_strength = 0.4;
 const float alignment_strength = 1.0;
 const float cohesion_strength = 1.0;
 

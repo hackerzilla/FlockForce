@@ -4,7 +4,7 @@ extends Node
 var boid_scene: PackedScene
 
 @export 
-var spawn_radius: float = 20.0
+var spawn_radius: float = 5.0
 
 @export 
 var separation: float = 1.0
@@ -18,7 +18,7 @@ var cohesion: float = 1.0
 var boids: Array[RigidBody3D] = []
 
 @export
-var boid_count: int = 50
+var boid_count: int = 2000
 
 # create a local rendering device
 var rd := RenderingServer.create_local_rendering_device()
@@ -126,7 +126,7 @@ func _process(delta):
 	var compute_list := rd.compute_list_begin()
 	rd.compute_list_bind_compute_pipeline(compute_list, pipeline)
 	rd.compute_list_bind_uniform_set(compute_list, uniform_set, 0)
-	rd.compute_list_dispatch(compute_list, 25, 1, 1)
+	rd.compute_list_dispatch(compute_list, 1000, 1, 1)
 	rd.compute_list_end()
 	# Submit to GPU and wait for sync
 	rd.submit()
@@ -167,12 +167,13 @@ func update_boids_position():
 		#if (i < 3):
 			#continue
 		var cur_boid = boids[i]
-		var prev_pos = cur_boid.position
+		#var prev_pos = cur_boid.position
 		var new_pos = Vector3(pos_output[(i*4)], pos_output[(i*4) + 1], pos_output[(i*4) + 2])
-		if (prev_pos - new_pos).length() > 1:
-			print("issue with boid: ", i, " distance of: ", (prev_pos - new_pos).length())
+		#if (prev_pos - new_pos).length() > 1:
+			#print("issue with boid: ", i, " distance of: ", (prev_pos - new_pos).length())
 		#var new_pos = Vector3(0,0,0)
 		var new_vol = Vector3(vol_output[(i*4)], vol_output[(i*4) + 1], vol_output[(i*4) + 2])
+		#print(new_pos)
 		cur_boid.position = new_pos
 		cur_boid.linear_velocity = new_vol
 		
