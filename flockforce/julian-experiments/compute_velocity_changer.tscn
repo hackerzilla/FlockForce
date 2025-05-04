@@ -1,6 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://cf8o0h61wloki"]
+[gd_scene load_steps=6 format=3 uid="uid://cf8o0h61wloki"]
 
 [ext_resource type="Script" uid="uid://oqggurlj2ew7" path="res://julian-experiments/compute_velocity_changer.gd" id="1_vrchc"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_vrchc"]
+friction = 0.0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n4g4n"]
 albedo_color = Color(0, 0, 0, 1)
@@ -13,9 +16,11 @@ points = PackedVector3Array(1.01587, 0.015873, 1.01587, -1.01587, -0.015873, -1.
 
 [node name="ComputeVelocityChanger" type="Node3D"]
 script = ExtResource("1_vrchc")
+updates_per_second = 1
 
 [node name="RigidBody3D" type="RigidBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.24032)
+physics_material_override = SubResource("PhysicsMaterial_vrchc")
 gravity_scale = 0.0
 linear_velocity = Vector3(0, 1, 0)
 
@@ -31,4 +36,4 @@ shape = SubResource("ConvexPolygonShape3D_gp8t3")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6.34)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.77726, 12.3713)

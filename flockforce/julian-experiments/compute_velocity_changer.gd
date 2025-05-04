@@ -6,6 +6,7 @@ extends Node3D
 		update_delay = 1.0 / updates_per_second
 var update_delay = 1.0 / 2.0 # to be set by updates_per_second setter
 var last_update_time = 0
+var quit_requested : bool = false
 
 var plane_body : RigidBody3D 
 var initial_velocity : Vector3 = Vector3.ZERO
@@ -17,8 +18,10 @@ var shader_spirv : RDShaderSPIRV = shader_file.get_spirv()
 var shader : RID
 var velocity_buffer_a : RID
 var velocity_buffer_b : RID
-var uniform_a : RDUniform 
-var uniform_b : RDUniform 
+var uniform_a_read : RDUniform 
+var uniform_a_write : RDUniform 
+var uniform_b_read : RDUniform 
+var uniform_b_write : RDUniform 
 var uniform_set_read_a_write_b : RID
 var uniform_set_read_b_write_a : RID
 var read_a_write_b : bool = true # for buffer swapping
@@ -51,20 +54,34 @@ func _ready() -> void:
 	velocity_buffer_a = rd.storage_buffer_create(vel_byte_arr.size(), vel_byte_arr)
 	velocity_buffer_b = rd.storage_buffer_create(vel_byte_arr.size())
 
-	# Create uniforms
-	uniform_a = RDUniform.new()
-	uniform_a.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
-	uniform_a.binding = 0
-	uniform_a.add_id(velocity_buffer_a)
+	# Sanity check
+	var sanity_arr = vel_byte_arr.to_float32_array()
+	print("sanity:", sanity_arr)
 
-	uniform_b = RDUniform.new()
-	uniform_b.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
-	uniform_b.binding = 1
-	uniform_b.add_id(velocity_buffer_b)
+	# Create uniforms Binding=0 is readonly, Binding=1 is writeonly
+	uniform_a_read = RDUniform.new()
+	uniform_a_read.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
+	uniform_a_read.binding = 0
+	uniform_a_read.add_id(velocity_buffer_a)
+
+	uniform_a_write = RDUniform.new()
+	uniform_a_write.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
+	uniform_a_write.binding = 1
+	uniform_a_write.add_id(velocity_buffer_a)
+
+	uniform_b_read = RDUniform.new()
+	uniform_b_read.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
+	uniform_b_read.binding = 0
+	uniform_b_read.add_id(velocity_buffer_b)
+
+	uniform_b_write = RDUniform.new()
+	uniform_b_write.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
+	uniform_b_write.binding = 1
+	uniform_b_write.add_id(velocity_buffer_b)
 
 	# Create uniform sets
-	uniform_set_read_a_write_b = rd.uniform_set_create([uniform_a, uniform_b], shader, 0)
-	uniform_set_read_b_write_a = rd.uniform_set_create([uniform_b, uniform_a], shader, 0)
+	uniform_set_read_a_write_b = rd.uniform_set_create([uniform_a_read, uniform_b_write], shader, 0)
+	uniform_set_read_b_write_a = rd.uniform_set_create([uniform_b_read, uniform_a_write], shader, 0)
 	read_a_write_b = true
 
 	# Create pipeline
@@ -83,6 +100,7 @@ func _process(_delta: float) -> void:
 
 	# Update the read-buffer with current velocity
 	var curr_velocity = plane_body.linear_velocity
+	print("current velocity = ", str(curr_velocity))
 	var vel_arr = PackedFloat32Array()
 	vel_arr.resize(3)
 	vel_arr[0] = curr_velocity[0]
@@ -123,7 +141,7 @@ func _process(_delta: float) -> void:
 
 	last_update_time = Time.get_ticks_msec()
 
-	# print("velocity updated with value: ", str(new_velocity))
+	print("velocity updated with value: ", str(new_velocity))
 
 func _input(event: InputEvent) -> void:
 	if event.is_action("Quit"):
@@ -131,16 +149,20 @@ func _input(event: InputEvent) -> void:
 
 func _notification(what):
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
-		# Free the resources we accumulated
-		if velocity_buffer_a:
-			rd.free_rid(velocity_buffer_a)
-		if velocity_buffer_b:
-			rd.free_rid(velocity_buffer_b)
-		if pipeline:
-			rd.free_rid(pipeline)
-		if uniform_set_read_a_write_b:
-			rd.free_rid(uniform_set_read_a_write_b)
-		if uniform_set_read_b_write_a:
-			rd.free_rid(uniform_set_read_b_write_a)
+		quit_requested = true
+		call_deferred("free_rendering_resources")
 		print("Gracefully quitting...")
 		get_tree().quit() # default behavior
+
+func free_rendering_resources() -> void:
+	# Free the resources we accumulated
+	if velocity_buffer_a:
+		rd.free_rid(velocity_buffer_a)
+	if velocity_buffer_b:
+		rd.free_rid(velocity_buffer_b)
+	if pipeline:
+		rd.free_rid(pipeline)
+	if uniform_set_read_a_write_b:
+		rd.free_rid(uniform_set_read_a_write_b)
+	if uniform_set_read_b_write_a:
+		rd.free_rid(uniform_set_read_b_write_a)

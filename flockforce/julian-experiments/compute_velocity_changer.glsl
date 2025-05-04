@@ -66,9 +66,7 @@ vec3 rotateY(vec3 p, float angle) {
     return (vec4(p, 1.0) * r).xyz;
 }
 void main() {
-    // vec3 rotated_velocity = rotateZ(velocity_buffer.data[0], radians(15.0));
-    // velocity_buffer.data[0] = velocity_buffer.data[0] - vec3(0, 0.2, 0);
-    // velocity_buffer.data[0] = velocity_buffer.data[0];
-    // velocity_buffer.data[0] = rotated_velocity;
-    velocity_out.data[0] = velocity_in.data[0];
+    vec3 rotated_velocity = rotateZ(velocity_in.data[0], radians(15.0));
+    // velocity_out.data[0] = velocity_in.data[0]; // passthrough sanity check
+    velocity_out.data[0] = rotated_velocity;
 }
