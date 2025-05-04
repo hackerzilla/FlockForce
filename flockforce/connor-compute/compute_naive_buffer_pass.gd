@@ -18,7 +18,7 @@ var cohesion: float = 1.0
 var boids: Array[RigidBody3D] = []
 
 @export
-var boid_count: int = 2000
+var boid_count: int = 10
 
 # create a local rendering device
 var rd := RenderingServer.create_local_rendering_device()
@@ -126,7 +126,7 @@ func _process(delta):
 	var compute_list := rd.compute_list_begin()
 	rd.compute_list_bind_compute_pipeline(compute_list, pipeline)
 	rd.compute_list_bind_uniform_set(compute_list, uniform_set, 0)
-	rd.compute_list_dispatch(compute_list, 1000, 1, 1)
+	rd.compute_list_dispatch(compute_list, boid_count / 2, 1, 1)
 	rd.compute_list_end()
 	# Submit to GPU and wait for sync
 	rd.submit()
@@ -173,9 +173,16 @@ func update_boids_position():
 			#print("issue with boid: ", i, " distance of: ", (prev_pos - new_pos).length())
 		#var new_pos = Vector3(0,0,0)
 		var new_vol = Vector3(vol_output[(i*4)], vol_output[(i*4) + 1], vol_output[(i*4) + 2])
-		#print(new_pos)
+		if contains_nan(new_pos):
+			print("new_pos contains NaN")
+		if contains_nan(new_vol):
+			print("new_vol contains NaN")
 		cur_boid.position = new_pos
 		cur_boid.linear_velocity = new_vol
+
+func contains_nan(vec):
+	return (vec.x != vec.x) or (vec.y != vec.y) or (vec.z != vec.z)
+
 		
 func initialize_boids():
 	for i in range(boid_count):

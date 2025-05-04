@@ -103,13 +103,24 @@ void main() {
     if (num_avoids != 0) {
         avoid_vector /= num_avoids;
     }
-    vec3 to_com = normalize(avg_position - boid_read_position);
+    vec3 to_com = vec3(0.0);
+    if (length(avg_position - boid_read_position) > 0.0) {
+        to_com = normalize(avg_position - boid_read_position);
+    }
+
     // vec3 separation = -to_com;
-    vec3 separation = normalize(avoid_vector);
+    vec3 separation = vec3(0.0);
+    if (length(avoid_vector) > 0.0) {
+        separation = normalize(avoid_vector);
+    }
     vec3 cohesion = to_com;
     vec3 alignment = avg_velocity;
 
     boid_read_velocity = (separation * separation_strength) + (alignment * alignment_strength) + (cohesion * cohesion_strength);
+    // boid_read_velocity = (separation * separation_strength);
+    // boid_read_velocity = (cohesion * cohesion_strength);
+    // boid_read_velocity = (alignment * alignment_strength);
+
     boid_read_velocity = normalize(boid_read_velocity);
     boid_read_position = boid_read_position + boid_read_velocity * 0.1; // should this include something related to timesteps?
 
