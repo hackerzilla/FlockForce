@@ -33,11 +33,11 @@ layout(set = 0, binding = 4, std430) restrict buffer Params{
 } params;
 
 
-const float neighborhood_size = 3.0;
-const float avoid_size = 2.0;
+const float neighborhood_size = 2.0;
+const float avoid_size = 1.0;
 
 const float separation_strength = 0.9;
-const float alignment_strength = 0.7;
+const float alignment_strength = 0.6;
 const float cohesion_strength = 0.9;
 
 const float limit = 15.0;
@@ -80,6 +80,7 @@ void main() {
         }
 
         vec3 pos_difference = boid_read_position - other_position;
+        if (any(isinf(pos_difference)) || any(isnan(pos_difference))) continue;
         if (length(pos_difference) > neighborhood_size) {
             continue;
         }
@@ -90,7 +91,7 @@ void main() {
         if (length(pos_difference) > avoid_size) {
             continue;
         }
-        avoid_vector += pos_difference;
+        avoid_vector += normalize(pos_difference);
         num_avoids += 1;
     }
     if (num_neighbors !=0) {
@@ -105,7 +106,7 @@ void main() {
     }
     vec3 to_com = normalize(avg_position - boid_read_position);
     // vec3 separation = -to_com;
-    vec3 separation = normalize(avoid_vector);
+    vec3 separation = avoid_vector;
     vec3 cohesion = to_com;
     vec3 alignment = avg_velocity;
 
@@ -113,12 +114,6 @@ void main() {
     boid_read_velocity = normalize(boid_read_velocity);
     boid_read_position = boid_read_position + boid_read_velocity * 0.1; // should this include something related to timesteps?
 
-    // if (boid_read_position.x > limit) boid_read_position.x = -inside_limit;
-    // if (boid_read_position.x < -limit) boid_read_position.x = inside_limit;
-    // if (boid_read_position.y > limit) boid_read_position.y = -inside_limit;
-    // if (boid_read_position.y < -limit) boid_read_position.y = inside_limit;
-    // if (boid_read_position.z > limit) boid_read_position.z = -inside_limit;
-    // if (boid_read_position.z < -limit) boid_read_position.z = inside_limit;
     boid_read_position = clamp(boid_read_position, vec3(-limit), vec3(limit));
 
     if (params.current_buffer == 0) {
@@ -128,6 +123,4 @@ void main() {
         positions_a.data[gl_GlobalInvocationID.x] = boid_read_position;
         velocities_a.data[gl_GlobalInvocationID.x] = boid_read_velocity;
     }
-    
-
 }

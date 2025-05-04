@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://dcngudltv8lkm"
+path="res://.godot/imported/spam.glsl-7a8910411ed2e924ce3ab483ab60c6a6.res"
+
+[deps]
+
+source_file="res://connor-compute/spam.glsl"
+dest_files=["res://.godot/imported/spam.glsl-7a8910411ed2e924ce3ab483ab60c6a6.res"]
+
+[params]
+
