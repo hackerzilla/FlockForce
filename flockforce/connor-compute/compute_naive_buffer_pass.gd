@@ -65,7 +65,7 @@ func _ready():
 		for j in range(3):
 			pos_start_arr.push_back(rng.randf_range(-spawn_radius, spawn_radius))
 			#pos_start_arr.push_back(i * 0.2) exists for testing purposes
-			vol_start_arr.push_back(rng.randf_range(-1, 1))
+			vol_start_arr.push_back(rng.randf_range(-3, 3))
 		pos_start_arr.push_back(0.0) #padding for vec3
 		vol_start_arr.push_back(0.0) #padding for vec3
 	position = PackedFloat32Array(pos_start_arr)
