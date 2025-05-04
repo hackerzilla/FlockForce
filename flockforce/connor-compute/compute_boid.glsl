@@ -25,6 +25,10 @@ layout(set = 0, binding = 3, std430) restrict buffer Velocity_b {
 }
 velocities_b;
 
+vec3 wrapVec3(vec3 v, vec3 a, vec3 b) {
+    vec3 range = b - a;
+    return a + mod(v - a, range);
+}
 
 // This is the buffer for int params (boid count only)
 layout(set = 0, binding = 4, std430) restrict buffer Params{
@@ -137,7 +141,12 @@ void main() {
     // if (boid_read_position.y < -limit) boid_read_position.y = inside_limit;
     // if (boid_read_position.z > limit) boid_read_position.z = -inside_limit;
     // if (boid_read_position.z < -limit) boid_read_position.z = inside_limit;
-    boid_read_position = clamp(boid_read_position, vec3(-params.limit), vec3(params.limit));
+
+
+
+    // boid_read_position = clamp(boid_read_position, vec3(-params.limit), vec3(params.limit));
+
+    boid_read_position = wrapVec3(boid_read_position, vec3(-params.limit), vec3(params.limit));
 
     if (params.current_buffer == 0.0) {
         positions_b.data[gl_GlobalInvocationID.x] = boid_read_position;
@@ -149,3 +158,4 @@ void main() {
     
 
 }
+
