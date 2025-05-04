@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://c45lqhy3d0l2k" path="res://connor-compute/compute_naive_buffer_pass.gd" id="1_vtskc"]
 [ext_resource type="PackedScene" uid="uid://dci0l5lu4babu" path="res://assets/seagull.tscn" id="2_k2sh4"]
-[ext_resource type="Script" uid="uid://le8fsbhi3sjt" path="res://free_look_camera.gd" id="3_k2sh4"]
+[ext_resource type="Script" path="res://free_look_camera.gd" id="3_k2sh4"]
 
 [node name="Node3D" type="Node3D"]
 script = ExtResource("1_vtskc")

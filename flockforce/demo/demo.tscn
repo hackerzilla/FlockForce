@@ -1,0 +1,37 @@
+[gd_scene load_steps=9 format=3 uid="uid://cwn451svp6gl7"]
+
+[ext_resource type="Texture2D" uid="uid://dv5gk3jlapdph" path="res://assets/textures/AllSkyFree_Sky_EpicGloriousPink_Equirect.png" id="1_d6po2"]
+[ext_resource type="Script" path="res://free_look_camera.gd" id="2_u10mr"]
+[ext_resource type="Script" uid="uid://c45lqhy3d0l2k" path="res://connor-compute/compute_naive_buffer_pass.gd" id="2_ytiva"]
+[ext_resource type="PackedScene" uid="uid://dci0l5lu4babu" path="res://assets/seagull.tscn" id="3_dar0o"]
+[ext_resource type="Script" uid="uid://hqfoqmaspyx6" path="res://demo/quit_handler.gd" id="4_j5lb4"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_ytiva"]
+panorama = ExtResource("1_d6po2")
+
+[sub_resource type="Sky" id="Sky_dar0o"]
+sky_material = SubResource("PanoramaSkyMaterial_ytiva")
+
+[sub_resource type="Environment" id="Environment_j5lb4"]
+background_mode = 2
+sky = SubResource("Sky_dar0o")
+
+[node name="Demo" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_j5lb4")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, -33.22)
+script = ExtResource("2_u10mr")
+
+[node name="ComputeBoids" type="Node3D" parent="."]
+script = ExtResource("2_ytiva")
+boid_scene = ExtResource("3_dar0o")
+spawn_radius = 20.0
+limit = 20.0
+
+[node name="QuitHandler" type="Node" parent="."]
+script = ExtResource("4_j5lb4")
