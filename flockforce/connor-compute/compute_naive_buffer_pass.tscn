@@ -8,5 +8,5 @@ script = ExtResource("1_vtskc")
 boid_scene = ExtResource("2_dd1wx")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 7.6716)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 15)
 fov = 86.5
