@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://5253mt35xx06"]
+
+[ext_resource type="Script" uid="uid://d1ykopl16niqn" path="res://julian-compute/new-attempt/compute_boids.gd" id="1_ymgg2"]
+
+[node name="ComputeBoids" type="Node3D"]
+script = ExtResource("1_ymgg2")
+spawn_radius = 15.0
+spawn_velocity = 1.0
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 39.5197)

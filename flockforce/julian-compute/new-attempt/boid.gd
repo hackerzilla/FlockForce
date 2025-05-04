@@ -1,5 +1,6 @@
 @tool
 extends RigidBody3D
+class_name Boid
 
 @onready var arrow_pivot = $ArrowPivot
 
