@@ -1,177 +1,261 @@
+/* --- style.css --- */
+
+/* --- CSS Variables --- */
+:root {
+    /* Default to Light Theme Variables (Pastel) */
+    --bg-color: #FDF5E6;
+    --text-color: #5D5C61;
+    --container-bg: #FFFFFF;
+    --heading-color: #A7C7E7;
+    --heading-h1-color: var(--heading-color); /* Same for light */
+    --heading-h4-color: #77A0C7; /* Specific h4 color for light */
+    --link-color: #E0A083;
+    --link-hover-color: #ca8969;
+    --nav-bg: #A7C7E7;
+    --nav-text: #FFFFFF;
+    --nav-link-hover-bg: rgba(255, 255, 255, 0.25);
+    --nav-link-hover-text: var(--nav-text);
+    --border-color: #D8CFBE;
+    --subtle-border-color: #E0E8F0; /* Used for h1 underline in light */
+    --figure-bg: #FFFFFF; /* Figure bg same as container bg in light */
+    --figure-border: var(--border-color);
+    --caption-color: #777;
+    --code-bg: #F0F0F0;
+    --code-text: #333;
+    --code-border-accent: #A7C7E7;
+    --inline-code-bg: #fceaea;
+    --inline-code-text: #c7254e;
+    --shadow-color: rgba(0, 0, 0, 0.07);
+    --footer-text: #777;
+    --button-bg: #A7C7E7;
+    --button-text: #FFFFFF;
+    --button-hover-bg: #8aabbf;
+}
+
+body.dark-theme {
+    /* Dark Theme Variable Overrides */
+    --bg-color: #1a1a1a;
+    --text-color: #EAEAEA;
+    --container-bg: #2a2a2a;
+    --heading-color: #EAEAEA; /* General heading color */
+    --heading-h1-color: #FFFFFF; /* Brighter H1 */
+    --heading-h4-color: #cccccc; /* Specific h4 color for dark */
+    --link-color: #FF6347;
+    --link-hover-color: #ff7f50;
+    --nav-bg: #111111;
+    --nav-text: #EAEAEA;
+    --nav-link-hover-bg: #FF6347; /* Use accent for hover bg */
+    --nav-link-hover-text: #FFFFFF;
+    --border-color: #444;
+    --subtle-border-color: var(--border-color); /* Use same border for dark */
+    --figure-bg: #2f2f2f; /* Specific figure bg for dark */
+    --figure-border: var(--border-color);
+    --caption-color: #bbbbbb;
+    --code-bg: #111;
+    --code-text: #d0d0d0;
+    --code-border-accent: #FF6347;
+    --inline-code-bg: #333;
+    --inline-code-text: #FFB347; /* Lighter orange for inline code */
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    --footer-text: #888;
+    --button-bg: #FF6347;
+    --button-text: #FFFFFF;
+    --button-hover-bg: #ff7f50;
+}
+
 /* --- Global Styles & Resets --- */
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box; /* Makes padding/border inclusion intuitive */
+    box-sizing: border-box;
 }
 
 html {
-    scroll-behavior: smooth; /* Smooth scrolling for anchor links */
+    scroll-behavior: smooth;
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Clean, modern sans-serif font */
-    line-height: 1.7; /* Improves readability */
-    background-color: #FDF5E6; /* Pastel Background: Old Lace */
-    color: #5D5C61; /* Main Text: Dark muted grey */
-    padding: 20px; /* Add some space around the edges on large screens */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.7;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    padding: 0;
+    font-size: 16px;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
 }
 
 /* --- Container --- */
-/* Wrap your main content in <div class="container"> for centering and styling */
 .container {
-    max-width: 900px; /* Max width of content area */
-    margin: 30px auto; /* Center the container horizontally, add vertical space */
-    padding: 30px 40px; /* Padding inside the container */
-    background-color: #FFFFFF; /* White background for content area */
-    border-radius: 10px; /* Soft rounded corners */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.07); /* Subtle shadow */
+    max-width: 900px;
+    margin: 20px auto 40px auto; /* Adjusted margin */
+    padding: 30px 40px;
+    background-color: var(--container-bg);
+    border-radius: 8px;
+    box-shadow: 0 5px 15px var(--shadow-color);
+    transition: background-color 0.3s ease;
 }
 
 /* --- Typography --- */
 h1, h2, h3, h4, h5, h6 {
-    color: #A7C7E7; /* Headings: Pastel Blue */
-    margin-top: 1.5em; /* Space above headings */
-    margin-bottom: 0.8em; /* Space below headings */
+    color: var(--heading-color);
+    margin-top: 1.5em;
+    margin-bottom: 0.7em;
     line-height: 1.3;
-    font-weight: 600; /* Slightly bolder */
+    font-weight: 600;
 }
 
-h1 { font-size: 2.6em; border-bottom: 2px solid #E0E8F0; padding-bottom: 0.3em;} /* Slightly more emphasis on H1 */
-h2 { font-size: 2em; }
+h1 {
+    font-size: 2.6em;
+    text-align: center;
+    margin-bottom: 1em;
+    padding-bottom: 0.3em;
+    border-bottom: 3px solid var(--subtle-border-color); /* Use subtle border color */
+    color: var(--heading-h1-color); /* Specific H1 color */
+    display: block; /* Ensure it takes full width for centering */
+}
+
+h2 {
+    font-size: 2em;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 0.3em;
+}
+
 h3 { font-size: 1.6em; }
-h4 { font-size: 1.2em; color: #77A0C7; /* Slightly darker blue for less emphasis */ }
+
+h4 {
+    font-size: 1.2em;
+    color: var(--heading-h4-color); /* Specific H4 color */
+}
 
 p {
-    margin-bottom: 1.2em; /* Space between paragraphs */
+    margin-bottom: 1.2em;
 }
 
 a {
-    color: #E0A083; /* Links: Soft Terracotta/Peach */
-    text-decoration: none; /* No underline by default */
-    transition: color 0.3s ease, text-decoration 0.3s ease; /* Smooth transition */
+    color: var(--link-color);
+    text-decoration: none;
+    transition: color 0.3s ease, opacity 0.3s ease;
 }
 
 a:hover, a:focus {
-    color: #ca8969; /* Darker shade on hover */
-    text-decoration: underline; /* Underline on hover for clarity */
+    color: var(--link-hover-color);
+    text-decoration: underline;
 }
 
-ul, ol {
-    margin-bottom: 1.2em;
-    padding-left: 25px; /* Indentation for lists */
-}
+ul, ol { margin-bottom: 1.2em; padding-left: 25px; }
+li { margin-bottom: 0.6em; }
+strong, b { font-weight: 700; color: var(--heading-h1-color); /* Make bold stand out more */}
 
-li {
-    margin-bottom: 0.6em; /* Space between list items */
-}
 
-strong, b {
-    font-weight: 600; /* Ensure bold stands out */
-}
-
-/* --- Navigation (Example Structure: <nav><ul><li><a>...</a></li></ul></nav>) --- */
+/* --- Navigation (Example using variables) --- */
 nav {
-    background-color: #A7C7E7; /* Use the primary accent for the nav bar */
+    background-color: var(--nav-bg);
     padding: 10px 0;
-    margin-bottom: 30px; /* Space below nav */
-    border-radius: 8px; /* Match container rounding */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-}
-
-nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    text-align: center;
-}
-
-nav ul li {
-    display: inline-block; /* Horizontal menu items */
-    margin: 0 15px;
-}
-
-nav ul li a {
-    color: #FFFFFF; /* White text on the pastel blue background */
-    font-weight: bold;
-    text-decoration: none;
-    padding: 8px 15px; /* Make links easier to click */
-    border-radius: 5px;
+    margin-bottom: 30px;
+    border-radius: 8px;
     transition: background-color 0.3s ease;
 }
 
-nav ul li a:hover, nav ul li a:focus {
-    background-color: rgba(255, 255, 255, 0.25); /* Subtle white highlight */
-    color: #FFFFFF; /* Keep text white */
-    text-decoration: none; /* No underline needed here */
-}
+nav ul { list-style: none; padding: 0; margin: 0; text-align: center; }
+nav ul li { display: inline-block; margin: 0 15px; }
 
-
-/* --- Images --- */
-img {
-    max-width: 100%; /* Make images responsive */
-    height: auto; /* Maintain aspect ratio */
-    display: block; /* Remove potential extra space below image */
-    margin: 2em auto; /* Center images and add vertical space */
-    border-radius: 8px; /* Soft rounded corners for images */
-    border: 1px solid #D8CFBE; /* Subtle border */
-    padding: 4px; /* Small padding inside border */
-    background-color: #fff; /* Ensure transparent parts are white */
-}
-
-/* --- Code Blocks (Optional - if you show code) --- */
-pre {
-    background-color: #F0F0F0; /* Light grey background */
-    border: 1px solid #ddd;
-    border-left: 5px solid #A7C7E7; /* Accent border */
-    padding: 15px;
-    margin: 1.5em 0;
-    overflow-x: auto; /* Allow horizontal scrolling */
+nav ul li a {
+    color: var(--nav-text);
+    font-weight: bold;
+    text-decoration: none;
+    padding: 8px 15px;
     border-radius: 5px;
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 0.95em;
-    line-height: 1.5;
-    color: #333; /* Darker text for code */
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+nav ul li a:hover, nav ul li a:focus {
+    background-color: var(--nav-link-hover-bg);
+    color: var(--nav-link-hover-text);
+    text-decoration: none;
+}
+
+/* --- Images & Figures --- */
+img { max-width: 100%; height: auto; display: block; border-radius: 6px; }
+
+figure {
+    margin: 2.5em 0;
+    padding: 15px;
+    border: 1px solid var(--figure-border);
+    border-radius: 6px;
+    background-color: var(--figure-bg);
+    text-align: center;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+figcaption { margin-top: 10px; font-size: 0.95em; color: var(--caption-color); }
+
+/* --- Code Blocks --- */
+pre {
+    background-color: var(--code-bg);
+    border: 1px solid var(--border-color);
+    border-left: 5px solid var(--code-border-accent);
+    padding: 20px;
+    margin: 1.5em 0;
+    overflow-x: auto;
+    border-radius: 5px;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 0.9em;
+    line-height: 1.6;
+    color: var(--code-text);
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
 code { /* Inline code */
-    background-color: #fceaea; /* Very light pinkish */
-    color: #c7254e; /* Borrowing Bootstrap's code color */
+    background-color: var(--inline-code-bg);
+    color: var(--inline-code-text);
     padding: 0.2em 0.5em;
     border-radius: 3px;
     font-size: 90%;
-    font-family: 'Courier New', Courier, monospace;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+pre code { /* Reset styles when code is inside pre */ background-color: transparent; color: inherit; padding: 0; border-radius: 0; font-size: inherit; font-family: inherit; }
+
+
+/* --- Header & Footer --- */
+header { text-align: center; margin-bottom: 2em; padding: 1em 0; }
+header p { color: var(--text-color); opacity: 0.8; font-size: 1.1em; }
+
+footer {
+    text-align: center;
+    margin-top: 4em;
+    padding-top: 1.5em;
+    border-top: 1px solid var(--border-color);
+    color: var(--footer-text);
+    font-size: 0.9em;
+    transition: border-color 0.3s ease, color 0.3s ease;
 }
 
-pre code { /* Reset inline style when inside a pre block */
-    background-color: transparent;
-    color: inherit;
-    padding: 0;
-    border-radius: 0;
-    font-size: inherit;
-    font-family: inherit;
+/* --- Theme Toggle Button Style --- */
+#theme-toggle-button {
+    padding: 8px 15px;
+    font-size: 0.9em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    font-weight: bold;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
+
+#theme-toggle-button:hover {
+    background-color: var(--button-hover-bg);
+}
+
 
 /* --- Basic Responsiveness --- */
 @media (max-width: 768px) {
-    body {
-        padding: 10px; /* Reduce padding on small screens */
-    }
-    .container {
-        padding: 20px; /* Reduce container padding */
-        margin: 15px auto; /* Reduce vertical margin */
-    }
+    .container { padding: 25px 20px; margin: 20px auto; }
     h1 { font-size: 2.1em; }
     h2 { font-size: 1.8em; }
     h3 { font-size: 1.4em; }
-
-    /* Stack navigation items on smaller screens */
-    nav ul li {
-        display: block;
-        margin: 10px 0;
-    }
-    nav ul li a {
-        display: block; /* Make the whole block clickable */
-        padding: 10px;
-    }
+    /* Optional: Adjust button position/size */
+    div[style*="text-align: right"] { padding: 10px; text-align: center; }
+    nav ul li { display: block; margin: 10px 0; }
+    nav ul li a { display: block; padding: 12px; }
 }
