@@ -34,14 +34,29 @@
 				<section id="abstract">
 					<h2>Abstract</h2>
 					<p>
-						[Insert your project abstract here. This should be a concise summary covering the problem you addressed, your core technical approach, the key results you achieved, and the overall significance or findings of your work.]
+						FlockForce is a 3D boid simulation accelerated with compute shader and made in Godot Engine. Our team started out with a blank Godot project, and we ended up with a convincing Boids implementation in an easily extendable format. Our simulation uses the GPU to accelerate the calculation of positions and velocities, however, the rendering is still taken care of by Godot’s Forward+ rendering pipeline, meaning that the individual boids are still interactable at the game engine level. This affords the opportunity for the boids to interact with other components of the game engine, for example, the physics engine, where other implementations of compute shader boids would have the particles exist purely on the GPU. While our design choice comes at the cost of performance, we believe it to be a worthwhile tradeoff for the opportunities it affords for creative expression.
 					</p>
 				</section>
 	
 				<section id="technical-approach">
 					<h2>Technical Approach</h2>
 					<p>
-						[Start with an overview paragraph introducing your technical approach.]
+						FlockForce centers around the boid algorithm invented by Craig Reynolds in 1986, which approximates the behavior of animals that form flocks, swarms, or schools. The algorithm is inspired by research into birds, which found that the flocking behavior of starlings follows simple rules at the level of individual organisms. It makes sense then that the boids algorithm is also relatively simple, although tuning it to produce pleasing results is still an implementation-specific challenge. For our implementation, we followed a philosophy of starting simple and adding complexity as needed. Our first draft of boids was a CPU-driven program that performed the O(n^2) neighborhood search, where n is the number of boids. As the article by Craig Reynlods describes, the velocity of each boid at any given timestep is the sum of three vectors: cohesion, separation, and alignment. The cohesion vector points from a boid to the center of mass of its neighbors (within some neighborhood radius). The separation vector points away from the center of mass of neighbors that are too close (an inner radius). Finally, the alignment vector points in the direction of the average heading of its neighbors. 
+					</p>
+					<p>
+						Creating the CPU boids implementation was worthwhile because it gave us both a sanity check and a benchmark for how much we could improve the performance. On an Apple M2 Pro, the CPU boids implementation was able to run smoothly for up to roughly 100 boids. This made sense as the algorithm has an O(n^2) time complexity, since each boid needs to check every other boid for presence in the local neighborhood. 
+					</p>
+					<p>
+						After successfully implementing the CPU boids, we set out to offload the work to the GPU. This task was more difficult than we initially thought. Fortunately, Godot has a helpful abstraction for interacting with the GPU. Godot has a RenderingDevice abstraction that encapsulates the boilerplate of setting up bindings for buffers, uniforms, shaders, compute pipelines, and more. Still, though, we had to learn what is required in order to send data buffers to the GPU and dispatch calls to run the desired shader. Debugging and understanding the compute shader pipeline was where much of the effort went. The effort was worth it when we were able to achieve greater than 10x the number of boids on-screen as compared to CPU-boids. 
+					</p>
+					<p>
+						To get there, we started simple with basic tests of binding buffers to uniforms, setting up the uniform set and compute pipeline, and getting the data back from the storage buffers after the CPU synchronized with the GPU. From there, we could reason about loading the boid positions into buffers, sending them off to the GPU, and retrieving the updated positions and setting them on the CPU. 
+					</p>
+					<p>
+						We had many, many bugs along the way. To name a few, we completely neglected having a swap buffer implementation initially (we were updating the boid positions and velocities in-place), which resulted in some slightly offsetting boid movement. To fix this we doubled our buffers. Positions and velocities would be read from buffers A and updated positions would be written to buffers B, then the roles of A and B would be swapped. This removes the data dependencies that in-place updates caused. 
+					</p>
+					<p>
+						Another bug, which was much more pernicious than the previous one, was an issue with implicit padding of data in the arrays on the GPU. We had arrays of vec3s (3-Vectors in GLSL), which held positions and velocities. What we didn’t realize at the time is that, for some reason, an extra 4 bytes was inserted between vec3’s, causing very strange jittering behavior in the visualization due to the data being returned not being in the expected format (i.e. not being in the format we sent to the GPU). The fix was a quick one, on the CPU side of things, we simply inserted an extra float in the byte array that we pass to the GPU. 
 					</p>
 	
 					<h3>Techniques, Algorithms, and Implementation</h3>
