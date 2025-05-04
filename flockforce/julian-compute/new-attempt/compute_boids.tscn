@@ -1,6 +1,18 @@
-[gd_scene load_steps=2 format=3 uid="uid://5253mt35xx06"]
+[gd_scene load_steps=6 format=3 uid="uid://5253mt35xx06"]
 
 [ext_resource type="Script" uid="uid://d1ykopl16niqn" path="res://julian-compute/new-attempt/compute_boids.gd" id="1_ymgg2"]
+[ext_resource type="Texture2D" uid="uid://2sy41ecpecr5" path="res://icon.svg" id="2_yiri1"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_xf28r"]
+panorama = ExtResource("2_yiri1")
+filter = false
+
+[sub_resource type="Sky" id="Sky_h3f6m"]
+sky_material = SubResource("PanoramaSkyMaterial_xf28r")
+
+[sub_resource type="Environment" id="Environment_p2bvo"]
+background_mode = 2
+sky = SubResource("Sky_h3f6m")
 
 [node name="ComputeBoids" type="Node3D"]
 script = ExtResource("1_ymgg2")
@@ -11,3 +23,6 @@ spawn_velocity = 1.0
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 39.5197)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_p2bvo")

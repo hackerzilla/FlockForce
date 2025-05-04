@@ -1,0 +1,19 @@
+[gd_scene load_steps=5 format=3 uid="uid://bhw7qaecyirj2"]
+
+[ext_resource type="Texture2D" uid="uid://dv5gk3jlapdph" path="res://skybox-test/AllSkyFree_Sky_EpicGloriousPink_Equirect.png" id="1_f628n"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_mb4vi"]
+panorama = ExtResource("1_f628n")
+filter = false
+
+[sub_resource type="Sky" id="Sky_o1yqs"]
+sky_material = SubResource("PanoramaSkyMaterial_mb4vi")
+
+[sub_resource type="Environment" id="Environment_2nuci"]
+background_mode = 2
+sky = SubResource("Sky_o1yqs")
+
+[node name="Skybox-test" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_2nuci")
