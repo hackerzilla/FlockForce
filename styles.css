@@ -2,43 +2,58 @@
 
 /* --- CSS Variables --- */
 :root {
-    /* Default to Light Theme Variables (Pastel) */
-    --bg-color: #FDF5E6;
-    --text-color: #5D5C61;
+    /* Default to NEW Light Theme Variables (Inspired by image_fe5ce8.jpg) */
+    --bg-color: #FBF8EF;
+    --text-color: #333333;
     --container-bg: #FFFFFF;
-    --heading-color: #A7C7E7;
+    --heading-color: #222222;
     --heading-h1-color: var(--heading-color);
-    --heading-h4-color: #77A0C7;
-    --link-color: #E0A083;
-    --link-hover-color: #ca8969;
-    --nav-bg: #A7C7E7; /* Variable for potential top nav */
-    --nav-text: #FFFFFF; /* Variable for potential top nav */
-    --nav-link-hover-bg: rgba(255, 255, 255, 0.25); /* Variable for potential top nav */
-    --nav-link-hover-text: var(--nav-text); /* Variable for potential top nav */
-    --border-color: #D8CFBE;
-    --subtle-border-color: #E0E8F0;
-    --figure-bg: #FFFFFF;
+    --heading-h4-color: #555555;
+    --link-color: #8BC34A;
+    --link-hover-color: #689F38;
+    --nav-bg: #FFF9C4; /* Variable for potential top nav */
+    --nav-text: #444444;
+    --nav-link-hover-bg: #FFF59D;
+    --nav-link-hover-text: #333333;
+    --border-color: #E0E0E0;
+    --subtle-border-color: var(--border-color);
+    --figure-bg: #F5F5F5;
     --figure-border: var(--border-color);
-    --caption-color: #777;
-    --code-bg: #F0F0F0;
-    --code-text: #333;
-    --code-border-accent: #A7C7E7;
-    --inline-code-bg: #fceaea;
-    --inline-code-text: #c7254e;
-    --shadow-color: rgba(0, 0, 0, 0.07);
-    --footer-text: #777;
-    --button-bg: #A7C7E7;
+    --caption-color: #666666;
+    --code-bg: #F5F5F5;
+    --code-text: #333333;
+    --code-border-accent: #AED581;
+    --inline-code-bg: #EFEFEF;
+    --inline-code-text: #333333;
+    --shadow-color: rgba(0, 0, 0, 0.08);
+    --footer-text: #666666;
+    --button-bg: #8BC34A;
     --button-text: #FFFFFF;
-    --button-hover-bg: #8aabbf;
+    --button-hover-bg: #689F38;
 
-    /* === NEW Sidebar Variables (Light Theme) === */
-    --sidebar-bg: #e8e8e8;
-    --sidebar-text: #333;
-    --sidebar-link-hover-bg: #d0d0d0;
-    --sidebar-link-active-bg: #A7C7E7; /* Use main accent */
+    /* Sidebar Variables (Light Theme - Keeping the set inspired by image_fe5ce8.jpg) */
+    --sidebar-bg: #F5F5F5; /* Light Grey sidebar */
+    --sidebar-text: #444444; /* Dark text for sidebar */
+    --sidebar-link-hover-bg: #E0E0E0; /* Slightly darker grey hover */
+    --sidebar-link-active-bg: #8BC34A; /* Accent Green for active link */
     --sidebar-link-active-text: #FFFFFF;
-    --sidebar-border: #cccccc;
-    /* ============================================ */
+    --sidebar-border: #DCDCDC; /* Sidebar border */
+
+    /* REMOVED duplicate older set of sidebar variables that started with --sidebar-bg: #e8e8e8; */
+}
+
+/* Basic Logo Styling (for header logo) */
+.logo {
+    display: block;
+    margin: 0 auto 20px auto;
+    max-height: 250px; /* Increased size */
+}
+
+/* Header layout */
+header {
+    text-align: center;
+    padding: 1em 0;
+    margin-bottom: 2em;
 }
 
 body.dark-theme {
@@ -51,10 +66,10 @@ body.dark-theme {
     --heading-h4-color: #cccccc;
     --link-color: #FF6347;
     --link-hover-color: #ff7f50;
-    --nav-bg: #111111; /* Variable for potential top nav */
-    --nav-text: #EAEAEA; /* Variable for potential top nav */
-    --nav-link-hover-bg: #FF6347; /* Variable for potential top nav */
-    --nav-link-hover-text: #FFFFFF; /* Variable for potential top nav */
+    --nav-bg: #111111;
+    --nav-text: #EAEAEA;
+    --nav-link-hover-bg: #FF6347;
+    --nav-link-hover-text: #FFFFFF;
     --border-color: #444;
     --subtle-border-color: var(--border-color);
     --figure-bg: #2f2f2f;
@@ -71,14 +86,13 @@ body.dark-theme {
     --button-text: #FFFFFF;
     --button-hover-bg: #ff7f50;
 
-    /* === NEW Sidebar Variables (Dark Theme) === */
+    /* Sidebar Variables (Dark Theme) */
     --sidebar-bg: #2c2c2c;
     --sidebar-text: #d0d0d0;
     --sidebar-link-hover-bg: #444;
     --sidebar-link-active-bg: #FF6347; /* Use main accent */
     --sidebar-link-active-text: #FFFFFF;
     --sidebar-border: #444;
-    /* ============================================ */
 }
 
 /* --- Global Styles & Resets --- */
@@ -88,7 +102,6 @@ body.dark-theme {
     box-sizing: border-box;
 }
 
-/* Ensure smooth scroll is enabled */
 html {
     scroll-behavior: smooth;
 }
@@ -98,12 +111,12 @@ body {
     line-height: 1.7;
     background-color: var(--bg-color);
     color: var(--text-color);
-    padding: 0; /* Ensure no body padding interferes with layout */
+    padding: 0;
     font-size: 16px;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* === NEW Sidebar Navigation Styles === */
+/* === UPDATED Sidebar Navigation Styles === */
 #sidebar-nav {
     position: fixed;
     left: 0;
@@ -116,28 +129,52 @@ body {
     overflow-y: auto;
     z-index: 100;
     transition: background-color 0.3s ease, border-color 0.3s ease;
+    display: flex; /* Use flexbox */
+    flex-direction: column; /* Stack logo link and list vertically */
 }
 
-#sidebar-nav h3 {
-    color: var(--heading-color); /* Use theme heading color */
-    font-size: 1.2em;
-    margin-top: 0;
-    margin-bottom: 1em;
-    padding-bottom: 0.5em;
-    border-bottom: 1px solid var(--sidebar-border);
+/* REMOVED #sidebar-nav h3 rule */
+
+/* Styles for Back-to-Top Link containing the logo */
+#sidebar-nav .back-to-top-button {
+    display: block;
+    margin-bottom: 20px; /* Space below logo link */
+    padding: 0;
+    background: none;
+    border: none;
+    text-align: center;
+    cursor: pointer;
+    line-height: 0; /* Prevent extra space */
 }
 
+/* Styles for Sidebar Logo Image itself */
+#sidebar-nav .sidebar-logo { /* Or target: #sidebar-nav .back-to-top-button img */
+    max-width: 75%; /* Adjust % to control size */
+    height: auto;
+    display: inline-block;
+    vertical-align: middle;
+    transition: opacity 0.2s ease;
+}
+
+#sidebar-nav .back-to-top-button:hover .sidebar-logo {
+    opacity: 0.8; /* Subtle hover effect */
+}
+
+/* Styles specifically for the navigation list */
 #sidebar-nav ul {
     list-style: none;
     padding: 0;
     margin: 0;
+    flex-grow: 1; /* Allows list to take remaining space */
+    overflow-y: auto; /* Add scroll to list only if needed */
 }
 
 #sidebar-nav li {
     margin-bottom: 5px;
 }
 
-#sidebar-nav a {
+/* Styles for links INSIDE the UL list */
+#sidebar-nav ul a {
     display: block;
     padding: 8px 15px;
     color: var(--sidebar-text);
@@ -147,13 +184,13 @@ body {
     font-size: 0.95em;
 }
 
-#sidebar-nav a:hover {
+#sidebar-nav ul a:hover {
     background-color: var(--sidebar-link-hover-bg);
-    color: var(--text-color); /* Use main text color on hover */
+    color: var(--text-color);
 }
 
-/* Style for the active link (JS adds/removes 'active' class) */
-#sidebar-nav a.active {
+/* Style for the active link within the list */
+#sidebar-nav ul a.active {
     background-color: var(--sidebar-link-active-bg);
     color: var(--sidebar-link-active-text);
     font-weight: bold;
@@ -161,10 +198,10 @@ body {
 /* ==================================== */
 
 
-/* === NEW Main Content Area Styles === */
+/* === Main Content Area Styles === */
 .main-content-area {
-    margin-left: 270px; /* Sidebar width (240px) + Desired Space (30px) */
-    padding: 1px 0 0 0; /* Adjust top padding if needed */
+    margin-left: 270px; /* Sidebar width (240px) + Space (30px) */
+    padding: 1px 0 0 0;
 }
 /* ==================================== */
 
@@ -181,7 +218,6 @@ body {
 }
 
 /* --- Typography --- */
-/* ... (Keep existing h1-h6, p styles) ... */
 h1, h2, h3, h4, h5, h6 { color: var(--heading-color); margin-top: 1.5em; margin-bottom: 0.7em; line-height: 1.3; font-weight: 600; }
 h1 { font-size: 2.6em; text-align: center; margin-bottom: 1em; padding-bottom: 0.3em; border-bottom: 3px solid var(--subtle-border-color); color: var(--heading-h1-color); display: block; }
 h2 { font-size: 2em; border-bottom: 2px solid var(--border-color); padding-bottom: 0.3em; }
@@ -190,8 +226,7 @@ h4 { font-size: 1.2em; color: var(--heading-h4-color); }
 p { margin-bottom: 1.2em; }
 
 /* General Link Styles (in main content) */
-/* Ensure sidebar links don't inherit this underline on hover */
-.main-content-area a, footer a { /* Be more specific if needed */
+.main-content-area a, footer a {
     color: var(--link-color);
     text-decoration: none;
     transition: color 0.3s ease, opacity 0.3s ease;
@@ -210,54 +245,43 @@ strong, b { font-weight: 700; color: var(--heading-h1-color); }
 
 /* --- Top Navigation (Keep if used, otherwise remove) --- */
 /* These styles might apply to a different <nav> element if you have one */
-nav {
-    background-color: var(--nav-bg);
-    padding: 10px 0;
-    margin-bottom: 30px;
-    border-radius: 8px;
-    transition: background-color 0.3s ease;
-}
-nav ul { list-style: none; padding: 0; margin: 0; text-align: center; }
-nav ul li { display: inline-block; margin: 0 15px; }
-nav ul li a { color: var(--nav-text); font-weight: bold; text-decoration: none; padding: 8px 15px; border-radius: 5px; transition: background-color 0.3s ease, color 0.3s ease; }
-nav ul li a:hover, nav ul li a:focus { background-color: var(--nav-link-hover-bg); color: var(--nav-link-hover-text); text-decoration: none; }
+/* Styles removed for brevity if not used */
+/* nav { ... } */
+/* nav ul { ... } */
+/* nav ul li { ... } */
+/* nav ul li a { ... } */
+/* nav ul li a:hover, nav ul li a:focus { ... } */
 /* --- End Top Navigation --- */
 
 
 /* --- Images & Figures --- */
-/* ... (Keep existing img, figure, figcaption styles) ... */
 img { max-width: 100%; height: auto; display: block; border-radius: 6px; }
 figure { margin: 2.5em 0; padding: 15px; border: 1px solid var(--figure-border); border-radius: 6px; background-color: var(--figure-bg); text-align: center; transition: background-color 0.3s ease, border-color 0.3s ease; }
 figcaption { margin-top: 10px; font-size: 0.95em; color: var(--caption-color); }
 
 
 /* --- Code Blocks --- */
-/* ... (Keep existing pre, code styles) ... */
 pre { background-color: var(--code-bg); border: 1px solid var(--border-color); border-left: 5px solid var(--code-border-accent); padding: 20px; margin: 1.5em 0; overflow-x: auto; border-radius: 5px; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; line-height: 1.6; color: var(--code-text); transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease; }
 code { background-color: var(--inline-code-bg); color: var(--inline-code-text); padding: 0.2em 0.5em; border-radius: 3px; font-size: 90%; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; transition: background-color 0.3s ease, color 0.3s ease; }
 pre code { background-color: transparent; color: inherit; padding: 0; border-radius: 0; font-size: inherit; font-family: inherit; }
 
 
 /* --- Header & Footer --- */
-/* ... (Keep existing header, footer styles) ... */
 header { text-align: center; margin-bottom: 2em; padding: 1em 0; }
 header p { color: var(--text-color); opacity: 0.8; font-size: 1.1em; }
 footer { text-align: center; margin-top: 4em; padding-top: 1.5em; border-top: 1px solid var(--border-color); color: var(--footer-text); font-size: 0.9em; transition: border-color 0.3s ease, color 0.3s ease; }
 
 
 /* --- Theme Toggle Button Style --- */
-/* ... (Keep existing button styles) ... */
 #theme-toggle-button { padding: 8px 15px; font-size: 0.9em; border: none; border-radius: 5px; cursor: pointer; background-color: var(--button-bg); color: var(--button-text); font-weight: bold; transition: background-color 0.3s ease, color 0.3s ease; }
 #theme-toggle-button:hover { background-color: var(--button-hover-bg); }
 
 
 /* --- Responsiveness --- */
-/* Combine media queries for cleaner structure */
-
 @media (max-width: 992px) {
      /* Sidebar adjustments */
     #sidebar-nav { width: 180px; }
-    .main-content-area { margin-left: 210px; }
+    .main-content-area { margin-left: 210px; } /* Adjusted margin: 180px + 30px space */
      /* Container adjustments */
      .container { padding: 25px 20px; }
 }
@@ -265,19 +289,14 @@ footer { text-align: center; margin-top: 4em; padding-top: 1.5em; border-top: 1p
 @media (max-width: 768px) {
     /* Hide sidebar completely */
     #sidebar-nav { display: none; }
-    .main-content-area { margin-left: 0; } /* Content takes full width */
+    .main-content-area { margin-left: 0; }
 
-    /* General adjustments from previous rules */
+    /* General adjustments */
     .container { padding: 20px 15px; margin: 10px auto 20px auto; }
     h1 { font-size: 2.1em; }
     h2 { font-size: 1.8em; }
     h3 { font-size: 1.4em; }
 
-    /* Button position adjustment (example) */
-    /* This targets the specific inline style you used - might be better to use a class */
+    /* Button position adjustment */
     div[style*="text-align: right"] { padding: 10px; text-align: center; margin-bottom: 0; }
-
-    /* Adjust old top nav rules if needed */
-    /* nav ul li { display: block; margin: 10px 0; } */
-    /* nav ul li a { display: block; padding: 12px; } */
 }
