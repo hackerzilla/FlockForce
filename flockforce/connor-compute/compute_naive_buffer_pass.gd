@@ -1,4 +1,5 @@
-extends Node	
+extends Node
+class_name ComputeBoids
 
 @export
 var boid_scene: PackedScene
@@ -28,6 +29,13 @@ var avoid_size: float = 2.0
 
 @export
 var limit: float = 30.0
+
+# GUI stuff
+var cohesion_slider     : HSlider
+var separation_slider   : HSlider
+var alignment_slider    : HSlider
+var neighborhood_slider : HSlider
+var avoidance_slider    : HSlider
 
 # create a local rendering device
 var rd := RenderingServer.create_local_rendering_device()
@@ -67,6 +75,13 @@ var pipeline
 #function to spawn boids and put data in inputBuffer
 
 func _ready():
+	# Initialize gui references
+	cohesion_slider = get_tree().root.get_node("Demo/GUI/CohesionSlider")
+	separation_slider = get_tree().root.get_node("Demo/GUI/SeparationSlider")
+	alignment_slider = get_tree().root.get_node("Demo/GUI/AlignmentSlider")
+	neighborhood_slider = get_tree().root.get_node("Demo/GUI/NeighborhoodSlider")
+	avoidance_slider = get_tree().root.get_node("Demo/GUI/AvoidanceSlider")
+	
 	var rng = RandomNumberGenerator.new()
 	var pos_start_arr = []
 	var vol_start_arr = []
@@ -103,7 +118,7 @@ func _ready():
 	vol_uniform_b = RDUniform.new()
 	params_uniform = RDUniform.new()
 	initialize_boids()
-	print("ready called")
+	#print("ready called")
 	pos_uniform_a.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
 	pos_uniform_a.binding = 0 # this needs to match the "binding" in our shader file
 	pos_uniform_a.add_id(pos_buffer_a)
@@ -216,9 +231,29 @@ func initialize_boids():
 		)
 		add_child(new_boid) # add to the scene tree
 		boids.push_back(new_boid)
-		print("created boid")
+		#print("created boid")
 		
 		var anim_player = new_boid.get_node("AnimationPlayer")
 		anim_player.play("ArmatureAction_006")
 		var rng = RandomNumberGenerator.new()
 		anim_player.seek(rng.randf() * 9.0, true)
+
+func _on_cohesion_slider_value_changed(value: float) -> void:
+	if cohesion_slider != null:
+		cohesion = value
+
+func _on_separation_slider_value_changed(value: float) -> void:
+	if separation_slider != null:
+		separation = separation_slider.value
+
+func _on_alignment_slider_value_changed(value: float) -> void:
+	if alignment_slider != null:
+		alignment = alignment_slider.value
+
+func _on_neighborhood_slider_value_changed(value: float) -> void:
+	if neighborhood_slider != null:
+		neighborhood_size = value
+
+func _on_avoidance_slider_value_changed(value: float) -> void:
+	if avoidance_slider != null:
+		avoid_size = value
