@@ -189,8 +189,22 @@ func update_boids_position():
 			print("new_pos contains NaN")
 		if contains_nan(new_vol):
 			print("new_vol contains NaN")
-		cur_boid.position = new_pos
+		cur_boid.position = new_pos		
 		cur_boid.linear_velocity = new_vol
+		
+		if new_vol.length() > 0:
+			var direction = new_vol.normalized()
+			var up = Vector3.UP
+			
+			# Check if direction is colinear with up vector
+			if abs(direction.dot(up)) > 0.999:
+				# direction is almost parallel to up vector, choose another up vector
+				up = Vector3.FORWARD
+			
+			var target_pos = cur_boid.global_transform.origin + new_vol
+			cur_boid.look_at(target_pos, up)
+			cur_boid.rotation.y -= 90
+			cur_boid.rotation.x = 0
 
 func contains_nan(vec):
 	return (vec.x != vec.x) or (vec.y != vec.y) or (vec.z != vec.z)
@@ -205,3 +219,8 @@ func initialize_boids():
 		add_child(new_boid) # add to the scene tree
 		boids.push_back(new_boid)
 		print("created boid")
+		
+		var anim_player = new_boid.get_node("AnimationPlayer")
+		anim_player.play("ArmatureAction_006")
+		var rng = RandomNumberGenerator.new()
+		anim_player.seek(rng.randf() * 9.0, true)
