@@ -4,13 +4,13 @@ extends Node
 var boid_scene: PackedScene
 
 @export 
-var spawn_radius: float = 5.0
+var spawn_radius: float = 30.0
 
 @export 
 var separation: float = 1.0
 
 @export 
-var allignment: float = 0.8
+var alignment: float = 0.8
 
 @export 
 var cohesion: float = 1.0
@@ -18,7 +18,16 @@ var cohesion: float = 1.0
 var boids: Array[RigidBody3D] = []
 
 @export
-var boid_count: int = 10
+var boid_count: int = 2000
+
+@export 
+var neighborhood_size: float = 3.0
+
+@export 
+var avoid_size: float = 2.0
+
+@export
+var limit: float = 30.0
 
 # create a local rendering device
 var rd := RenderingServer.create_local_rendering_device()
@@ -65,7 +74,7 @@ func _ready():
 		for j in range(3):
 			pos_start_arr.push_back(rng.randf_range(-spawn_radius, spawn_radius))
 			#pos_start_arr.push_back(i * 0.2) exists for testing purposes
-			vol_start_arr.push_back(rng.randf_range(-3, 3))
+			vol_start_arr.push_back(rng.randf_range(-1, 1))
 		pos_start_arr.push_back(0.0) #padding for vec3
 		vol_start_arr.push_back(0.0) #padding for vec3
 	position = PackedFloat32Array(pos_start_arr)
@@ -84,7 +93,7 @@ func _ready():
 	pos_buffer_b = rd.storage_buffer_create(position_bytes.size(), position_bytes)
 	vol_buffer_b = rd.storage_buffer_create(velocity_bytes.size(), velocity_bytes)
 	
-	var params_bytes  = PackedInt32Array([boid_count, current_buffer]).to_byte_array()
+	var params_bytes  = PackedFloat32Array([boid_count, current_buffer, separation, alignment, cohesion, 0.0, neighborhood_size, avoid_size, limit]).to_byte_array()
 	params_buffer = rd.storage_buffer_create(params_bytes.size(), params_bytes)
 
 	# Create a uniform to assign the buffer to the rendering device
@@ -117,12 +126,11 @@ func _ready():
 	
 	pipeline = rd.compute_pipeline_create(shader)
 	uniform_set = rd.uniform_set_create([pos_uniform_a, vol_uniform_a, pos_uniform_b, vol_uniform_b, params_uniform], shader, 0) # the last parameter (the 0) needs to match the "set" in our shader file
-	
+	print(pipeline, uniform_set)
 	
 
 
 func _process(delta):
-	
 	var compute_list := rd.compute_list_begin()
 	rd.compute_list_bind_compute_pipeline(compute_list, pipeline)
 	rd.compute_list_bind_uniform_set(compute_list, uniform_set, 0)
@@ -137,8 +145,12 @@ func _process(delta):
 		current_buffer = 1
 	else:
 		current_buffer = 0
-	var new_params_bytes = PackedInt32Array([boid_count, current_buffer]).to_byte_array()
+	 
+	var new_params_bytes = PackedFloat32Array([boid_count, current_buffer, separation, alignment, cohesion, delta, neighborhood_size, avoid_size, limit]).to_byte_array()
 	rd.buffer_update(params_buffer, 0, new_params_bytes.size(), new_params_bytes)
+
+
+
 	
 	
 	# Read back the data from the buffer
