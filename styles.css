@@ -7,17 +7,17 @@
     --text-color: #5D5C61;
     --container-bg: #FFFFFF;
     --heading-color: #A7C7E7;
-    --heading-h1-color: var(--heading-color); /* Same for light */
-    --heading-h4-color: #77A0C7; /* Specific h4 color for light */
+    --heading-h1-color: var(--heading-color);
+    --heading-h4-color: #77A0C7;
     --link-color: #E0A083;
     --link-hover-color: #ca8969;
-    --nav-bg: #A7C7E7;
-    --nav-text: #FFFFFF;
-    --nav-link-hover-bg: rgba(255, 255, 255, 0.25);
-    --nav-link-hover-text: var(--nav-text);
+    --nav-bg: #A7C7E7; /* Variable for potential top nav */
+    --nav-text: #FFFFFF; /* Variable for potential top nav */
+    --nav-link-hover-bg: rgba(255, 255, 255, 0.25); /* Variable for potential top nav */
+    --nav-link-hover-text: var(--nav-text); /* Variable for potential top nav */
     --border-color: #D8CFBE;
-    --subtle-border-color: #E0E8F0; /* Used for h1 underline in light */
-    --figure-bg: #FFFFFF; /* Figure bg same as container bg in light */
+    --subtle-border-color: #E0E8F0;
+    --figure-bg: #FFFFFF;
     --figure-border: var(--border-color);
     --caption-color: #777;
     --code-bg: #F0F0F0;
@@ -30,6 +30,15 @@
     --button-bg: #A7C7E7;
     --button-text: #FFFFFF;
     --button-hover-bg: #8aabbf;
+
+    /* === NEW Sidebar Variables (Light Theme) === */
+    --sidebar-bg: #e8e8e8;
+    --sidebar-text: #333;
+    --sidebar-link-hover-bg: #d0d0d0;
+    --sidebar-link-active-bg: #A7C7E7; /* Use main accent */
+    --sidebar-link-active-text: #FFFFFF;
+    --sidebar-border: #cccccc;
+    /* ============================================ */
 }
 
 body.dark-theme {
@@ -37,30 +46,39 @@ body.dark-theme {
     --bg-color: #1a1a1a;
     --text-color: #EAEAEA;
     --container-bg: #2a2a2a;
-    --heading-color: #EAEAEA; /* General heading color */
-    --heading-h1-color: #FFFFFF; /* Brighter H1 */
-    --heading-h4-color: #cccccc; /* Specific h4 color for dark */
+    --heading-color: #EAEAEA;
+    --heading-h1-color: #FFFFFF;
+    --heading-h4-color: #cccccc;
     --link-color: #FF6347;
     --link-hover-color: #ff7f50;
-    --nav-bg: #111111;
-    --nav-text: #EAEAEA;
-    --nav-link-hover-bg: #FF6347; /* Use accent for hover bg */
-    --nav-link-hover-text: #FFFFFF;
+    --nav-bg: #111111; /* Variable for potential top nav */
+    --nav-text: #EAEAEA; /* Variable for potential top nav */
+    --nav-link-hover-bg: #FF6347; /* Variable for potential top nav */
+    --nav-link-hover-text: #FFFFFF; /* Variable for potential top nav */
     --border-color: #444;
-    --subtle-border-color: var(--border-color); /* Use same border for dark */
-    --figure-bg: #2f2f2f; /* Specific figure bg for dark */
+    --subtle-border-color: var(--border-color);
+    --figure-bg: #2f2f2f;
     --figure-border: var(--border-color);
     --caption-color: #bbbbbb;
     --code-bg: #111;
     --code-text: #d0d0d0;
     --code-border-accent: #FF6347;
     --inline-code-bg: #333;
-    --inline-code-text: #FFB347; /* Lighter orange for inline code */
+    --inline-code-text: #FFB347;
     --shadow-color: rgba(0, 0, 0, 0.3);
     --footer-text: #888;
     --button-bg: #FF6347;
     --button-text: #FFFFFF;
     --button-hover-bg: #ff7f50;
+
+    /* === NEW Sidebar Variables (Dark Theme) === */
+    --sidebar-bg: #2c2c2c;
+    --sidebar-text: #d0d0d0;
+    --sidebar-link-hover-bg: #444;
+    --sidebar-link-active-bg: #FF6347; /* Use main accent */
+    --sidebar-link-active-text: #FFFFFF;
+    --sidebar-border: #444;
+    /* ============================================ */
 }
 
 /* --- Global Styles & Resets --- */
@@ -70,6 +88,7 @@ body.dark-theme {
     box-sizing: border-box;
 }
 
+/* Ensure smooth scroll is enabled */
 html {
     scroll-behavior: smooth;
 }
@@ -79,15 +98,81 @@ body {
     line-height: 1.7;
     background-color: var(--bg-color);
     color: var(--text-color);
-    padding: 0;
+    padding: 0; /* Ensure no body padding interferes with layout */
     font-size: 16px;
-    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* --- Container --- */
+/* === NEW Sidebar Navigation Styles === */
+#sidebar-nav {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 240px; /* Adjust width as needed */
+    background-color: var(--sidebar-bg);
+    border-right: 1px solid var(--sidebar-border);
+    padding: 20px;
+    overflow-y: auto;
+    z-index: 100;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+#sidebar-nav h3 {
+    color: var(--heading-color); /* Use theme heading color */
+    font-size: 1.2em;
+    margin-top: 0;
+    margin-bottom: 1em;
+    padding-bottom: 0.5em;
+    border-bottom: 1px solid var(--sidebar-border);
+}
+
+#sidebar-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#sidebar-nav li {
+    margin-bottom: 5px;
+}
+
+#sidebar-nav a {
+    display: block;
+    padding: 8px 15px;
+    color: var(--sidebar-text);
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    font-size: 0.95em;
+}
+
+#sidebar-nav a:hover {
+    background-color: var(--sidebar-link-hover-bg);
+    color: var(--text-color); /* Use main text color on hover */
+}
+
+/* Style for the active link (JS adds/removes 'active' class) */
+#sidebar-nav a.active {
+    background-color: var(--sidebar-link-active-bg);
+    color: var(--sidebar-link-active-text);
+    font-weight: bold;
+}
+/* ==================================== */
+
+
+/* === NEW Main Content Area Styles === */
+.main-content-area {
+    margin-left: 270px; /* Sidebar width (240px) + Desired Space (30px) */
+    padding: 1px 0 0 0; /* Adjust top padding if needed */
+}
+/* ==================================== */
+
+
+/* --- Container (Now inside main-content-area) --- */
 .container {
     max-width: 900px;
-    margin: 20px auto 40px auto; /* Adjusted margin */
+    margin: 20px auto 40px auto;
     padding: 30px 40px;
     background-color: var(--container-bg);
     border-radius: 8px;
@@ -96,58 +181,35 @@ body {
 }
 
 /* --- Typography --- */
-h1, h2, h3, h4, h5, h6 {
-    color: var(--heading-color);
-    margin-top: 1.5em;
-    margin-bottom: 0.7em;
-    line-height: 1.3;
-    font-weight: 600;
-}
-
-h1 {
-    font-size: 2.6em;
-    text-align: center;
-    margin-bottom: 1em;
-    padding-bottom: 0.3em;
-    border-bottom: 3px solid var(--subtle-border-color); /* Use subtle border color */
-    color: var(--heading-h1-color); /* Specific H1 color */
-    display: block; /* Ensure it takes full width for centering */
-}
-
-h2 {
-    font-size: 2em;
-    border-bottom: 2px solid var(--border-color);
-    padding-bottom: 0.3em;
-}
-
+/* ... (Keep existing h1-h6, p styles) ... */
+h1, h2, h3, h4, h5, h6 { color: var(--heading-color); margin-top: 1.5em; margin-bottom: 0.7em; line-height: 1.3; font-weight: 600; }
+h1 { font-size: 2.6em; text-align: center; margin-bottom: 1em; padding-bottom: 0.3em; border-bottom: 3px solid var(--subtle-border-color); color: var(--heading-h1-color); display: block; }
+h2 { font-size: 2em; border-bottom: 2px solid var(--border-color); padding-bottom: 0.3em; }
 h3 { font-size: 1.6em; }
+h4 { font-size: 1.2em; color: var(--heading-h4-color); }
+p { margin-bottom: 1.2em; }
 
-h4 {
-    font-size: 1.2em;
-    color: var(--heading-h4-color); /* Specific H4 color */
-}
-
-p {
-    margin-bottom: 1.2em;
-}
-
-a {
+/* General Link Styles (in main content) */
+/* Ensure sidebar links don't inherit this underline on hover */
+.main-content-area a, footer a { /* Be more specific if needed */
     color: var(--link-color);
     text-decoration: none;
     transition: color 0.3s ease, opacity 0.3s ease;
 }
-
-a:hover, a:focus {
+.main-content-area a:hover, footer a:hover,
+.main-content-area a:focus, footer a:focus {
     color: var(--link-hover-color);
     text-decoration: underline;
 }
 
+/* Lists */
 ul, ol { margin-bottom: 1.2em; padding-left: 25px; }
 li { margin-bottom: 0.6em; }
-strong, b { font-weight: 700; color: var(--heading-h1-color); /* Make bold stand out more */}
+strong, b { font-weight: 700; color: var(--heading-h1-color); }
 
 
-/* --- Navigation (Example using variables) --- */
+/* --- Top Navigation (Keep if used, otherwise remove) --- */
+/* These styles might apply to a different <nav> element if you have one */
 nav {
     background-color: var(--nav-bg);
     padding: 10px 0;
@@ -155,107 +217,67 @@ nav {
     border-radius: 8px;
     transition: background-color 0.3s ease;
 }
-
 nav ul { list-style: none; padding: 0; margin: 0; text-align: center; }
 nav ul li { display: inline-block; margin: 0 15px; }
+nav ul li a { color: var(--nav-text); font-weight: bold; text-decoration: none; padding: 8px 15px; border-radius: 5px; transition: background-color 0.3s ease, color 0.3s ease; }
+nav ul li a:hover, nav ul li a:focus { background-color: var(--nav-link-hover-bg); color: var(--nav-link-hover-text); text-decoration: none; }
+/* --- End Top Navigation --- */
 
-nav ul li a {
-    color: var(--nav-text);
-    font-weight: bold;
-    text-decoration: none;
-    padding: 8px 15px;
-    border-radius: 5px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-nav ul li a:hover, nav ul li a:focus {
-    background-color: var(--nav-link-hover-bg);
-    color: var(--nav-link-hover-text);
-    text-decoration: none;
-}
 
 /* --- Images & Figures --- */
+/* ... (Keep existing img, figure, figcaption styles) ... */
 img { max-width: 100%; height: auto; display: block; border-radius: 6px; }
-
-figure {
-    margin: 2.5em 0;
-    padding: 15px;
-    border: 1px solid var(--figure-border);
-    border-radius: 6px;
-    background-color: var(--figure-bg);
-    text-align: center;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
-}
+figure { margin: 2.5em 0; padding: 15px; border: 1px solid var(--figure-border); border-radius: 6px; background-color: var(--figure-bg); text-align: center; transition: background-color 0.3s ease, border-color 0.3s ease; }
 figcaption { margin-top: 10px; font-size: 0.95em; color: var(--caption-color); }
 
-/* --- Code Blocks --- */
-pre {
-    background-color: var(--code-bg);
-    border: 1px solid var(--border-color);
-    border-left: 5px solid var(--code-border-accent);
-    padding: 20px;
-    margin: 1.5em 0;
-    overflow-x: auto;
-    border-radius: 5px;
-    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-    font-size: 0.9em;
-    line-height: 1.6;
-    color: var(--code-text);
-    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
-}
 
-code { /* Inline code */
-    background-color: var(--inline-code-bg);
-    color: var(--inline-code-text);
-    padding: 0.2em 0.5em;
-    border-radius: 3px;
-    font-size: 90%;
-    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-pre code { /* Reset styles when code is inside pre */ background-color: transparent; color: inherit; padding: 0; border-radius: 0; font-size: inherit; font-family: inherit; }
+/* --- Code Blocks --- */
+/* ... (Keep existing pre, code styles) ... */
+pre { background-color: var(--code-bg); border: 1px solid var(--border-color); border-left: 5px solid var(--code-border-accent); padding: 20px; margin: 1.5em 0; overflow-x: auto; border-radius: 5px; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; line-height: 1.6; color: var(--code-text); transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease; }
+code { background-color: var(--inline-code-bg); color: var(--inline-code-text); padding: 0.2em 0.5em; border-radius: 3px; font-size: 90%; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; transition: background-color 0.3s ease, color 0.3s ease; }
+pre code { background-color: transparent; color: inherit; padding: 0; border-radius: 0; font-size: inherit; font-family: inherit; }
 
 
 /* --- Header & Footer --- */
+/* ... (Keep existing header, footer styles) ... */
 header { text-align: center; margin-bottom: 2em; padding: 1em 0; }
 header p { color: var(--text-color); opacity: 0.8; font-size: 1.1em; }
+footer { text-align: center; margin-top: 4em; padding-top: 1.5em; border-top: 1px solid var(--border-color); color: var(--footer-text); font-size: 0.9em; transition: border-color 0.3s ease, color 0.3s ease; }
 
-footer {
-    text-align: center;
-    margin-top: 4em;
-    padding-top: 1.5em;
-    border-top: 1px solid var(--border-color);
-    color: var(--footer-text);
-    font-size: 0.9em;
-    transition: border-color 0.3s ease, color 0.3s ease;
-}
 
 /* --- Theme Toggle Button Style --- */
-#theme-toggle-button {
-    padding: 8px 15px;
-    font-size: 0.9em;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    background-color: var(--button-bg);
-    color: var(--button-text);
-    font-weight: bold;
-    transition: background-color 0.3s ease, color 0.3s ease;
+/* ... (Keep existing button styles) ... */
+#theme-toggle-button { padding: 8px 15px; font-size: 0.9em; border: none; border-radius: 5px; cursor: pointer; background-color: var(--button-bg); color: var(--button-text); font-weight: bold; transition: background-color 0.3s ease, color 0.3s ease; }
+#theme-toggle-button:hover { background-color: var(--button-hover-bg); }
+
+
+/* --- Responsiveness --- */
+/* Combine media queries for cleaner structure */
+
+@media (max-width: 992px) {
+     /* Sidebar adjustments */
+    #sidebar-nav { width: 180px; }
+    .main-content-area { margin-left: 210px; }
+     /* Container adjustments */
+     .container { padding: 25px 20px; }
 }
 
-#theme-toggle-button:hover {
-    background-color: var(--button-hover-bg);
-}
-
-
-/* --- Basic Responsiveness --- */
 @media (max-width: 768px) {
-    .container { padding: 25px 20px; margin: 20px auto; }
+    /* Hide sidebar completely */
+    #sidebar-nav { display: none; }
+    .main-content-area { margin-left: 0; } /* Content takes full width */
+
+    /* General adjustments from previous rules */
+    .container { padding: 20px 15px; margin: 10px auto 20px auto; }
     h1 { font-size: 2.1em; }
     h2 { font-size: 1.8em; }
     h3 { font-size: 1.4em; }
-    /* Optional: Adjust button position/size */
-    div[style*="text-align: right"] { padding: 10px; text-align: center; }
-    nav ul li { display: block; margin: 10px 0; }
-    nav ul li a { display: block; padding: 12px; }
+
+    /* Button position adjustment (example) */
+    /* This targets the specific inline style you used - might be better to use a class */
+    div[style*="text-align: right"] { padding: 10px; text-align: center; margin-bottom: 0; }
+
+    /* Adjust old top nav rules if needed */
+    /* nav ul li { display: block; margin: 10px 0; } */
+    /* nav ul li a { display: block; padding: 12px; } */
 }
