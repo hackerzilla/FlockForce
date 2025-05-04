@@ -33,7 +33,7 @@ layout(set = 0, binding = 4, std430) restrict buffer Params{
 } params;
 
 
-const float neighborhood_size = 2.0;
+const float neighborhood_size = 1.2;
 const float avoid_size = 1.0;
 
 const float separation_strength = 0.9;
@@ -112,7 +112,7 @@ void main() {
 
     boid_read_velocity = (separation * separation_strength) + (alignment * alignment_strength) + (cohesion * cohesion_strength);
     boid_read_velocity = normalize(boid_read_velocity);
-    boid_read_position = boid_read_position + boid_read_velocity * 0.1; // should this include something related to timesteps?
+    boid_read_position = boid_read_position + boid_read_velocity * 0.05; // should this include something related to timesteps?
 
     boid_read_position = clamp(boid_read_position, vec3(-limit), vec3(limit));
 
