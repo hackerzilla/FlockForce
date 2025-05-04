@@ -33,13 +33,14 @@ layout(set = 0, binding = 4, std430) restrict buffer Params{
 } params;
 
 
-const float neighborhood_size = 5.0;
+const float neighborhood_size = 3.0;
+const float avoid_size = 2.0;
 
-const float separation_strength = 1.2;
-const float alignment_strength = 1.1;
-const float cohesion_strength = 1.2;
+const float separation_strength = 0.9;
+const float alignment_strength = 0.7;
+const float cohesion_strength = 0.9;
 
-const float limit = 10.0;
+const float limit = 15.0;
 
 
 // The code we want to execute in each invocation
@@ -59,7 +60,9 @@ void main() {
     
     vec3 avg_position = vec3(0.0);
     vec3 avg_velocity = vec3(0.0);
+    vec3 avoid_vector = vec3(0.0);
     int num_neighbors = 0;
+    int num_avoids = 0;
     int total_boids = params.boid_count;
 
     for (int i = 0; i < total_boids; i++) {
@@ -83,6 +86,12 @@ void main() {
         avg_position += other_position;
         avg_velocity += other_velocity;
         num_neighbors += 1;
+
+        if (length(pos_difference) > avoid_size) {
+            continue;
+        }
+        avoid_vector += pos_difference;
+        num_avoids += 1;
     }
     if (num_neighbors !=0) {
         avg_position /= num_neighbors;
@@ -91,8 +100,12 @@ void main() {
         avg_position = boid_read_position;
         avg_velocity = boid_read_velocity;
     }
+    if (num_avoids != 0) {
+        avoid_vector /= num_avoids;
+    }
     vec3 to_com = normalize(avg_position - boid_read_position);
-    vec3 separation = -to_com;
+    // vec3 separation = -to_com;
+    vec3 separation = normalize(avoid_vector);
     vec3 cohesion = to_com;
     vec3 alignment = avg_velocity;
 
