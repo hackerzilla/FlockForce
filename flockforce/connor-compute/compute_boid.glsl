@@ -28,19 +28,26 @@ velocities_b;
 
 // This is the buffer for int params (boid count only)
 layout(set = 0, binding = 4, std430) restrict buffer Params{
-    int boid_count;
-    int current_buffer;
+    float boid_count;
+    float current_buffer;
+    float separation_strength;
+    float alignment_strength;
+    float cohesion_strength;
+    float delta;
+    float neighborhood_size;
+    float avoid_size;
+    float limit;
 } params;
 
 
-const float neighborhood_size = 3.0;
-const float avoid_size = 2.0;
+// const float neighborhood_size = 3.0;
+// const float avoid_size = 2.0;
 
-const float separation_strength = 0.9;
-const float alignment_strength = 0.7;
-const float cohesion_strength = 0.9;
+// const float separation_strength = 0.9;
+// const float alignment_strength = 0.7;
+// const float cohesion_strength = 0.9;
 
-const float limit = 15.0;
+// const float limit = 30.0;
 
 
 // The code we want to execute in each invocation
@@ -50,7 +57,7 @@ void main() {
 
     vec3 boid_read_position;
     vec3 boid_read_velocity;
-    if (params.current_buffer == 0) {
+    if (params.current_buffer == 0.0) {
         boid_read_position = positions_a.data[gl_GlobalInvocationID.x];
         boid_read_velocity = velocities_a.data[gl_GlobalInvocationID.x];
     } else {
@@ -63,7 +70,7 @@ void main() {
     vec3 avoid_vector = vec3(0.0);
     int num_neighbors = 0;
     int num_avoids = 0;
-    int total_boids = params.boid_count;
+    int total_boids = int(params.boid_count);
 
     for (int i = 0; i < total_boids; i++) {
         if (i == gl_GlobalInvocationID.x) {
@@ -71,7 +78,7 @@ void main() {
         }
         vec3 other_position;
         vec3 other_velocity;
-        if (params.current_buffer == 0) {
+        if (params.current_buffer == 0.0) {
             other_position = positions_a.data[i];
             other_velocity = velocities_a.data[i];
         } else {
@@ -80,14 +87,14 @@ void main() {
         }
 
         vec3 pos_difference = boid_read_position - other_position;
-        if (length(pos_difference) > neighborhood_size) {
+        if (length(pos_difference) > params.neighborhood_size) {
             continue;
         }
         avg_position += other_position;
         avg_velocity += other_velocity;
         num_neighbors += 1;
 
-        if (length(pos_difference) > avoid_size) {
+        if (length(pos_difference) > params.avoid_size) {
             continue;
         }
         avoid_vector += pos_difference;
@@ -116,13 +123,13 @@ void main() {
     vec3 cohesion = to_com;
     vec3 alignment = avg_velocity;
 
-    boid_read_velocity = (separation * separation_strength) + (alignment * alignment_strength) + (cohesion * cohesion_strength);
+    boid_read_velocity = (separation * params.separation_strength) + (alignment * params.alignment_strength) + (cohesion * params.cohesion_strength);
     // boid_read_velocity = (separation * separation_strength);
     // boid_read_velocity = (cohesion * cohesion_strength);
     // boid_read_velocity = (alignment * alignment_strength);
 
     boid_read_velocity = normalize(boid_read_velocity);
-    boid_read_position = boid_read_position + boid_read_velocity * 0.1; // should this include something related to timesteps?
+    boid_read_position = boid_read_position + boid_read_velocity * params.delta * 5; // should this include something related to timesteps?
 
     // if (boid_read_position.x > limit) boid_read_position.x = -inside_limit;
     // if (boid_read_position.x < -limit) boid_read_position.x = inside_limit;
@@ -130,9 +137,9 @@ void main() {
     // if (boid_read_position.y < -limit) boid_read_position.y = inside_limit;
     // if (boid_read_position.z > limit) boid_read_position.z = -inside_limit;
     // if (boid_read_position.z < -limit) boid_read_position.z = inside_limit;
-    boid_read_position = clamp(boid_read_position, vec3(-limit), vec3(limit));
+    boid_read_position = clamp(boid_read_position, vec3(-params.limit), vec3(params.limit));
 
-    if (params.current_buffer == 0) {
+    if (params.current_buffer == 0.0) {
         positions_b.data[gl_GlobalInvocationID.x] = boid_read_position;
         velocities_b.data[gl_GlobalInvocationID.x] = boid_read_velocity;
     } else {
