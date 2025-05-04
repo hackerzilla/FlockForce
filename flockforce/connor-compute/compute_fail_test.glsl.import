@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://dhxmwctpyf2m2"
+path="res://.godot/imported/compute_fail_test.glsl-7ae159c63c8439f8ec1660b8552d39a4.res"
+
+[deps]
+
+source_file="res://connor-compute/compute_fail_test.glsl"
+dest_files=["res://.godot/imported/compute_fail_test.glsl-7ae159c63c8439f8ec1660b8552d39a4.res"]
+
+[params]
+

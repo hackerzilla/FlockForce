@@ -1,11 +1,19 @@
-[gd_scene load_steps=3 format=3 uid="uid://bxpktp4ldb1mi"]
+[gd_scene load_steps=4 format=3 uid="uid://bxpktp4ldb1mi"]
 
 [ext_resource type="Script" uid="uid://c45lqhy3d0l2k" path="res://connor-compute/compute_naive_buffer_pass.gd" id="1_vtskc"]
-[ext_resource type="PackedScene" uid="uid://bfc7kx5fbm0cy" path="res://connor-compute/connor_boid.tscn" id="2_dd1wx"]
+[ext_resource type="PackedScene" uid="uid://dci0l5lu4babu" path="res://assets/seagull.tscn" id="2_k2sh4"]
+[ext_resource type="Script" uid="uid://le8fsbhi3sjt" path="res://free_look_camera.gd" id="3_k2sh4"]
 
 [node name="Node3D" type="Node3D"]
 script = ExtResource("1_vtskc")
-boid_scene = ExtResource("2_dd1wx")
+boid_scene = ExtResource("2_k2sh4")
+spawn_radius = 20.0
+limit = 20.0
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20, 0)
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10.7187)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 15)
+fov = 86.5
+script = ExtResource("3_k2sh4")
