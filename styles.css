@@ -329,11 +329,10 @@ footer { text-align: center; margin-top: 4em; padding-top: 1.5em; border-top: 1p
 }
 
 #theme-toggle-button:hover {
-    /* Apply same hover as links */
     background-color: var(--sidebar-link-hover-bg);
     color: var(--text-color);
-    /* text-decoration: none; /* Not usually needed for buttons */ */
 }
+
 /* =============================================================== */
 /* ========================================================== */
 
