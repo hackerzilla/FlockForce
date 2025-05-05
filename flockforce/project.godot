@@ -11,8 +11,13 @@ config_version=5
 [application]
 
 config/name="FlockForce"
+run/main_scene="uid://cwn451svp6gl7"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
+
+[display]
+
+window/size/mode=2
 
 [input]
 
