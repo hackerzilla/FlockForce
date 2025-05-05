@@ -43,13 +43,43 @@
 					<p>
 						Creating the CPU boids implementation was worthwhile because it gave us both a sanity check and a benchmark for how much we could improve the performance. On an Apple M2 Pro, the CPU boids implementation was able to run smoothly for up to roughly 100 boids. This made sense as the algorithm has an O(n^2) time complexity, since each boid needs to check every other boid for presence in the local neighborhood. 
 					</p>
-					<figure class="problem-gif">
-						<img src="flockforce/gifs/set1neighborhood1.2.gif" alt="GIF showing overly strong separation">
-							<figcaption>Fig C: Boids exhibiting excessive separation.</figcaption>
-					</figure>
+					<div class="gif-gallery">
+						
+						<figure class="gallery-item">
+							<img src="flockforce/gifs/CPU_boids_1.gif" alt="[Description of Demo GIF 1 - e.g., Initial boid setup]">
+							<figcaption>CPU only: Demo 1</figcaption>
+						</figure>
+		
+						<figure class="gallery-item">
+							 <img src="flockforce/gifs/CPU_boids_2.gif" alt="[Description of Demo GIF 2 - e.g., Cohesion behavior]">
+							<figcaption>CPU only: Demo 2</figcaption>
+						</figure>
+		
+						<figure class="gallery-item">
+							 <img src="flockforce/gifs/CPU_boids_3.gif" alt="[Description of Demo GIF 3 - e.g., Alignment behavior]">
+							<figcaption>CPU only: Demo 3</figcaption>
+						</figure>
+		
+						<figure class="gallery-item">
+							 <img src="flockforce/gifs/CPU_boids_4.gif" alt="[Description of Demo GIF 4 - e.g., Separation behavior]">
+							<figcaption>CPU only: Demo 4</figcaption>
+						</figure>
+		
+						<figure class="gallery-item">
+							 <img src="flockforce/gifs/CPU_boids_5.gif" alt="[Description of Demo GIF 5 - e.g., Combined behaviors]">
+							<figcaption>CPU only: Demo 5</figcaption>
+						</figure>
+						 </div>
 					<p>
 						After successfully implementing the CPU boids, we set out to offload the work to the GPU. This task was more difficult than we initially thought. Fortunately, Godot has a helpful abstraction for interacting with the GPU. Godot has a RenderingDevice abstraction that encapsulates the boilerplate of setting up bindings for buffers, uniforms, shaders, compute pipelines, and more. Still, though, we had to learn what is required in order to send data buffers to the GPU and dispatch calls to run the desired shader. Debugging and understanding the compute shader pipeline was where much of the effort went. The effort was worth it when we were able to achieve greater than 10x the number of boids on-screen as compared to CPU-boids. 
 					</p>
+
+					<figure class="gallery-item">
+						<img src="flockforce/gifs/process_diagram.png" alt="[Description of Demo GIF 3 - e.g., Alignment behavior]">
+					   <figcaption>CPU only: Demo 3</figcaption>
+				   </figure>
+
+				
 					<p>
 						To get there, we started simple with basic tests of binding buffers to uniforms, setting up the uniform set and compute pipeline, and getting the data back from the storage buffers after the CPU synchronized with the GPU. From there, we could reason about loading the boid positions into buffers, sending them off to the GPU, and retrieving the updated positions and setting them on the CPU. 
 					</p>
@@ -138,27 +168,58 @@
 	
 					<h3>Lessons Learned</h3>
 					<p>
-						[Reflect on the key takeaways from the project. What did you learn about the technical subject, project management, teamwork, debugging, etc.?]
+						We learned a number of things from completing this project, both in terms of technical skills and time management and project management. On the technical side we learned about the strengths and weaknesses of executing code on the cpu, while we enjoyed a huge amount of speedup from using the GPU’s many cores, the gpu is also much less flexible in terms of executing complex code with many branches, which restricted the steps we could take in our simulation. We also learned new debugging skills, as we no longer had access to good old-fashioned print statements, and we needed to debug the behavior of groups of particles instead of a single one. On the project management side, we learned about the importance of planning ahead. It can be super difficult to divide up work, especially when there is a topic that is new to all members. Together, we learned about the value of persistence in a project like this, and we collectively overcame the numerous bugs that popped up along the way.
 					</p>
 	
 				</section>
 	
 				<section id="results">
 					<h2>Results</h2>
-					<p>
-						[Present your final results. Include relevant images, animations, or videos. Provide context for each result. You can include extra results not shown in the final presentation.]
-					</p>
-	
-					<figure>
-						<img src="images/result_image_1.png" alt="[Description of what this image shows]">
-						<figcaption>Figure 1: Brief description of this result image.</figcaption>
+
+
+					<div class="gif-gallery">
+						
+						<figure class="gallery-item">
+							<img src="flockforce/gifs/demo_gif_1.gif" alt="[Description of Demo GIF 1 - e.g., Initial boid setup]">
+							<figcaption>Demo 1: [Optional caption - e.g., Initial Setup]</figcaption>
+						</figure>
+		
+						<figure class="gallery-item">
+							 <img src="flockforce/gifs/demo_gif_2.gif" alt="[Description of Demo GIF 2 - e.g., Cohesion behavior]">
+							<figcaption>Demo 2: [Optional caption - e.g., Cohesion]</figcaption>
+						</figure>
+		
+						<figure class="gallery-item">
+							 <img src="flockforce/gifs/demo_gif_3.gif" alt="[Description of Demo GIF 3 - e.g., Alignment behavior]">
+							<figcaption>Demo 3: [Optional caption - e.g., Alignment]</figcaption>
+						</figure>
+		
+						<figure class="gallery-item">
+							 <img src="flockforce/gifs/demo_gif_4.gif" alt="[Description of Demo GIF 4 - e.g., Separation behavior]">
+							<figcaption>Demo 4: [Optional caption - e.g., Separation]</figcaption>
+						</figure>
+		
+						<figure class="gallery-item">
+							 <img src="flockforce/gifs/demo_gif_5.gif" alt="[Description of Demo GIF 5 - e.g., Combined behaviors]">
+							<figcaption>Demo 5: [Optional caption - e.g., Combined Rules]</figcaption>
+						</figure>
+		
+						<figure class="gallery-item">
+							 <img src="flockforce/gifs/demo_gif_6.gif" alt="[Description of Demo GIF 6 - e.g., Interaction with obstacle]">
+							<figcaption>Demo 6: [Optional caption - e.g., Obstacle Interaction]</figcaption>
+						</figure>
+		
+						<figure class="gallery-item">
+							 <img src="flockforce/gifs/demo_gif_7.gif" alt="[Description of Demo GIF 7 - e.g., Large flock simulation]">
+							<figcaption>Demo 7: [Optional caption - e.g., Scale Test]</figcaption>
+						</figure>
+						 </div>
+
+					<figure class="gallery-item">
+						<img src="flockforce/gifs/process_diagram.png" alt="[Description of Demo GIF 3 - e.g., Alignment behavior]">
+						<figcaption>Diagram </figcaption>
 					</figure>
-	
-					<figure>
-						<img src="images/result_image_2.jpg" alt="[Description of what this image shows]">
-						<figcaption>Figure 2: Another result, perhaps showing a different aspect or comparison.</figcaption>
-					</figure>
-	
+		
 					<figure>
 						 <video controls width="100%">
 							<source src="videos/result_demo.mp4" type="video/mp4">

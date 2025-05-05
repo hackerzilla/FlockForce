@@ -161,7 +161,7 @@ body {
     list-style: none;
     padding: 0;
     margin: 0;
-    overflow-y: auto;
+    overflow-y: auto; /* Removed flex-grow */
 }
 
 #sidebar-nav li {
@@ -233,9 +233,26 @@ p { margin-bottom: 1.2em; }
 }
 
 /* Lists */
+/* General list styling */
 ul, ol { margin-bottom: 1.2em; padding-left: 25px; }
+/* Default list item marker */
 li { margin-bottom: 0.6em; }
 strong, b { font-weight: 700; color: var(--heading-h1-color); }
+
+/* Remove bullets from the Problems/GIFs list */
+ul.problems-list {
+    list-style-type: none;
+    padding-left: 0;
+}
+/* Optional: Adjust margin for list items if needed now that padding is gone */
+ul.problems-list li {
+     margin-bottom: 1.5em;
+     /* Add any other specific styling for these list items */
+     text-align: left; /* Ensure text aligns left */
+}
+ul.problems-list li figure { /* Ensure figure within this specific list item centers text */
+    text-align: center;
+}
 
 
 /* --- Top Navigation (Keep if used, otherwise remove) --- */
@@ -262,6 +279,47 @@ figcaption {
     text-align: center;
 }
 
+/* --- GIF Gallery Styles --- */
+.gif-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive columns */
+    gap: 50px; /* Space between grid items */
+    margin-top: 2em; /* Space above the gallery */
+    margin-bottom: 2em; /* Space below the gallery */
+}
+
+.gallery-item {
+    margin: 0;
+    padding: 10px;
+    border: 1px solid var(--figure-border);
+    border-radius: 6px;
+    background-color: var(--figure-bg);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.gallery-item img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    /* === ADDED/CONFIRMED CENTERING RULES === */
+    margin-left: auto;
+    margin-right: auto;
+    /* ======================================== */
+}
+
+.gallery-item figcaption {
+    font-size: 0.9em;
+    color: var(--caption-color);
+    margin-top: auto; /* Helps push caption down */
+}
+/* ========================= */
+
+
 /* === Styles for GIF Figures in Problems Section === */
 .problem-gif {
     margin-top: 1em;
@@ -279,7 +337,7 @@ figcaption {
     display: block;
     max-width: 90%;
     height: auto;
-    margin: 0 auto;
+    margin: 0 auto; /* This centers the image */
     border-radius: 4px;
 }
 
@@ -308,21 +366,21 @@ footer { text-align: center; margin-top: 4em; padding-top: 1.5em; border-top: 1p
 /* === UPDATED Theme Toggle Button Style (to look like nav link) === */
 #theme-toggle-button {
     /* Reset Button Defaults & Apply Link Look */
-    background: none;                  /* Remove button background */
-    border: none;                      /* Remove button border */
-    font-family: inherit;              /* Use the same font as surrounding text */
-    font-weight: normal;               /* Make text normal weight like links */
-    text-align: left;                  /* Align text to the left like links */
-    cursor: pointer;                   /* Keep pointer cursor */
+    background: none;
+    border: none;
+    font-family: inherit;
+    font-weight: normal;
+    text-align: left;
+    cursor: pointer;
 
     /* Apply Link Dimensions & Colors */
-    display: block;                    /* Make it block like links */
-    width: 100%;                       /* Take full width */
-    padding: 8px 15px;                 /* Match link padding */
-    font-size: 0.95em;                 /* Match link font size */
-    color: var(--sidebar-text);        /* Use sidebar text color */
-    border-radius: 4px;                /* Match link border radius */
-    margin-top: 25px;                  /* Keep existing space above */
+    display: block;
+    width: 100%;
+    padding: 8px 15px;
+    font-size: 0.95em;
+    color: var(--sidebar-text);
+    border-radius: 4px;
+    margin-top: 25px;
 
     /* Keep transition */
     transition: background-color 0.2s ease, color 0.2s ease;
@@ -332,9 +390,7 @@ footer { text-align: center; margin-top: 4em; padding-top: 1.5em; border-top: 1p
     background-color: var(--sidebar-link-hover-bg);
     color: var(--text-color);
 }
-
 /* =============================================================== */
-/* ========================================================== */
 
 
 /* --- Responsiveness --- */
@@ -357,6 +413,5 @@ footer { text-align: center; margin-top: 4em; padding-top: 1.5em; border-top: 1p
     h2 { font-size: 1.8em; }
     h3 { font-size: 1.4em; }
 
-    /* Button position adjustment - REMOVED rule for old container */
-    /* The button is now part of the sidebar, which is hidden here */
+    /* Button position adjustment - Rule removed */
 }
