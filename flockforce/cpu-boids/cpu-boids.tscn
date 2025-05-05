@@ -4,8 +4,13 @@
 [ext_resource type="PackedScene" uid="uid://bytrua2livwae" path="res://cpu-boids/boid.tscn" id="2_vmxt3"]
 
 [node name="BoidRoot" type="Node3D"]
+transform = Transform3D(0.999998, -0.0012846, 0.00133887, 0.001286, 0.999999, -0.00104372, -0.00133753, 0.00104544, 0.999999, 0, 0, 0)
 script = ExtResource("1_2tbla")
 boid_scene = ExtResource("2_vmxt3")
+alignment_strength = 2.0
+cohesion_strenth = 1.5
+random_nudge_strenth = 0.0
+neighborhood_size = 30.0
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 57.4692)

@@ -155,7 +155,6 @@ func _process(delta):
 	rd.submit()
 	rd.sync()
 	update_boids_position()
-	#print("updated position")
 	if (current_buffer == 0):
 		current_buffer = 1
 	else:
@@ -163,8 +162,6 @@ func _process(delta):
 	 
 	var new_params_bytes = PackedFloat32Array([boid_count, current_buffer, separation, alignment, cohesion, delta, neighborhood_size, avoid_size, limit]).to_byte_array()
 	rd.buffer_update(params_buffer, 0, new_params_bytes.size(), new_params_bytes)
-
-
 
 	
 	# Read back the data from the buffer
@@ -238,6 +235,7 @@ func initialize_boids():
 		var rng = RandomNumberGenerator.new()
 		anim_player.seek(rng.randf() * 9.0, true)
 
+# Signal callbacks from GUI objects
 func _on_cohesion_slider_value_changed(value: float) -> void:
 	if cohesion_slider != null:
 		cohesion = value
