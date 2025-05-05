@@ -3,41 +3,41 @@
 /* --- CSS Variables --- */
 :root {
     /* Default to NEW Light Theme Variables (Sky Blue Theme) */
-    --bg-color: #EDF6FF; /* Very pale light blue background */
-    --text-color: #0D47A1; /* Dark Blue text for contrast */
-    --container-bg: #FFFFFF; /* White container background */
-    --heading-color: #0D47A1; /* Dark Blue headings */
-    --heading-h1-color: #1565C0; /* Slightly brighter blue for H1 */
-    --heading-h4-color: #1E88E5; /* Medium Blue for H4 */
-    --link-color: #1976D2; /* Standard Blue links */
-    --link-hover-color: #0D47A1; /* Dark Blue on hover */
-    --nav-bg: #BBDEFB; /* Light blue for potential top nav */
+    --bg-color: #EDF6FF;
+    --text-color: #0D47A1;
+    --container-bg: #FFFFFF;
+    --heading-color: #0D47A1;
+    --heading-h1-color: #1565C0;
+    --heading-h4-color: #1E88E5;
+    --link-color: #1976D2;
+    --link-hover-color: #0D47A1;
+    --nav-bg: #BBDEFB; /* Variable for potential top nav */
     --nav-text: #0D47A1;
     --nav-link-hover-bg: #90CAF9;
     --nav-link-hover-text: #0D47A1;
-    --border-color: #BBDEFB; /* Light Blue border */
+    --border-color: #BBDEFB;
     --subtle-border-color: var(--border-color);
-    --figure-bg: #E3F2FD; /* Slightly darker pale blue figure bg */
-    --figure-border: var(--border-color);
-    --caption-color: #1565C0; /* Medium blue caption */
+    --figure-bg: #E3F2FD; /* Figure background */
+    --figure-border: var(--border-color); /* Figure border */
+    --caption-color: #1565C0;
     --code-bg: #E3F2FD;
     --code-text: #0D47A1;
-    --code-border-accent: #1976D2; /* Standard blue code accent */
+    --code-border-accent: #1976D2;
     --inline-code-bg: #E3F2FD;
     --inline-code-text: #0D47A1;
-    --shadow-color: rgba(66, 165, 245, 0.2); /* Subtle blue shadow */
-    --footer-text: #1565C0; /* Medium blue footer text */
-    --button-bg: #1976D2; /* Standard Blue button */
+    --shadow-color: rgba(66, 165, 245, 0.2);
+    --footer-text: #1565C0;
+    --button-bg: #1976D2;
     --button-text: #FFFFFF;
-    --button-hover-bg: #1565C0; /* Slightly darker blue hover */
+    --button-hover-bg: #1565C0;
 
     /* Sidebar Variables (Light Theme) */
-    --sidebar-bg: #FFFFFF; /* White sidebar background */
-    --sidebar-text: #0D47A1; /* Dark blue sidebar text */
-    --sidebar-link-hover-bg: #E3F2FD; /* Pale blue hover for links */
-    --sidebar-link-active-bg: #1976D2; /* Standard blue for active link */
+    --sidebar-bg: #FFFFFF;
+    --sidebar-text: #0D47A1;
+    --sidebar-link-hover-bg: #E3F2FD;
+    --sidebar-link-active-bg: #1976D2;
     --sidebar-link-active-text: #FFFFFF;
-    --sidebar-border: #BBDEFB; /* Light blue sidebar border */
+    --sidebar-border: #BBDEFB;
 }
 
 /* Basic Logo Styling (for header logo) */
@@ -62,34 +62,34 @@ body.dark-theme {
     --heading-color: #EAEAEA;
     --heading-h1-color: #FFFFFF;
     --heading-h4-color: #cccccc;
-    --link-color: #4FC3F7; /* NEW: Light Blue/Cyan Accent */
-    --link-hover-color: #29B6F6; /* NEW: Slightly different blue shade */
-    --nav-bg: #111111; /* Keep dark nav bg */
+    --link-color: #4FC3F7;
+    --link-hover-color: #29B6F6;
+    --nav-bg: #111111;
     --nav-text: #EAEAEA;
-    --nav-link-hover-bg: #4FC3F7; /* NEW: Blue Accent */
-    --nav-link-hover-text: #000000; /* Black text on light blue hover */
+    --nav-link-hover-bg: #4FC3F7;
+    --nav-link-hover-text: #000000;
     --border-color: #444;
     --subtle-border-color: var(--border-color);
-    --figure-bg: #2f2f2f;
-    --figure-border: var(--border-color);
+    --figure-bg: #2f2f2f; /* Figure background */
+    --figure-border: var(--border-color); /* Figure border */
     --caption-color: #bbbbbb;
     --code-bg: #111;
     --code-text: #d0d0d0;
-    --code-border-accent: #4FC3F7; /* NEW: Blue Accent */
+    --code-border-accent: #4FC3F7;
     --inline-code-bg: #333;
-    --inline-code-text: #81D4FA; /* NEW: Lighter Blue Accent for inline code */
+    --inline-code-text: #81D4FA;
     --shadow-color: rgba(0, 0, 0, 0.3);
     --footer-text: #888;
-    --button-bg: #4FC3F7; /* NEW: Blue Accent */
-    --button-text: #000000; /* Black text on light blue button */
-    --button-hover-bg: #29B6F6; /* NEW: Slightly different blue shade */
+    --button-bg: #4FC3F7;
+    --button-text: #000000;
+    --button-hover-bg: #29B6F6;
 
     /* Sidebar Variables (Dark Theme) */
     --sidebar-bg: #2c2c2c;
     --sidebar-text: #d0d0d0;
     --sidebar-link-hover-bg: #444;
-    --sidebar-link-active-bg: #4FC3F7; /* NEW: Blue Accent */
-    --sidebar-link-active-text: #000000; /* Black text on light blue active */
+    --sidebar-link-active-bg: #4FC3F7;
+    --sidebar-link-active-text: #000000;
     --sidebar-border: #444;
 }
 
@@ -114,40 +114,38 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* === UPDATED Sidebar Navigation Styles === */
+/* === Sidebar Navigation Styles === */
 #sidebar-nav {
     position: fixed;
     left: 0;
     top: 0;
     bottom: 0;
-    width: 240px; /* Adjust width as needed */
+    width: 240px;
     background-color: var(--sidebar-bg);
     border-right: 1px solid var(--sidebar-border);
     padding: 20px;
     overflow-y: auto;
     z-index: 100;
     transition: background-color 0.3s ease, border-color 0.3s ease;
-    display: flex; /* Use flexbox */
-    flex-direction: column; /* Stack logo link and list vertically */
+    display: flex;
+    flex-direction: column;
 }
-
-/* REMOVED #sidebar-nav h3 rule */
 
 /* Styles for Back-to-Top Link containing the logo */
 #sidebar-nav .back-to-top-button {
     display: block;
-    margin-bottom: 20px; /* Space below logo link */
+    margin-bottom: 20px;
     padding: 0;
     background: none;
     border: none;
     text-align: center;
     cursor: pointer;
-    line-height: 0; /* Prevent extra space */
+    line-height: 0;
 }
 
 /* Styles for Sidebar Logo Image itself */
-#sidebar-nav .sidebar-logo { /* Or target: #sidebar-nav .back-to-top-button img */
-    max-width: 75%; /* Adjust % to control size */
+#sidebar-nav .sidebar-logo {
+    max-width: 75%;
     height: auto;
     display: inline-block;
     vertical-align: middle;
@@ -155,7 +153,7 @@ body {
 }
 
 #sidebar-nav .back-to-top-button:hover .sidebar-logo {
-    opacity: 0.8; /* Subtle hover effect */
+    opacity: 0.8;
 }
 
 /* Styles specifically for the navigation list */
@@ -163,8 +161,8 @@ body {
     list-style: none;
     padding: 0;
     margin: 0;
-    flex-grow: 1; /* Allows list to take remaining space */
-    overflow-y: auto; /* Add scroll to list only if needed */
+    flex-grow: 1;
+    overflow-y: auto;
 }
 
 #sidebar-nav li {
@@ -242,20 +240,60 @@ strong, b { font-weight: 700; color: var(--heading-h1-color); }
 
 
 /* --- Top Navigation (Keep if used, otherwise remove) --- */
-/* These styles might apply to a different <nav> element if you have one */
 /* Styles removed for brevity if not used */
-/* nav { ... } */
-/* nav ul { ... } */
-/* nav ul li { ... } */
-/* nav ul li a { ... } */
-/* nav ul li a:hover, nav ul li a:focus { ... } */
-/* --- End Top Navigation --- */
 
 
 /* --- Images & Figures --- */
 img { max-width: 100%; height: auto; display: block; border-radius: 6px; }
-figure { margin: 2.5em 0; padding: 15px; border: 1px solid var(--figure-border); border-radius: 6px; background-color: var(--figure-bg); text-align: center; transition: background-color 0.3s ease, border-color 0.3s ease; }
-figcaption { margin-top: 10px; font-size: 0.95em; color: var(--caption-color); }
+/* General Figure Styles */
+figure {
+    margin: 2.5em auto; /* Center figure block if possible, adjust vertical margin */
+    padding: 15px;
+    border: 1px solid var(--figure-border);
+    border-radius: 6px;
+    background-color: var(--figure-bg);
+    text-align: center;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    max-width: 95%; /* Prevent figures from touching container edges */
+}
+figcaption {
+    margin-top: 10px;
+    font-size: 0.95em;
+    color: var(--caption-color);
+    text-align: center;
+}
+
+/* === Styles for GIF Figures in Problems Section === */
+.problem-gif {
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    /* Inherit general figure styles: background, border, border-radius */
+    padding: 15px; /* Explicitly restore padding */
+    border: 1px solid var(--figure-border); /* Explicitly restore border */
+    background-color: var(--figure-bg); /* Explicitly restore background */
+    border-radius: 6px; /* Explicitly restore border-radius */
+    text-align: center; /* Keep caption centered */
+    /* Override general figure margin if needed, keep max-width */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.problem-gif img {
+    display: block;
+    max-width: 90%; /* Adjust max size as needed */
+    height: auto;
+    margin: 0 auto; /* Center image using auto L/R margins */
+    border-radius: 4px;
+}
+
+.problem-gif figcaption {
+    display: block;
+    font-size: 0.9em;
+    margin-top: 0.5em;
+    text-align: center;
+    color: var(--caption-color);
+}
+/* =============================================== */
 
 
 /* --- Code Blocks --- */
