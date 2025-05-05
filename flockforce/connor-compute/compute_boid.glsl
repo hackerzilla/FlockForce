@@ -25,6 +25,7 @@ layout(set = 0, binding = 3, std430) restrict buffer Velocity_b {
 }
 velocities_b;
 
+
 vec3 wrapVec3(vec3 v, vec3 a, vec3 b) {
     vec3 range = b - a;
     return a + mod(v - a, range);
@@ -43,6 +44,18 @@ layout(set = 0, binding = 4, std430) restrict buffer Params{
     float limit;
 } params;
 
+layout(set = 0, binding = 5, std430) restrict buffer CellCounts {
+  uint counts[];
+};
+
+layout(set = 0, binding = 6, std430) restrict buffer CellBoidIndices {
+  uint indices[]; 
+};
+
+layout(local_size_x = 64) in;
+uniform ivec3 gridDim;
+uniform float cellSize;
+
 
 // const float neighborhood_size = 3.0;
 // const float avoid_size = 2.0;
@@ -58,6 +71,12 @@ layout(set = 0, binding = 4, std430) restrict buffer Params{
 void main() {
     // gl_GlobalInvocationID.x uniquely identifies this invocation across all work groups
     // my_data_buffer.data[gl_GlobalInvocationID.x] *= 2.0;
+    uint idx = gl_GlobalInvocationID.x;
+    if (idx >= params.boid_count) {
+        return;
+    }
+    gridDim = ivec3(params.limit, params.limit, params.limit);
+    cellSize = 1.0;
 
     vec3 boid_read_position;
     vec3 boid_read_velocity;
@@ -69,6 +88,14 @@ void main() {
         boid_read_velocity = velocities_b.data[gl_GlobalInvocationID.x];
     }
     
+    ivec3 cell = ivec3(floor(boid_read_position / cellSize));
+    cell = clamp(cell, ivec3(0), gridDim - ivec3(1));
+
+    uint cellIndex = uint(cell.x + cell.y * gridDim.x + cell.z * gridDim.x * gridDim.y);
+
+    uint offset = atomicAdd(counts[cellIndex], 1);
+    indices[cellIndex * maxBoidsPerCell + offset] = idx;
+
     vec3 avg_position = vec3(0.0);
     vec3 avg_velocity = vec3(0.0);
     vec3 avoid_vector = vec3(0.0);
@@ -76,33 +103,48 @@ void main() {
     int num_avoids = 0;
     int total_boids = int(params.boid_count);
 
-    for (int i = 0; i < total_boids; i++) {
-        if (i == gl_GlobalInvocationID.x) {
-            continue;
-        }
-        vec3 other_position;
-        vec3 other_velocity;
-        if (params.current_buffer == 0.0) {
-            other_position = positions_a.data[i];
-            other_velocity = velocities_a.data[i];
-        } else {
-            other_position = positions_b.data[i];
-            other_velocity = velocities_b.data[i];
-        }
+    // for (int i = 0; i < total_boids; i++) {
+    for (int z = -1; z <= 1; z++) {
+        for (int y = -1; y <= 1; y++) {
+            for (int x = -1; x <= 1; x++) {
+                ivec3 neighborCell = clamp(boidCell + ivec3(x, y, z), ivec3(0), gridDim - ivec3(1));
+                uint neighborCellIndex = uint(neighborCell.x + neighborCell.y * gridDim.x + neighborCell.z * gridDim.x * gridDim.y);
 
-        vec3 pos_difference = boid_read_position - other_position;
-        if (length(pos_difference) > params.neighborhood_size) {
-            continue;
-        }
-        avg_position += other_position;
-        avg_velocity += other_velocity;
-        num_neighbors += 1;
+                uint count = counts[neighborCellIndex];
 
-        if (length(pos_difference) > params.avoid_size) {
-            continue;
+                for (uint i = 0; i < count; i++) {
+                    uint otherBoidIndex = indices[neighborCellIndex * maxBoidsPerCell + i];
+
+                    if (i == gl_GlobalInvocationID.x) {
+                        continue;
+                    }
+                    vec3 other_position;
+                    vec3 other_velocity;
+                    if (params.current_buffer == 0.0) {
+                        other_position = positions_a.data[i];
+                        other_velocity = velocities_a.data[i];
+                    } else {
+                        other_position = positions_b.data[i];
+                        other_velocity = velocities_b.data[i];
+                    }
+
+                    vec3 pos_difference = boid_read_position - other_position;
+                    if (length(pos_difference) > params.neighborhood_size) {
+                        continue;
+                    }
+                    avg_position += other_position;
+                    avg_velocity += other_velocity;
+                    num_neighbors += 1;
+
+                    if (length(pos_difference) > params.avoid_size) {
+                        continue;
+                    }
+                    avoid_vector += pos_difference;
+                    num_avoids += 1;
+                // }
+                }
+            }
         }
-        avoid_vector += pos_difference;
-        num_avoids += 1;
     }
     if (num_neighbors !=0) {
         avg_position /= num_neighbors;

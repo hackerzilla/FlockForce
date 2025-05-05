@@ -8,6 +8,7 @@
 script = ExtResource("1_vtskc")
 boid_scene = ExtResource("2_k2sh4")
 spawn_radius = 20.0
+boid_count = 5000
 limit = 20.0
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
