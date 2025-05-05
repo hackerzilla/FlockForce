@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=3 uid="uid://dci0l5lu4babu"]
+
+[ext_resource type="PackedScene" uid="uid://b7e1cqvnaxvpg" path="res://assets/scene.gltf" id="1_03n5w"]
+
+[node name="scene" instance=ExtResource("1_03n5w")]
+linear_velocity = Vector3(10, 0, 0)
+
+[node name="Skeleton3D" parent="Sketchfab_model/root/GLTF_SceneRootNode/Armature_17/GLTF_created_0" index="0"]
+bones/1/position = Vector3(-0.106827, 0.207819, 6.81874e-10)
+bones/4/rotation = Quaternion(3.6334e-08, -1.26395e-07, 0.0800577, 0.99679)
+bones/5/rotation = Quaternion(-1.72835e-07, -3.946e-09, -0.135831, 0.990732)
+bones/6/rotation = Quaternion(0.5632, 0.390417, -0.303814, 0.661874)
+bones/7/rotation = Quaternion(0.25796, -0.000355949, 0.0427606, 0.965209)
+bones/8/rotation = Quaternion(0.000696314, -0.00462394, -0.0142949, 0.999887)
+bones/9/rotation = Quaternion(0.117707, -0.00770717, -0.00346724, 0.993012)
+bones/10/rotation = Quaternion(0.307646, 0.666677, -0.559419, 0.384638)
+bones/11/rotation = Quaternion(0.259392, -0.00720857, -0.0388606, 0.964963)
+bones/12/rotation = Quaternion(0.000407863, 0.00367384, 0.0113549, 0.999929)
+bones/13/rotation = Quaternion(0.117923, 0.00847948, 0.00773746, 0.992956)
+bones/14/rotation = Quaternion(4.77045e-08, -1.34947e-08, 0.975981, -0.217855)
