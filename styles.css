@@ -161,7 +161,6 @@ body {
     list-style: none;
     padding: 0;
     margin: 0;
-    flex-grow: 1;
     overflow-y: auto;
 }
 
@@ -247,14 +246,14 @@ strong, b { font-weight: 700; color: var(--heading-h1-color); }
 img { max-width: 100%; height: auto; display: block; border-radius: 6px; }
 /* General Figure Styles */
 figure {
-    margin: 2.5em auto; /* Center figure block if possible, adjust vertical margin */
+    margin: 2.5em auto;
     padding: 15px;
     border: 1px solid var(--figure-border);
     border-radius: 6px;
     background-color: var(--figure-bg);
     text-align: center;
     transition: background-color 0.3s ease, border-color 0.3s ease;
-    max-width: 95%; /* Prevent figures from touching container edges */
+    max-width: 95%;
 }
 figcaption {
     margin-top: 10px;
@@ -267,22 +266,20 @@ figcaption {
 .problem-gif {
     margin-top: 1em;
     margin-bottom: 0.5em;
-    /* Inherit general figure styles: background, border, border-radius */
-    padding: 15px; /* Explicitly restore padding */
-    border: 1px solid var(--figure-border); /* Explicitly restore border */
-    background-color: var(--figure-bg); /* Explicitly restore background */
-    border-radius: 6px; /* Explicitly restore border-radius */
-    text-align: center; /* Keep caption centered */
-    /* Override general figure margin if needed, keep max-width */
+    padding: 15px;
+    border: 1px solid var(--figure-border);
+    background-color: var(--figure-bg);
+    border-radius: 6px;
+    text-align: center;
     margin-left: auto;
     margin-right: auto;
 }
 
 .problem-gif img {
     display: block;
-    max-width: 90%; /* Adjust max size as needed */
+    max-width: 90%;
     height: auto;
-    margin: 0 auto; /* Center image using auto L/R margins */
+    margin: 0 auto;
     border-radius: 4px;
 }
 
@@ -308,9 +305,37 @@ header p { color: var(--text-color); opacity: 0.8; font-size: 1.1em; }
 footer { text-align: center; margin-top: 4em; padding-top: 1.5em; border-top: 1px solid var(--border-color); color: var(--footer-text); font-size: 0.9em; transition: border-color 0.3s ease, color 0.3s ease; }
 
 
-/* --- Theme Toggle Button Style --- */
-#theme-toggle-button { padding: 8px 15px; font-size: 0.9em; border: none; border-radius: 5px; cursor: pointer; background-color: var(--button-bg); color: var(--button-text); font-weight: bold; transition: background-color 0.3s ease, color 0.3s ease; }
-#theme-toggle-button:hover { background-color: var(--button-hover-bg); }
+/* === UPDATED Theme Toggle Button Style (to look like nav link) === */
+#theme-toggle-button {
+    /* Reset Button Defaults & Apply Link Look */
+    background: none;                  /* Remove button background */
+    border: none;                      /* Remove button border */
+    font-family: inherit;              /* Use the same font as surrounding text */
+    font-weight: normal;               /* Make text normal weight like links */
+    text-align: left;                  /* Align text to the left like links */
+    cursor: pointer;                   /* Keep pointer cursor */
+
+    /* Apply Link Dimensions & Colors */
+    display: block;                    /* Make it block like links */
+    width: 100%;                       /* Take full width */
+    padding: 8px 15px;                 /* Match link padding */
+    font-size: 0.95em;                 /* Match link font size */
+    color: var(--sidebar-text);        /* Use sidebar text color */
+    border-radius: 4px;                /* Match link border radius */
+    margin-top: 25px;                  /* Keep existing space above */
+
+    /* Keep transition */
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+#theme-toggle-button:hover {
+    /* Apply same hover as links */
+    background-color: var(--sidebar-link-hover-bg);
+    color: var(--text-color);
+    /* text-decoration: none; /* Not usually needed for buttons */ */
+}
+/* =============================================================== */
+/* ========================================================== */
 
 
 /* --- Responsiveness --- */
@@ -333,6 +358,6 @@ footer { text-align: center; margin-top: 4em; padding-top: 1.5em; border-top: 1p
     h2 { font-size: 1.8em; }
     h3 { font-size: 1.4em; }
 
-    /* Button position adjustment */
-    div[style*="text-align: right"] { padding: 10px; text-align: center; margin-bottom: 0; }
+    /* Button position adjustment - REMOVED rule for old container */
+    /* The button is now part of the sidebar, which is hidden here */
 }

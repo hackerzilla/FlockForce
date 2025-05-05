@@ -6,10 +6,6 @@
     <title>Your Website Title</title> </head>
 	<link rel="stylesheet" href="styles.css">  </head>
 	<body>
-
-		<div style="text-align: right; padding: 10px 20px;">
-			<button id="theme-toggle-button">Switch to Dark Mode</button>
-		</div>
 		<nav id="sidebar-nav">
 			<a href="#" class="back-to-top-button" title="Back to Top">
 				<img src="FlockForceSidebar.jpg" alt="Back to Top - Flock Force Logo" class="sidebar-logo">
@@ -21,6 +17,7 @@
 				<li><a href="#references">References</a></li>
 				<li><a href="#contributions">Contributions</a></li>
 				</ul>
+		<button id="theme-toggle-button">Switch to Dark Mode</button>
 		</nav>
 		<div class="container">
 			<header>
@@ -58,20 +55,6 @@
 					<p>
 						Another bug, which was much more pernicious than the previous one, was an issue with implicit padding of data in the arrays on the GPU. We had arrays of vec3s (3-Vectors in GLSL), which held positions and velocities. What we didn’t realize at the time is that, for some reason, an extra 4 bytes was inserted between vec3’s, causing very strange jittering behavior in the visualization due to the data being returned not being in the expected format (i.e. not being in the format we sent to the GPU). The fix was a quick one, on the CPU side of things, we simply inserted an extra float in the byte array that we pass to the GPU. 
 					</p>
-	
-					<h3>Techniques, Algorithms, and Implementation</h3>
-					<p>
-						[Describe the specific techniques and algorithms you used or implemented. Explain the core concepts clearly. Detail how you implemented them. Be specific about libraries or frameworks used if applicable.]
-					</p>
-					<ul>
-						<li>[Detail about Technique 1...]</li>
-						<li>[Detail about Algorithm 2...]</li>
-					</ul>
-	
-					<h3>Comparison to References & Unique Decisions</h3>
-					 <p>
-						[Discuss how your approach relates to existing work or references you used. Did you implement a subset of a paper's method? Did you combine multiple approaches? Did you enhance or change anything? Clearly state the unique decisions your team made regarding the implementation or approach and justify why those decisions were made.]
-					 </p>
 	
 					 <section id="problems"> <h3>Problems Encountered and Solutions</h3>
 						<p>
