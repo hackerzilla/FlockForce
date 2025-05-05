@@ -1,90 +1,295 @@
-<html>
-	<head>
-		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=default'></script>
-		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-        <!-- Will add  more css into this document-->
-		<style>
-			h1 {
-				text-align: center;
-			}
-
-			.container {
-				margin: 0 auto;
-				padding: 60px 20%;
-			}
-
-			figure {
-				text-align: center;
-			}
-
-			img {
-				display: inline-block;
-			}
-
-			body {
-				font-family: 'Inter', sans-serif;
-			}
-		</style>
-	</head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flock Force</title> </head>
+	<title>Flock Force - CS184 Final Report</title> <link rel="stylesheet" href="styles.css"> <link rel="icon" type="image/jpeg" href="FlockForceSidebar.jpg"
 	<body>
+		<nav id="sidebar-nav">
+			<a href="#" class="back-to-top-button" title="Back to Top">
+				<img src="FlockForceSidebar.jpg" alt="Back to Top - Flock Force Logo" class="sidebar-logo">
+			</a>
+			<ul>
+				<li><a href="#abstract">Abstract</a></li>
+				<li><a href="#technical-approach">Technical Approach</a></li>
+				<li><a href="#results">Results</a></li>
+				<li><a href="#references">References</a></li>
+				<li><a href="#contributions">Contributions</a></li>
+				</ul>
+		<button id="theme-toggle-button">Switch to Dark Mode</button>
+		</nav>
 		<div class="container">
-		<h1>Final Project Milestone Report (Team 11)</h1>
-		<div style="text-align: center;">Names: Julian Pearson Rickenbach, Mark Yuzon, Connor Armstrong, John Yoon</div>
+			<header>
+				 <img src="FlockForce.jpg" alt="Flock Force Logo" class="logo">
+				 <p>Team Members: Julian Pearson Rickenbach, Mark Yuzon, Connor Armstrong, John Yoon</p>
+				<p>CS184 Final Report</p>
+			</header>
+	
+			<main>
+	
+				<section id="abstract">
+					<h2>Abstract</h2>
+					<p>
+						FlockForce is a 3D boid simulation accelerated with compute shader and made in Godot Engine. Our team started out with a blank Godot project, and we ended up with a convincing Boids implementation in an easily extendable format. Our simulation uses the GPU to accelerate the calculation of positions and velocities, however, the rendering is still taken care of by Godot’s Forward+ rendering pipeline, meaning that the individual boids are still interactable at the game engine level. This affords the opportunity for the boids to interact with other components of the game engine, for example, the physics engine, where other implementations of compute shader boids would have the particles exist purely on the GPU. While our design choice comes at the cost of performance, we believe it to be a worthwhile tradeoff for the opportunities it affords for creative expression.
+					</p>
+				</section>
+	
+				<section id="technical-approach">
+					<h2>Technical Approach</h2>
+					<p>
+						FlockForce centers around the boid algorithm invented by Craig Reynolds in 1986, which approximates the behavior of animals that form flocks, swarms, or schools. The algorithm is inspired by research into birds, which found that the flocking behavior of starlings follows simple rules at the level of individual organisms. It makes sense then that the boids algorithm is also relatively simple, although tuning it to produce pleasing results is still an implementation-specific challenge. For our implementation, we followed a philosophy of starting simple and adding complexity as needed. Our first draft of boids was a CPU-driven program that performed the O(n^2) neighborhood search, where n is the number of boids. As the article by Craig Reynlods describes, the velocity of each boid at any given timestep is the sum of three vectors: cohesion, separation, and alignment. The cohesion vector points from a boid to the center of mass of its neighbors (within some neighborhood radius). The separation vector points away from the center of mass of neighbors that are too close (an inner radius). Finally, the alignment vector points in the direction of the average heading of its neighbors. 
+					</p>
+					<p>
+						Creating the CPU boids implementation was worthwhile because it gave us both a sanity check and a benchmark for how much we could improve the performance. On an Apple M2 Pro, the CPU boids implementation was able to run smoothly for up to roughly 100 boids. This made sense as the algorithm has an O(n^2) time complexity, since each boid needs to check every other boid for presence in the local neighborhood. 
+					</p>
+					<div class="gif-gallery">
+						
+						<figure class="gallery-item">
+							<img src="flockforce/gifs/CPU_boids_1.gif" alt="[Description of Demo GIF 1 - e.g., Initial boid setup]">
+							<figcaption>CPU only: Demo 1</figcaption>
+						</figure>
+		
+						<figure class="gallery-item">
+							 <img src="flockforce/gifs/CPU_boids_2.gif" alt="[Description of Demo GIF 2 - e.g., Cohesion behavior]">
+							<figcaption>CPU only: Demo 2</figcaption>
+						</figure>
+		
+						<figure class="gallery-item">
+							 <img src="flockforce/gifs/CPU_boids_3.gif" alt="[Description of Demo GIF 3 - e.g., Alignment behavior]">
+							<figcaption>CPU only: Demo 3</figcaption>
+						</figure>
+		
+						<figure class="gallery-item">
+							 <img src="flockforce/gifs/CPU_boids_4.gif" alt="[Description of Demo GIF 4 - e.g., Separation behavior]">
+							<figcaption>CPU only: Demo 4</figcaption>
+						</figure>
+		
+						<figure class="gallery-item">
+							 <img src="flockforce/gifs/CPU_boids_5.gif" alt="[Description of Demo GIF 5 - e.g., Combined behaviors]">
+							<figcaption>CPU only: Demo 5</figcaption>
+						</figure>
+						 </div>
+					<p>
+						After successfully implementing the CPU boids, we set out to offload the work to the GPU. This task was more difficult than we initially thought. Fortunately, Godot has a helpful abstraction for interacting with the GPU. Godot has a RenderingDevice abstraction that encapsulates the boilerplate of setting up bindings for buffers, uniforms, shaders, compute pipelines, and more. Still, though, we had to learn what is required in order to send data buffers to the GPU and dispatch calls to run the desired shader. Debugging and understanding the compute shader pipeline was where much of the effort went. The effort was worth it when we were able to achieve greater than 10x the number of boids on-screen as compared to CPU-boids. 
+					</p>
 
-		<br>
-        <!-- will update the links latee-->
-		Link to webpage: <a href="https://hackerzilla.github.io/FlockForce/">https://hackerzilla.github.io/FlockForce/</a>
+					<figure class="gallery-item">
+						<img src="flockforce/gifs/process_diagram.png" alt="[Description of Demo GIF 3 - e.g., Alignment behavior]">
+					   <figcaption>CPU only: Demo 3</figcaption>
+				   </figure>
 
-		<br>
-        <!-- Will iupdate link here -->
-		Link to GitHub repository:  <a href="https://github.com/hackerzilla/FlockForce/tree/main">https://github.com/hackerzilla/FlockForce/tree/main</a>
+				
+					<p>
+						To get there, we started simple with basic tests of binding buffers to uniforms, setting up the uniform set and compute pipeline, and getting the data back from the storage buffers after the CPU synchronized with the GPU. From there, we could reason about loading the boid positions into buffers, sending them off to the GPU, and retrieving the updated positions and setting them on the CPU. 
+					</p>
+					<p>
+						We had many, many bugs along the way. To name a few, we completely neglected having a swap buffer implementation initially (we were updating the boid positions and velocities in-place), which resulted in some slightly offsetting boid movement. To fix this we doubled our buffers. Positions and velocities would be read from buffers A and updated positions would be written to buffers B, then the roles of A and B would be swapped. This removes the data dependencies that in-place updates caused. 
+					</p>
+					<p>
+						Another bug, which was much more pernicious than the previous one, was an issue with implicit padding of data in the arrays on the GPU. We had arrays of vec3s (3-Vectors in GLSL), which held positions and velocities. What we didn’t realize at the time is that, for some reason, an extra 4 bytes was inserted between vec3’s, causing very strange jittering behavior in the visualization due to the data being returned not being in the expected format (i.e. not being in the format we sent to the GPU). The fix was a quick one, on the CPU side of things, we simply inserted an extra float in the byte array that we pass to the GPU. 
+					</p>
+	
+					 <section id="problems"> <h3>Problems Encountered and Solutions</h3>
+						<ul>
+							<li>
+								<strong>Problem:</strong> We want to take our cpu boid implementation and add it to the gpu, so we can use it to speedup the algorithm, but we don’t know how to pass data between the CPU and the GPU<br>
+								<strong>Solution:</strong> Use SSBO (shader storage buffer objects) Admittedly this isn’t unique and is just how compute shaders worked, but we didn’t have a clue how compute shaders worked when we started and this was pretty cool.
+					
+								<figure class="problem-gif">
+									<img src="flockforce/gifs/computeMoving.gif" alt="GIF showing initial particle explosion problem">
+									<figcaption>Fig A: This was our first sign of being able to move boids from receiving the output of the gpu in the SSBO.</figcaption>
+								</figure>
+							</li>
+					
+							<li>					
+								<figure class="problem-gif">
+									<img src="flockforce/gifs/set1.gif" alt="GIF showing incorrect neighbor finding">
+									 <figcaption>Fig B: The simulation after adding the separate avoidance distance, large neighborhood size.</figcaption>
+								</figure>
+							</li>
+					
+							<li>
+								<figure class="problem-gif">
+									<img src="flockforce/gifs/set1neighborhood1.2.gif" alt="GIF showing overly strong separation">
+									 <figcaption>Fig C: The simulation with separate avoidance distance, small neighborhood size.</figcaption>
+								</figure>
+							</li>
+
+							<li>
+								<strong>Problem:</strong> The boids are getting WAY too friendly, with a lower separation strength they are converging to a single point, but if we raise the separation strength they all zoom away from one another. <br>
+								<strong>Solution:</strong> Change the distance required to activate separation strength. With a smaller separation distance they can be pulled together but will stop at a distance instead of converging.
+					
+								<figure class="problem-gif">
+									<img src="flockforce/gifs/set2.gif" alt="GIF showing overly strong separation">
+									 <figcaption>Fig D: This is prior to adding the avoidance distance, boids would converge at the extremities of the bounding box.</figcaption>
+								</figure>
+							</li>
+
+							<li>
+								<figure class="problem-gif">
+									<img src="flockforce/gifs/set2separation1.4.gif" alt="GIF showing overly strong separation">
+									 <figcaption>Fig E: Boids exhibiting excessive separation.</figcaption>
+								</figure>
+							</li>
+
+							<li>
+								<strong>Problem:</strong> The boids are acting UP! We noticed flickering and added a debug routine to check if any boids were moving more than 1 full unit in a single timestep. Some were rapidly alternating between multiple positions.<br>
+								<strong>Solution:</strong> We researched more into the vec3 glsl datatype and discovered that they are padded to be 16 bytes! We then added another random float to our array to account for the padding.
+					
+								<figure class="problem-gif">
+									<img src="flockforce/gifs/set3.gif" alt="GIF showing overly strong separation">
+									 <figcaption>Fig F: This is prior to noticing the padding discrepancy, some boids do not move while others bounce between a handful of positions.</figcaption>
+								</figure>
+							</li>
+
+							<li>					
+								<figure class="problem-gif">
+									<img src="flockforce/gifs/set4.gif" alt="GIF showing overly strong separation">
+									 <figcaption>Fig G: This was prior to discovering padding, we set the neighborhood size much too large resulting in all boids to match behavior.</figcaption>
+								</figure>
+							</li>
+					
+							</ul>
+					</section>
+	
+	
+					<h3>Lessons Learned</h3>
+					<p>
+						We learned a number of things from completing this project, both in terms of technical skills and time management and project management. On the technical side we learned about the strengths and weaknesses of executing code on the cpu, while we enjoyed a huge amount of speedup from using the GPU’s many cores, the gpu is also much less flexible in terms of executing complex code with many branches, which restricted the steps we could take in our simulation. We also learned new debugging skills, as we no longer had access to good old-fashioned print statements, and we needed to debug the behavior of groups of particles instead of a single one. On the project management side, we learned about the importance of planning ahead. It can be super difficult to divide up work, especially when there is a topic that is new to all members. Together, we learned about the value of persistence in a project like this, and we collectively overcame the numerous bugs that popped up along the way.
+					</p>
+	
+				</section>
+	
+				<section id="results">
+					<h2>Results</h2>
 
 
-        <!--will include the webpage title here -->
+					<div class="gif-gallery">
+						
+						<figure class="gallery-item">
+							<img src="flockforce/gifs/demo_gif_1.gif" alt="[Description of Demo GIF 1 - e.g., Initial boid setup]">
+							<figcaption>Demo 1: [Optional caption - e.g., Initial Setup]</figcaption>
+						</figure>
+		
+						<figure class="gallery-item">
+							 <img src="flockforce/gifs/demo_gif_2.gif" alt="[Description of Demo GIF 2 - e.g., Cohesion behavior]">
+							<figcaption>Demo 2: [Optional caption - e.g., Cohesion]</figcaption>
+						</figure>
+		
+						<figure class="gallery-item">
+							 <img src="flockforce/gifs/demo_gif_3.gif" alt="[Description of Demo GIF 3 - e.g., Alignment behavior]">
+							<figcaption>Demo 3: [Optional caption - e.g., Alignment]</figcaption>
+						</figure>
+		
+						<figure class="gallery-item">
+							 <img src="flockforce/gifs/demo_gif_4.gif" alt="[Description of Demo GIF 4 - e.g., Separation behavior]">
+							<figcaption>Demo 4: [Optional caption - e.g., Separation]</figcaption>
+						</figure>
+		
+						<figure class="gallery-item">
+							 <img src="flockforce/gifs/demo_gif_5.gif" alt="[Description of Demo GIF 5 - e.g., Combined behaviors]">
+							<figcaption>Demo 5: [Optional caption - e.g., Combined Rules]</figcaption>
+						</figure>
+		
+						<figure class="gallery-item">
+							 <img src="flockforce/gifs/demo_gif_6.gif" alt="[Description of Demo GIF 6 - e.g., Interaction with obstacle]">
+							<figcaption>Demo 6: [Optional caption - e.g., Obstacle Interaction]</figcaption>
+						</figure>
+		
+						<figure class="gallery-item">
+							 <img src="flockforce/gifs/demo_gif_7.gif" alt="[Description of Demo GIF 7 - e.g., Large flock simulation]">
+							<figcaption>Demo 7: [Optional caption - e.g., Scale Test]</figcaption>
+						</figure>
+						 </div>
 
-
-		<!--
-		We've already added one heading per part, to make your write-up as navigable when grading. Please fit your write-up within these sections!
-		-->
-		<h2>3.1: Milestone Report </h2>
-        <h3>Accomplished</h3>
-        <p>
-            These first two weeks of working on FlockForce, we accomplished: a functioning 
-			CPU-only version of the boids algorithm working in Godot Engine, basics
-			in compute shader programming, and integration of compute shaders upon Godot’s 
-			particle abstraction. 
-        </p>
-		<p>
-			
-		</p>
-		<h3>Preliminary results</h3>
-		<p>
-			The first week, we split into two teams. The first team (Julian and Mark) focused on the CPU boids implementation, and the second team (Connor and John) used the time to read about compute shaders and the GPU shader pipeline. We managed to flesh out the rough program for CPU boids, which works decently well. Below is an image of the 3D boids produced by our CPU-based program. The performance is not great as you might expect from an <em>O(n<sup>2</sup>)</em> algorithm running in a scripting environment. We were able to get stable <strong>120 FPS</strong> on an <strong>M2 Pro</strong> machine with 100 boids. This suggests a lot of room for improvement once we get compute shader boids working.
-		</p>
-		<p>
-			The second week, Mark focused on setting up the milestone submission while others tried to implement a first draft boids simulation on a compute shader. This section turns out to be a little bit beyond our current knowledge and requires further research. From this research, we found that Godot Engine has an abstraction called <a href="https://docs.godotengine.org/en/stable/classes/class_gpuparticles3d.html#class-gpuparticles3d" target="_blank">GPUParticles3D</a>, which has way more features than we realistically need, but has a key functionality of being able to make many particles that live entirely on the GPU and can have their attributes modified from a user-authored compute shader. This is currently our most promising direction, so we spent time reading and learning about the <em>GPUParticles3D</em> class.
-		</p>
-		<p>
-			In addition, we have some compute shader code for a boids simulation, although it doesn’t function yet since at the time of writing it we hadn’t figured out how to connect it to the rendering backend. However, it still shows the intention of what our compute shader will eventually be doing, which is a simple forward Euler or Verlet integration of particle position (boid position) over time. This code snippet from our rough draft compute shader shows the lines that update each particle’s position and velocity.
-		</p>
-		<h3>Progress relative to your plan & Further changes to plan</h3>
-		<p>
-			Our next steps include finishing the compute shader implementation of the boids algorithm and optimizing its performance. Our objective is to optimize boid simulation performance and increase the number of boids we can simulate and render. To achieve this, we plan to experiment with the <em>GPUParticle3D</em> node, along with exploring other methods of rendering the GPU-based boid simulation. Another key plan is to implement a neighborhood search algorithm with better than <em>O(n<sup>2</sup>)</em> complexity, allowing for more efficient simulation as the number of boids increases.
-		</p>
-
-		<h2>3.2: Milestone Video</h2>
-		<br>
-        <!-- will update the links latee-->
-		<a href="https://youtu.be/JFyV3ioOYWU?feature=shared">https://youtu.be/JFyV3ioOYWU?feature=shared</a>
-
-		<p>
-			<!-- Will include text here-->
-		</p>
-
-		<h2>3.3: Milestone Slides</h2>
-		<a href="https://www.canva.com/design/DAGlOD7Kwow/K57iDLisehqeTTzdDSIspg/view?utm_content=DAGlOD7Kwow&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hd00e9cbd21">https://www.canva.com/design/DAGlOD7Kwow/K57iDLisehqeTTzdDSIspg/view?utm_content=DAGlOD7Kwow&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hd00e9cbd21</a>
-
-
-
+					<figure class="gallery-item">
+						<img src="flockforce/gifs/graph.png" alt="[Description of Demo GIF 3 - e.g., Alignment behavior]">
+						<figcaption>Diagram </figcaption>
+					</figure>
+		
+					<h4>Video Summary</h4>
+					<p>
+						A video summarizing the project development and results can be found at the following link: <a href="https://www.youtube.com/watch?v=ykozLva9I_8" target="_blank">https://www.youtube.com/watch?v=ykozLva9I_8</a>
+					</p>
+	
+					<h4>Video Summary</h4>
+					<p>
+						A video summarizing the project development and results can be found at the following link: <a href="https://www.canva.com/design/DAGmhuPIzPY/MOmQt3_GR3zYr1_MMoigyg/view?utm_content=DAGmhuPIzPY&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h1f2164ef21" target="_blank">https://www.canva.com/design/DAGmhuPIzPY/MOmQt3_GR3zYr1_MMoigyg/view?utm_content=DAGmhuPIzPY&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h1f2164ef21</a>
+					</p>
+	
+					</section>
+	
+				<section id="references">
+					<h2>References</h2>
+					 <ul>
+						<li>
+							Gildor. "Seagull." <i>Sketchfab</i>. Published 2017. <a href="https://sketchfab.com/3d-models/seagull-dc42ffc81c86480e9e7f7752fa134174" target="_blank">https://sketchfab.com/3d-models/seagull-dc42ffc81c86480e9e7f7752fa134174</a>.
+						</li>
+						<li>
+							Khronos OpenGL Wiki. "Shader Storage Buffer Object." Last modified March 14, 2023. <a href="https://www.khronos.org/opengl/wiki/Shader_Storage_Buffer_Object" target="_blank">https://www.khronos.org/opengl/wiki/Shader_Storage_Buffer_Object</a>.
+						</li>
+						<li>
+							niceeffort. <i>boids_compute_example</i>. GitLab. <a href="https://gitlab.com/niceeffort/boids_compute_example/-/tree/main?ref_type=heads" target="_blank">https://gitlab.com/niceeffort/boids_compute_example/-/tree/main?ref_type=heads</a>.
+						</li>
+						<li>
+							Reynolds, Craig W. "Boids (Flocks, Herds, and Schools: a Distributed Behavioral Model)." <i>red3d.com</i>. <a href="https://www.red3d.com/cwr/boids/" target="_blank">https://www.red3d.com/cwr/boids/</a>.
+						</li>
+						<li>
+							rpgwhitelock. <i>AllSkyFree_Godot</i>. GitHub. <a href="https://github.com/rpgwhitelock/AllSkyFree_Godot/tree/master" target="_blank">https://github.com/rpgwhitelock/AllSkyFree_Godot/tree/master</a>.
+						</li>
+						</ul>
+				</section>
+	
+				<section id="contributions">
+					<h2>Contributions</h2>
+					<p>Detailed breakdown of contributions from each team member:</p>
+					 <ul>
+						<li> <strong>Julian Pearson Rickenbach:</strong>
+							<ul>
+								<li>Implemented boids algorithm (CPU version)</li>
+								<li>Researched boid algorithm implementations</li>
+								<li>Researched compute shaders and Godot shader specifics</li>
+								<li>Assisted in debugging compute shader</li>
+								<li>Contributed to writing the various writeups</li>
+								<li>Edited the final submission video</li>
+							</ul>
+						</li>
+						<li> <strong>Connor Armstrong:</strong>
+							 <ul>
+								<li>Implemented boids algorithm in compute shader</li>
+								<li>Researched compute shader implementations</li>
+								<li>Debugged compute shader</li>
+								<li>Tuned boids algorithm specifics</li>
+							</ul>
+						</li>
+						<li> <strong>Mark Yuzon:</strong>
+							 <ul>
+								<li>Developed the website</li>
+								<li>Created and implemented the slides</li>
+								<li>Procured the bird model and animation</li>
+								<li>Created the work schedules</li>
+							</ul>
+						</li>
+						<li> <strong>John Yoon:</strong>
+							 <ul>
+								<li>Added bird model and animation to boid scene</li>
+								<li>Coded the boundary wrapping</li>
+								<li>Contributed by debugging the compute shader </li>
+								<li>Contributed in making the slides and writing the writeup</li>
+								<li>Added a free moving camera to the project</li>
+							</ul>
+						</li>
+						 </ul>
+				</section>
+	
+			</main>
+	
+			<footer>
+				<p>CS184 Final Project | [University Of California, Berkeley] | [Spring 2025]</p>
+			</footer>
+	
+		</div> 
+		<script src="scripts.js"></script>
 	</body>
-</html>
+	</html>

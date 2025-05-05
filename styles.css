@@ -2,44 +2,42 @@
 
 /* --- CSS Variables --- */
 :root {
-    /* Default to NEW Light Theme Variables (Inspired by image_fe5ce8.jpg) */
-    --bg-color: #FBF8EF;
-    --text-color: #333333;
+    /* Default to NEW Light Theme Variables (Sky Blue Theme) */
+    --bg-color: #EDF6FF;
+    --text-color: #0D47A1;
     --container-bg: #FFFFFF;
-    --heading-color: #222222;
-    --heading-h1-color: var(--heading-color);
-    --heading-h4-color: #555555;
-    --link-color: #8BC34A;
-    --link-hover-color: #689F38;
-    --nav-bg: #FFF9C4; /* Variable for potential top nav */
-    --nav-text: #444444;
-    --nav-link-hover-bg: #FFF59D;
-    --nav-link-hover-text: #333333;
-    --border-color: #E0E0E0;
+    --heading-color: #0D47A1;
+    --heading-h1-color: #1565C0;
+    --heading-h4-color: #1E88E5;
+    --link-color: #1976D2;
+    --link-hover-color: #0D47A1;
+    --nav-bg: #BBDEFB; /* Variable for potential top nav */
+    --nav-text: #0D47A1;
+    --nav-link-hover-bg: #90CAF9;
+    --nav-link-hover-text: #0D47A1;
+    --border-color: #BBDEFB;
     --subtle-border-color: var(--border-color);
-    --figure-bg: #F5F5F5;
-    --figure-border: var(--border-color);
-    --caption-color: #666666;
-    --code-bg: #F5F5F5;
-    --code-text: #333333;
-    --code-border-accent: #AED581;
-    --inline-code-bg: #EFEFEF;
-    --inline-code-text: #333333;
-    --shadow-color: rgba(0, 0, 0, 0.08);
-    --footer-text: #666666;
-    --button-bg: #8BC34A;
+    --figure-bg: #E3F2FD; /* Figure background */
+    --figure-border: var(--border-color); /* Figure border */
+    --caption-color: #1565C0;
+    --code-bg: #E3F2FD;
+    --code-text: #0D47A1;
+    --code-border-accent: #1976D2;
+    --inline-code-bg: #E3F2FD;
+    --inline-code-text: #0D47A1;
+    --shadow-color: rgba(66, 165, 245, 0.2);
+    --footer-text: #1565C0;
+    --button-bg: #1976D2;
     --button-text: #FFFFFF;
-    --button-hover-bg: #689F38;
+    --button-hover-bg: #1565C0;
 
-    /* Sidebar Variables (Light Theme - Keeping the set inspired by image_fe5ce8.jpg) */
-    --sidebar-bg: #F5F5F5; /* Light Grey sidebar */
-    --sidebar-text: #444444; /* Dark text for sidebar */
-    --sidebar-link-hover-bg: #E0E0E0; /* Slightly darker grey hover */
-    --sidebar-link-active-bg: #8BC34A; /* Accent Green for active link */
+    /* Sidebar Variables (Light Theme) */
+    --sidebar-bg: #FFFFFF;
+    --sidebar-text: #0D47A1;
+    --sidebar-link-hover-bg: #E3F2FD;
+    --sidebar-link-active-bg: #1976D2;
     --sidebar-link-active-text: #FFFFFF;
-    --sidebar-border: #DCDCDC; /* Sidebar border */
-
-    /* REMOVED duplicate older set of sidebar variables that started with --sidebar-bg: #e8e8e8; */
+    --sidebar-border: #BBDEFB;
 }
 
 /* Basic Logo Styling (for header logo) */
@@ -57,41 +55,41 @@ header {
 }
 
 body.dark-theme {
-    /* Dark Theme Variable Overrides */
+    /* Dark Theme Variable Overrides (Dark Grey Base, Blue Accents) */
     --bg-color: #1a1a1a;
     --text-color: #EAEAEA;
     --container-bg: #2a2a2a;
     --heading-color: #EAEAEA;
     --heading-h1-color: #FFFFFF;
     --heading-h4-color: #cccccc;
-    --link-color: #FF6347;
-    --link-hover-color: #ff7f50;
+    --link-color: #4FC3F7;
+    --link-hover-color: #29B6F6;
     --nav-bg: #111111;
     --nav-text: #EAEAEA;
-    --nav-link-hover-bg: #FF6347;
-    --nav-link-hover-text: #FFFFFF;
+    --nav-link-hover-bg: #4FC3F7;
+    --nav-link-hover-text: #000000;
     --border-color: #444;
     --subtle-border-color: var(--border-color);
-    --figure-bg: #2f2f2f;
-    --figure-border: var(--border-color);
+    --figure-bg: #2f2f2f; /* Figure background */
+    --figure-border: var(--border-color); /* Figure border */
     --caption-color: #bbbbbb;
     --code-bg: #111;
     --code-text: #d0d0d0;
-    --code-border-accent: #FF6347;
+    --code-border-accent: #4FC3F7;
     --inline-code-bg: #333;
-    --inline-code-text: #FFB347;
+    --inline-code-text: #81D4FA;
     --shadow-color: rgba(0, 0, 0, 0.3);
     --footer-text: #888;
-    --button-bg: #FF6347;
-    --button-text: #FFFFFF;
-    --button-hover-bg: #ff7f50;
+    --button-bg: #4FC3F7;
+    --button-text: #000000;
+    --button-hover-bg: #29B6F6;
 
     /* Sidebar Variables (Dark Theme) */
     --sidebar-bg: #2c2c2c;
     --sidebar-text: #d0d0d0;
     --sidebar-link-hover-bg: #444;
-    --sidebar-link-active-bg: #FF6347; /* Use main accent */
-    --sidebar-link-active-text: #FFFFFF;
+    --sidebar-link-active-bg: #4FC3F7;
+    --sidebar-link-active-text: #000000;
     --sidebar-border: #444;
 }
 
@@ -116,40 +114,38 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* === UPDATED Sidebar Navigation Styles === */
+/* === Sidebar Navigation Styles === */
 #sidebar-nav {
     position: fixed;
     left: 0;
     top: 0;
     bottom: 0;
-    width: 240px; /* Adjust width as needed */
+    width: 240px;
     background-color: var(--sidebar-bg);
     border-right: 1px solid var(--sidebar-border);
     padding: 20px;
     overflow-y: auto;
     z-index: 100;
     transition: background-color 0.3s ease, border-color 0.3s ease;
-    display: flex; /* Use flexbox */
-    flex-direction: column; /* Stack logo link and list vertically */
+    display: flex;
+    flex-direction: column;
 }
-
-/* REMOVED #sidebar-nav h3 rule */
 
 /* Styles for Back-to-Top Link containing the logo */
 #sidebar-nav .back-to-top-button {
     display: block;
-    margin-bottom: 20px; /* Space below logo link */
+    margin-bottom: 20px;
     padding: 0;
     background: none;
     border: none;
     text-align: center;
     cursor: pointer;
-    line-height: 0; /* Prevent extra space */
+    line-height: 0;
 }
 
 /* Styles for Sidebar Logo Image itself */
-#sidebar-nav .sidebar-logo { /* Or target: #sidebar-nav .back-to-top-button img */
-    max-width: 75%; /* Adjust % to control size */
+#sidebar-nav .sidebar-logo {
+    max-width: 75%;
     height: auto;
     display: inline-block;
     vertical-align: middle;
@@ -157,7 +153,7 @@ body {
 }
 
 #sidebar-nav .back-to-top-button:hover .sidebar-logo {
-    opacity: 0.8; /* Subtle hover effect */
+    opacity: 0.8;
 }
 
 /* Styles specifically for the navigation list */
@@ -165,8 +161,7 @@ body {
     list-style: none;
     padding: 0;
     margin: 0;
-    flex-grow: 1; /* Allows list to take remaining space */
-    overflow-y: auto; /* Add scroll to list only if needed */
+    overflow-y: auto; /* Removed flex-grow */
 }
 
 #sidebar-nav li {
@@ -238,26 +233,122 @@ p { margin-bottom: 1.2em; }
 }
 
 /* Lists */
+/* General list styling */
 ul, ol { margin-bottom: 1.2em; padding-left: 25px; }
+/* Default list item marker */
 li { margin-bottom: 0.6em; }
 strong, b { font-weight: 700; color: var(--heading-h1-color); }
 
+/* Remove bullets from the Problems/GIFs list */
+ul.problems-list {
+    list-style-type: none;
+    padding-left: 0;
+}
+/* Optional: Adjust margin for list items if needed now that padding is gone */
+ul.problems-list li {
+     margin-bottom: 1.5em;
+     /* Add any other specific styling for these list items */
+     text-align: left; /* Ensure text aligns left */
+}
+ul.problems-list li figure { /* Ensure figure within this specific list item centers text */
+    text-align: center;
+}
+
 
 /* --- Top Navigation (Keep if used, otherwise remove) --- */
-/* These styles might apply to a different <nav> element if you have one */
 /* Styles removed for brevity if not used */
-/* nav { ... } */
-/* nav ul { ... } */
-/* nav ul li { ... } */
-/* nav ul li a { ... } */
-/* nav ul li a:hover, nav ul li a:focus { ... } */
-/* --- End Top Navigation --- */
 
 
 /* --- Images & Figures --- */
 img { max-width: 100%; height: auto; display: block; border-radius: 6px; }
-figure { margin: 2.5em 0; padding: 15px; border: 1px solid var(--figure-border); border-radius: 6px; background-color: var(--figure-bg); text-align: center; transition: background-color 0.3s ease, border-color 0.3s ease; }
-figcaption { margin-top: 10px; font-size: 0.95em; color: var(--caption-color); }
+/* General Figure Styles */
+figure {
+    margin: 2.5em auto;
+    padding: 15px;
+    border: 1px solid var(--figure-border);
+    border-radius: 6px;
+    background-color: var(--figure-bg);
+    text-align: center;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    max-width: 95%;
+}
+figcaption {
+    margin-top: 10px;
+    font-size: 0.95em;
+    color: var(--caption-color);
+    text-align: center;
+}
+
+/* --- GIF Gallery Styles --- */
+.gif-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive columns */
+    gap: 50px; /* Space between grid items */
+    margin-top: 2em; /* Space above the gallery */
+    margin-bottom: 2em; /* Space below the gallery */
+}
+
+.gallery-item {
+    margin: 0;
+    padding: 10px;
+    border: 1px solid var(--figure-border);
+    border-radius: 6px;
+    background-color: var(--figure-bg);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.gallery-item img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    /* === ADDED/CONFIRMED CENTERING RULES === */
+    margin-left: auto;
+    margin-right: auto;
+    /* ======================================== */
+}
+
+.gallery-item figcaption {
+    font-size: 0.9em;
+    color: var(--caption-color);
+    margin-top: auto; /* Helps push caption down */
+}
+/* ========================= */
+
+
+/* === Styles for GIF Figures in Problems Section === */
+.problem-gif {
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    padding: 15px;
+    border: 1px solid var(--figure-border);
+    background-color: var(--figure-bg);
+    border-radius: 6px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.problem-gif img {
+    display: block;
+    max-width: 90%;
+    height: auto;
+    margin: 0 auto; /* This centers the image */
+    border-radius: 4px;
+}
+
+.problem-gif figcaption {
+    display: block;
+    font-size: 0.9em;
+    margin-top: 0.5em;
+    text-align: center;
+    color: var(--caption-color);
+}
+/* =============================================== */
 
 
 /* --- Code Blocks --- */
@@ -272,9 +363,34 @@ header p { color: var(--text-color); opacity: 0.8; font-size: 1.1em; }
 footer { text-align: center; margin-top: 4em; padding-top: 1.5em; border-top: 1px solid var(--border-color); color: var(--footer-text); font-size: 0.9em; transition: border-color 0.3s ease, color 0.3s ease; }
 
 
-/* --- Theme Toggle Button Style --- */
-#theme-toggle-button { padding: 8px 15px; font-size: 0.9em; border: none; border-radius: 5px; cursor: pointer; background-color: var(--button-bg); color: var(--button-text); font-weight: bold; transition: background-color 0.3s ease, color 0.3s ease; }
-#theme-toggle-button:hover { background-color: var(--button-hover-bg); }
+/* === UPDATED Theme Toggle Button Style (to look like nav link) === */
+#theme-toggle-button {
+    /* Reset Button Defaults & Apply Link Look */
+    background: none;
+    border: none;
+    font-family: inherit;
+    font-weight: normal;
+    text-align: left;
+    cursor: pointer;
+
+    /* Apply Link Dimensions & Colors */
+    display: block;
+    width: 100%;
+    padding: 8px 15px;
+    font-size: 0.95em;
+    color: var(--sidebar-text);
+    border-radius: 4px;
+    margin-top: 25px;
+
+    /* Keep transition */
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+#theme-toggle-button:hover {
+    background-color: var(--sidebar-link-hover-bg);
+    color: var(--text-color);
+}
+/* =============================================================== */
 
 
 /* --- Responsiveness --- */
@@ -297,6 +413,5 @@ footer { text-align: center; margin-top: 4em; padding-top: 1.5em; border-top: 1p
     h2 { font-size: 1.8em; }
     h3 { font-size: 1.4em; }
 
-    /* Button position adjustment */
-    div[style*="text-align: right"] { padding: 10px; text-align: center; margin-bottom: 0; }
+    /* Button position adjustment - Rule removed */
 }
