@@ -61,17 +61,14 @@
 					</p>
 	
 					 <section id="problems"> <h3>Problems Encountered and Solutions</h3>
-						<p>
-							[Describe the significant technical challenges or problems you encountered during the project. For each problem, explain how you identified it and the steps you took to tackle or overcome it.]
-						</p>
 						<ul>
 							<li>
-								<strong>Problem:</strong> [Description of Problem 1 - e.g., Initial particle explosion] <br>
-								<strong>Solution:</strong> [How you tackled it - e.g., Implemented velocity clamping]
+								<strong>Problem:</strong> We want to take our cpu boid implementation and add it to the gpu, so we can use it to speedup the algorithm, but we don’t know how to pass data between the CPU and the GPU<br>
+								<strong>Solution:</strong> Use SSBO (shader storage buffer objects) Admittedly this isn’t unique and is just how compute shaders worked, but we didn’t have a clue how compute shaders worked when we started and this was pretty cool.
 					
 								<figure class="problem-gif">
 									<img src="flockforce/gifs/computeMoving.gif" alt="GIF showing initial particle explosion problem">
-									<figcaption>Fig A: Example of the initial simulation instability.</figcaption>
+									<figcaption>Fig A: This was our first sign of being able to move boids from receiving the output of the gpu in the SSBO.</figcaption>
 								</figure>
 							</li>
 					
@@ -81,7 +78,7 @@
 					
 								<figure class="problem-gif">
 									<img src="flockforce/gifs/set1.gif" alt="GIF showing incorrect neighbor finding">
-									 <figcaption>Fig B: Visualization of neighbor search before correction.</figcaption>
+									 <figcaption>Fig B: The simulation with separate avoidance distance, small neighborhood size.</figcaption>
 								</figure>
 							</li>
 					
@@ -91,17 +88,17 @@
 					
 								<figure class="problem-gif">
 									<img src="flockforce/gifs/set1neighborhood1.2.gif" alt="GIF showing overly strong separation">
-									 <figcaption>Fig C: Boids exhibiting excessive separation.</figcaption>
+									 <figcaption>Fig C: The simulation with separate avoidance distance, small neighborhood size.</figcaption>
 								</figure>
 							</li>
 
 							<li>
-								<strong>Problem:</strong> [Description of Problem 3 - e.g., Separation force too strong] <br>
-								<strong>Solution:</strong> [How you tackled it - e.g., Tuned separation weight and radius]
+								<strong>Problem:</strong> The boids are getting WAY too friendly, with a lower separation strength they are converging to a single point, but if we raise the separation strength they all zoom away from one another. <br>
+								<strong>Solution:</strong> Change the distance required to activate separation strength. With a smaller separation distance they can be pulled together but will stop at a distance instead of converging.
 					
 								<figure class="problem-gif">
 									<img src="flockforce/gifs/set2.gif" alt="GIF showing overly strong separation">
-									 <figcaption>Fig C: Boids exhibiting excessive separation.</figcaption>
+									 <figcaption>Fig D: This is prior to adding the avoidance distance, boids would converge at the extremities of the bounding box.</figcaption>
 								</figure>
 							</li>
 
@@ -111,17 +108,17 @@
 					
 								<figure class="problem-gif">
 									<img src="flockforce/gifs/set2separation1.4.gif" alt="GIF showing overly strong separation">
-									 <figcaption>Fig C: Boids exhibiting excessive separation.</figcaption>
+									 <figcaption>Fig E: Boids exhibiting excessive separation.</figcaption>
 								</figure>
 							</li>
 
 							<li>
-								<strong>Problem:</strong> [Description of Problem 3 - e.g., Separation force too strong] <br>
-								<strong>Solution:</strong> [How you tackled it - e.g., Tuned separation weight and radius]
+								<strong>Problem:</strong> The boids are acting UP! We noticed flickering and added a debug routine to check if any boids were moving more than 1 full unit in a single timestep. Some were rapidly alternating between multiple positions.<br>
+								<strong>Solution:</strong> We researched more into the vec3 glsl datatype and discovered that they are padded to be 16 bytes! We then added another random float to our array to account for the padding.
 					
 								<figure class="problem-gif">
 									<img src="flockforce/gifs/set3.gif" alt="GIF showing overly strong separation">
-									 <figcaption>Fig C: Boids exhibiting excessive separation.</figcaption>
+									 <figcaption>Fig F: This is prior to noticing the padding discrepancy, some boids do not move while others bounce between a handful of positions.</figcaption>
 								</figure>
 							</li>
 
@@ -131,7 +128,7 @@
 					
 								<figure class="problem-gif">
 									<img src="flockforce/gifs/set4.gif" alt="GIF showing overly strong separation">
-									 <figcaption>Fig C: Boids exhibiting excessive separation.</figcaption>
+									 <figcaption>Fig G: This was prior to discovering padding, we set the neighborhood size much too large resulting in all boids to match behavior.</figcaption>
 								</figure>
 							</li>
 					
@@ -176,9 +173,21 @@
 				<section id="references">
 					<h2>References</h2>
 					 <ul>
-						<li>[1] Author(s). (Year). *Title of Paper or Resource*. Journal or Source, Volume(Issue), pages. [Optional: <a href="URL_if_available" target="_blank">Link</a>]</li>
-						<li>[2] Author(s). *Website or Book Title*. Retrieved from [URL] or Publisher.</li>
-						<li>[3] ...</li>
+						<li>
+							Gildor. "Seagull." <i>Sketchfab</i>. Published 2017. <a href="https://sketchfab.com/3d-models/seagull-dc42ffc81c86480e9e7f7752fa134174" target="_blank">https://sketchfab.com/3d-models/seagull-dc42ffc81c86480e9e7f7752fa134174</a>.
+						</li>
+						<li>
+							Khronos OpenGL Wiki. "Shader Storage Buffer Object." Last modified March 14, 2023. <a href="https://www.khronos.org/opengl/wiki/Shader_Storage_Buffer_Object" target="_blank">https://www.khronos.org/opengl/wiki/Shader_Storage_Buffer_Object</a>.
+						</li>
+						<li>
+							niceeffort. <i>boids_compute_example</i>. GitLab. <a href="https://gitlab.com/niceeffort/boids_compute_example/-/tree/main?ref_type=heads" target="_blank">https://gitlab.com/niceeffort/boids_compute_example/-/tree/main?ref_type=heads</a>.
+						</li>
+						<li>
+							Reynolds, Craig W. "Boids (Flocks, Herds, and Schools: a Distributed Behavioral Model)." <i>red3d.com</i>. <a href="https://www.red3d.com/cwr/boids/" target="_blank">https://www.red3d.com/cwr/boids/</a>.
+						</li>
+						<li>
+							rpgwhitelock. <i>AllSkyFree_Godot</i>. GitHub. <a href="https://github.com/rpgwhitelock/AllSkyFree_Godot/tree/master" target="_blank">https://github.com/rpgwhitelock/AllSkyFree_Godot/tree/master</a>.
+						</li>
 						</ul>
 				</section>
 	
@@ -186,9 +195,36 @@
 					<h2>Contributions</h2>
 					<p>Detailed breakdown of contributions from each team member:</p>
 					 <ul>
-						<li><strong>[Team Member 1 Name]:</strong> [Specific tasks, features implemented, sections written, etc.]</li>
-						<li><strong>[Team Member 2 Name]:</strong> [Specific tasks, features implemented, sections written, etc.]</li>
-						<li><strong>[Team Member 3 Name, if any]:</strong> [Specific tasks, features implemented, sections written, etc.]</li>
+						<li> <strong>Julian Pearson Rickenbach:</strong>
+							<ul>
+								<li>Implemented boids algorithm (CPU version)</li>
+								<li>Researched boid algorithm implementations</li>
+								<li>Researched compute shaders and Godot shader specifics</li>
+								<li>Assisted in debugging compute shader</li>
+								<li>Contributed to writing the various writeups</li>
+							</ul>
+						</li>
+						<li> <strong>Connor Armstrong:</strong>
+							 <ul>
+								<li>Implemented boids algorithm in compute shader</li>
+								<li>Researched compute shader implementations</li>
+								<li>Debugged compute shader</li>
+								<li>Tuned boids algorithm specifics</li>
+							</ul>
+						</li>
+						<li> <strong>Mark Yuzon:</strong>
+							 <ul>
+								<li>Developed the website</li>
+								<li>Created and implemented the slides</li>
+								<li>Procured the bird model</li>
+							</ul>
+						</li>
+						<li> <strong>John Yoon:</strong>
+							 <ul>
+								<li>Contributed by debugging the compute shader</li>
+								<li>Contributed in making the slides and writing the writeup</li>
+							</ul>
+						</li>
 						 </ul>
 				</section>
 	
